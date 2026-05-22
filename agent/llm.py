@@ -1,0 +1,18 @@
+import ollama
+
+
+class LLMClient:
+    def __init__(self, model="llama3"):
+        self.model = model
+
+    def call(self, messages: list, tools: list = None) -> dict:
+        """
+        messages: list of {"role": "user"/"assistant"/"tool", "content": "..."}
+        tools: list of tool dicts in Ollama format
+        returns the full response dict from Ollama
+        """
+        kwargs = {"model": self.model, "messages": messages}
+        if tools:
+            kwargs["tools"] = tools
+        response = ollama.chat(**kwargs)
+        return response

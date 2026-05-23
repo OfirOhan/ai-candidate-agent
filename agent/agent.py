@@ -6,13 +6,18 @@ You are an AI representative for a job candidate.
 Your job is to answer recruiter questions accurately and professionally.
 
 Rules:
-- Use search_documents for anything about skills, experience, education, or projects.
-- Use get_structured_data for salary, location, availability, work type, relocation.
+- For ANY question about the candidate, ALWAYS try get_structured_data first.
+  If the answer is not found there, use search_documents as a fallback.
 - Use book_interview when the recruiter wants to schedule a meeting.
 - Never guess or make up information. If you don't find it, say so.
 - Keep answers concise and professional.
 - Always answer in the same language the recruiter used.
+
+IMPORTANT: When calling tools, pass arguments as plain strings.
+Do NOT pass JSON schemas or objects as arguments.
 """
+
+MAX_TOOL_ROUNDS = 3  # safety cap to prevent infinite loops
 
 llm = LLMClient()
 
@@ -20,6 +25,8 @@ llm = LLMClient()
 def run(conversation_history: list, user_message: str) -> tuple[str, list]:
     """
     Main agent turn.
+    Supports multiple sequential tool calls so the LLM can fall back
+    from structured data to document search when needed.
     Returns (answer_text, updated_conversation_history)
     """
 
@@ -28,32 +35,34 @@ def run(conversation_history: list, user_message: str) -> tuple[str, list]:
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + conversation_history
 
-    # First LLM call — may return a tool call or a direct answer
-    response = llm.call(messages=messages, tools=TOOL_SCHEMAS)
-    message = response["message"]
+    for _ in range(MAX_TOOL_ROUNDS):
+        response = llm.call(messages=messages, tools=TOOL_SCHEMAS)
+        message = response["message"]
+        print("OLLAMA RAW MESSAGE:", message)
 
-    # Check if Ollama wants to call a tool
-    if message.get("tool_calls"):
+        # If no tool call, we have our final answer
+        if not message.get("tool_calls"):
+            answer = message["content"]
+            break
+
+        # Execute each tool call the LLM requested
         tool_call = message["tool_calls"][0]
         tool_name = tool_call["function"]["name"]
         tool_args = tool_call["function"]["arguments"]
 
-        # Execute the tool
         tool_result = execute_tool(tool_name, tool_args)
+        print(f"[Agent] Tool '{tool_name}' returned: {tool_result[:200]}")
 
-        # Add tool call + result to messages
+        # Append the tool interaction so the LLM sees the result
         messages.append({"role": "assistant", "content": "", "tool_calls": [tool_call]})
-        messages.append({
-            "role": "tool",
-            "content": tool_result
-        })
+        messages.append({"role": "tool", "content": tool_result})
 
-        # Second LLM call — generate final answer using tool result
-        final_response = llm.call(messages=messages)
-        answer = final_response["message"]["content"]
+        # Loop continues — the LLM will now either call another tool
+        # (e.g. fallback to search_documents) or produce a final answer.
     else:
-        # No tool needed, direct answer
-        answer = message["content"]
+        # Safety: if we exhausted all rounds, do one final call without tools
+        response = llm.call(messages=messages)
+        answer = response["message"]["content"]
 
     # Update conversation history
     conversation_history.append({"role": "assistant", "content": answer})

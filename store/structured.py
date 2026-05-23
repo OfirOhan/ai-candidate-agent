@@ -4,14 +4,33 @@ import os
 DATA_PATH = "./store/data/candidate.json"
 
 DEFAULT_FIELDS = {
+    # Personal Details
     "full_name": "",
-    "salary_expectation": "",
+    "email_address": "",
+    "country_code": "",
+    "phone_number": "",
+    "linkedin": "",
+    "github": "",
+
+    # Education
+    "degree_title": "",
+    "field_of_study": "",
+    "institution": "",
+    "graduation_year": "",
+    "gpa": "",
+
+    # Experience
+    "years_of_experience": "",
+    "current_role": "",
+    "desired_job_title": "",
+    "job_description": "",
+
+    # Job Preferences
+    "monthly_salary_expectation": "",
     "preferred_location": "",
     "availability": "",
-    "work_type": "",       # remote / hybrid / onsite
-    "years_of_experience": "",
+    "work_type": "",         # Remote / Hybrid / Onsite / No Preference
     "open_to_relocation": "",
-    "linkedin": ""
 }
 
 

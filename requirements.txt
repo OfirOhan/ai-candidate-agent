@@ -3,3 +3,4 @@ chromadb
 sentence-transformers
 ollama
 PyMuPDF
+langchain-text-splitters

@@ -2,7 +2,7 @@ import ollama
 
 
 class LLMClient:
-    def __init__(self, model="llama3"):
+    def __init__(self, model="qwen3"):
         self.model = model
 
     def call(self, messages: list, tools: list = None) -> dict:

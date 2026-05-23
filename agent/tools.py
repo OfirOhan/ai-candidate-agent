@@ -9,11 +9,44 @@ TOOL_SCHEMAS = [
     {
         "type": "function",
         "function": {
+            "name": "get_structured_data",
+            "description": (
+                "Get fixed, guaranteed-accurate candidate information. "
+                "ONLY use this tool for the following fields:\n"
+                "  Personal: full_name, email_address, country_code, phone_number, linkedin, github\n"
+                "  Education: degree_title, field_of_study, institution, graduation_year, gpa\n"
+                "  Experience: years_of_experience, current_role, job_description\n"
+                "  Preferences: monthly_salary_expectation, preferred_location, availability, work_type, open_to_relocation\n"
+                "If the question does not match one of these fields, "
+                "use search_documents instead."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "type": "string",
+                        "description": (
+                            "One of: full_name, email_address, country_code, "
+                            "phone_number, linkedin, github, degree_title, field_of_study, "
+                            "institution, graduation_year, gpa, years_of_experience, "
+                            "current_role, job_description, monthly_salary_expectation, "
+                            "preferred_location, availability, work_type, open_to_relocation"
+                        )
+                    }
+                },
+                "required": ["field"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "search_documents",
             "description": (
                 "Search the candidate's uploaded documents (CV, grades, certificates). "
-                "Use this when asked about skills, work experience, education, projects, "
-                "technologies, or anything that would appear in a resume."
+                "Use this for ANY question about the candidate that is not covered "
+                "by get_structured_data — including skills, experience, education, "
+                "projects, contact details, technologies, certifications, and more."
             ),
             "parameters": {
                 "type": "object",
@@ -24,32 +57,6 @@ TOOL_SCHEMAS = [
                     }
                 },
                 "required": ["query"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_structured_data",
-            "description": (
-                "Get fixed, guaranteed-accurate candidate information. "
-                "Use this when asked about salary expectations, location preference, "
-                "availability to start, work type (remote/hybrid/onsite), "
-                "years of experience, or willingness to relocate."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "field": {
-                        "type": "string",
-                        "description": (
-                            "One of: salary_expectation, preferred_location, "
-                            "availability, work_type, years_of_experience, "
-                            "open_to_relocation, full_name, linkedin"
-                        )
-                    }
-                },
-                "required": ["field"]
             }
         }
     },
@@ -79,19 +86,35 @@ TOOL_SCHEMAS = [
 # -- Tool execution functions ------------------------------------------------
 
 
-def search_documents(query: str) -> str:
-    chunks = retrieve(query, CANDIDATE_ID)
+def search_documents(**kwargs) -> str:
+    # Accept any argument name the LLM uses (query, field, etc.)
+    query = kwargs.get("query", next(iter(kwargs.values()), ""))
+    # Auto-recover if the LLM passes a dict instead of a string
+    if isinstance(query, dict):
+        query = query.get("query", query.get("description", str(query)))
+    chunks = retrieve(str(query), CANDIDATE_ID)
     if not chunks:
         return "No relevant information found in documents."
     return "\n\n".join(chunks)
 
 
-def get_structured_data(field: str) -> str:
-    value = get_field(field)
+def get_structured_data(**kwargs) -> str:
+    # Accept any argument name the LLM uses (field, query, etc.)
+    field = kwargs.get("field", next(iter(kwargs.values()), ""))
+    # Auto-recover if the LLM passes a dict instead of a string
+    if isinstance(field, dict):
+        raw = field.get("field", field.get("description", str(field)))
+        field = raw.split(":")[0].strip()
+    value = get_field(str(field))
     return f"{field}: {value}"
 
 
-def book_interview(date: str) -> str:
+def book_interview(**kwargs) -> str:
+    # Accept any argument name the LLM uses (date, query, etc.)
+    date = kwargs.get("date", next(iter(kwargs.values()), ""))
+    # Auto-recover if the LLM passes a dict instead of a string
+    if isinstance(date, dict):
+        date = date.get("date", date.get("description", str(date)))
     # MVP: mock response. Later: integrate Calendly API.
     return (
         f"A meeting request has been noted for {date}. "

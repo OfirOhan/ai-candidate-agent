@@ -14,7 +14,15 @@ for msg in st.session_state.history:
 # Input
 user_input = st.chat_input("Ask a question...")
 if user_input:
+    # 1. Show the user's message on screen immediately
+    st.chat_message("user").write(user_input)
+    
+    # 2. Run the agent while showing a spinner
     with st.spinner("Thinking..."):
         answer, updated_history = run(st.session_state.history.copy(), user_input)
+        
+    # 3. Show the agent's answer immediately
+    st.chat_message("assistant").write(answer)
+    
+    # 4. Save to state (no st.rerun needed, it will redraw naturally next turn)
     st.session_state.history = updated_history
-    st.rerun()

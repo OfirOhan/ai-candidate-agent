@@ -4,3 +4,9 @@ sentence-transformers
 ollama
 PyMuPDF
 langchain-text-splitters
+ragas
+deepeval
+pandas
+jinja2
+langchain-ollama
+langchain-huggingface

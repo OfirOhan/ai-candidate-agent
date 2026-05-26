@@ -1,5 +1,9 @@
 .venv
 .idea
 *.json
+!evaluation/data/*.json
 *.bin
 *.pdf
+evaluation/reports/
+__pycache__/
+*.pyc

@@ -3,6 +3,14 @@ import os
 
 DATA_PATH = "./store/data/candidate.json"
 
+DEFAULT_EDUCATION = {
+    "degree_title": "",
+    "field_of_study": "",
+    "institution": "",
+    "graduation_year": "",
+    "gpa": "",
+}
+
 DEFAULT_FIELDS = {
     # Personal Details
     "full_name": "",
@@ -12,12 +20,8 @@ DEFAULT_FIELDS = {
     "linkedin": "",
     "github": "",
 
-    # Education
-    "degree_title": "",
-    "field_of_study": "",
-    "institution": "",
-    "graduation_year": "",
-    "gpa": "",
+    # Education (list of degrees)
+    "education": [DEFAULT_EDUCATION.copy()],
 
     # Experience
     "years_of_experience": "",
@@ -38,7 +42,17 @@ def load() -> dict:
     if not os.path.exists(DATA_PATH):
         return DEFAULT_FIELDS.copy()
     with open(DATA_PATH, "r") as f:
-        return json.load(f)
+        data = json.load(f)
+    # Migration: convert old flat education fields to list format
+    if "education" not in data and "degree_title" in data:
+        data["education"] = [{
+            "degree_title": data.pop("degree_title", ""),
+            "field_of_study": data.pop("field_of_study", ""),
+            "institution": data.pop("institution", ""),
+            "graduation_year": data.pop("graduation_year", ""),
+            "gpa": data.pop("gpa", ""),
+        }]
+    return data
 
 
 def save(data: dict):
@@ -49,4 +63,27 @@ def save(data: dict):
 
 def get_field(field: str) -> str:
     data = load()
+
+    # Handle education field specially — format all degrees into readable text
+    if field == "education":
+        entries = data.get("education", [])
+        if not entries:
+            return "Not provided"
+        lines = []
+        for i, edu in enumerate(entries, 1):
+            title = edu.get("degree_title", "")
+            if not title:
+                continue
+            parts = [title]
+            if edu.get("field_of_study"):
+                parts.append(f"in {edu['field_of_study']}")
+            if edu.get("institution"):
+                parts.append(f"from {edu['institution']}")
+            if edu.get("graduation_year"):
+                parts.append(f"({edu['graduation_year']})")
+            if edu.get("gpa"):
+                parts.append(f"- GPA: {edu['gpa']}")
+            lines.append(" ".join(parts))
+        return "\n".join(lines) if lines else "Not provided"
+
     return data.get(field, "Not provided")

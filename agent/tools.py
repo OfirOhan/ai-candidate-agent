@@ -14,8 +14,8 @@ TOOL_SCHEMAS = [
                 "Get fixed, guaranteed-accurate candidate information. "
                 "ONLY use this tool for the following fields:\n"
                 "  Personal: full_name, email_address, country_code, phone_number, linkedin, github\n"
-                "  Education: degree_title, field_of_study, institution, graduation_year, gpa\n"
-                "  Experience: years_of_experience, current_role, job_description\n"
+                "  Education: education (returns all degrees, fields of study, institutions, and GPAs)\n"
+                "  Experience: years_of_experience, current_role, desired_job_title, job_description\n"
                 "  Preferences: monthly_salary_expectation, preferred_location, availability, work_type, open_to_relocation\n"
                 "If the question does not match one of these fields, "
                 "use search_documents instead."
@@ -27,9 +27,9 @@ TOOL_SCHEMAS = [
                         "type": "string",
                         "description": (
                             "One of: full_name, email_address, country_code, "
-                            "phone_number, linkedin, github, degree_title, field_of_study, "
-                            "institution, graduation_year, gpa, years_of_experience, "
-                            "current_role, job_description, monthly_salary_expectation, "
+                            "phone_number, linkedin, github, education, "
+                            "years_of_experience, current_role, desired_job_title, "
+                            "job_description, monthly_salary_expectation, "
                             "preferred_location, availability, work_type, open_to_relocation"
                         )
                     }

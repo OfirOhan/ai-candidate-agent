@@ -7,3 +7,5 @@
 evaluation/reports/
 __pycache__/
 *.pyc
+chroma_db
+uploads

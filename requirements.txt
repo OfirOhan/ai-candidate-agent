@@ -4,6 +4,9 @@ sentence-transformers
 ollama
 PyMuPDF
 langchain-text-splitters
+python-docx
+pytesseract
+Pillow
 ragas
 deepeval
 pandas

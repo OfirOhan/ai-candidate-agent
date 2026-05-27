@@ -59,27 +59,6 @@ TOOL_SCHEMAS = [
                 "required": ["query"]
             }
         }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "book_interview",
-            "description": (
-                "Handle interview scheduling. Use this when the recruiter wants to "
-                "set up a meeting, check availability for a specific date, or "
-                "book an interview slot."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "date": {
-                        "type": "string",
-                        "description": "The requested date or time slot"
-                    }
-                },
-                "required": ["date"]
-            }
-        }
     }
 ]
 
@@ -109,25 +88,12 @@ def get_structured_data(**kwargs) -> str:
     return f"{field}: {value}"
 
 
-def book_interview(**kwargs) -> str:
-    # Accept any argument name the LLM uses (date, query, etc.)
-    date = kwargs.get("date", next(iter(kwargs.values()), ""))
-    # Auto-recover if the LLM passes a dict instead of a string
-    if isinstance(date, dict):
-        date = date.get("date", date.get("description", str(date)))
-    # MVP: mock response. Later: integrate Calendly API.
-    return (
-        f"A meeting request has been noted for {date}. "
-        "The candidate will confirm via email shortly."
-    )
-
 
 # -- Dispatcher --------------------------------------------------------------
 
 TOOL_FUNCTIONS = {
     "search_documents": search_documents,
     "get_structured_data": get_structured_data,
-    "book_interview": book_interview
 }
 
 

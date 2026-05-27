@@ -101,9 +101,14 @@ def ingest_document(file_path: str, candidate_id: str, doc_type: str = "cv"):
     all_chunks, all_embeddings, all_ids, all_metas = [], [], [], []
 
     for s_idx, section in enumerate(sections):
+        # Split the body text
         chunks = text_splitter.split_text(section["text"])
+
         for c_idx, chunk in enumerate(chunks):
-            all_chunks.append(chunk)
+            # Prepend the section title to the text chunk for semantic richness
+            contextualized_chunk = f"Section: {section['section']}\n{chunk}"
+
+            all_chunks.append(contextualized_chunk)
             all_ids.append(f"{base}_s{s_idx}_chunk_{c_idx}")
             all_metas.append({
                 "candidate_id": candidate_id,

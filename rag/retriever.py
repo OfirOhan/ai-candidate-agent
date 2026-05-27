@@ -43,7 +43,53 @@ def expand_query(original_query: str, n_variations: int = 3) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# 2. Query Classification — semantic match to actual sections in ChromaDB
+# 2. Query Routing — summary index vs vector index
+# ---------------------------------------------------------------------------
+
+def is_broad_query(query: str, candidate_id: str, threshold: float = 0.3) -> bool:
+    """Decide if the query is broad (overview) or specific (targeted lookup).
+
+    Compares the query against actual summaries vs actual section names in ChromaDB.
+    If the query is more similar to summaries than to any specific section → broad.
+
+    Language agnostic — no hardcoded phrases, works in Hebrew, English, anything.
+
+    Examples:
+        broad:    "ספר לי על המועמד", "give me an overview"
+        specific: "what FastAPI projects did he build", "כישורי Python"
+    """
+    collection = client.get_or_create_collection(name=candidate_id)
+    chunk_results = collection.get(include=["metadatas"])
+    sections = list({
+        m["section"]
+        for m in chunk_results["metadatas"]
+        if "section" in m
+    })
+
+    summary_collection = client.get_or_create_collection(f"{candidate_id}_summaries")
+    summary_results = summary_collection.get(include=["embeddings"])
+
+    if not summary_results["embeddings"] or not sections:
+        return False
+
+    query_embedding = embedder.encode([query])[0]
+
+    # Score query against all section names
+    section_embeddings = embedder.encode(sections)
+    best_section_score = float(np.max(section_embeddings @ query_embedding))
+
+    # Score query against actual summary embeddings
+    summary_embeddings = np.array(summary_results["embeddings"])
+    best_summary_score = float(np.max(summary_embeddings @ query_embedding))
+
+    print(f"[Retriever] Summary score: {best_summary_score:.3f} | Section score: {best_section_score:.3f}")
+
+    # Broad if summaries win over sections by the threshold margin
+    return best_summary_score > best_section_score + threshold
+
+
+# ---------------------------------------------------------------------------
+# 3. Query Classification — semantic match to actual sections in ChromaDB
 # ---------------------------------------------------------------------------
 
 def classify_query(query: str, collection) -> dict:
@@ -52,7 +98,6 @@ def classify_query(query: str, collection) -> dict:
 
     Returns a ChromaDB `where` filter dict, or {} to search everything.
     """
-    # Pull all unique section names that exist for this candidate
     results = collection.get(include=["metadatas"])
     sections = list({
         m["section"]
@@ -63,11 +108,9 @@ def classify_query(query: str, collection) -> dict:
     if not sections:
         return {}
 
-    # Embed the query and all section names
     query_embedding = embedder.encode([query])[0]
     section_embeddings = embedder.encode(sections)
 
-    # Cosine similarity: dot product on normalized vectors
     scores = section_embeddings @ query_embedding
 
     best_idx = int(np.argmax(scores))
@@ -77,14 +120,13 @@ def classify_query(query: str, collection) -> dict:
     print(f"[Retriever] Section scores: {dict(zip(sections, scores.round(3)))}")
     print(f"[Retriever] Best section: '{best_section}' (score: {best_score:.3f})")
 
-    # Only filter if confident enough — otherwise search everything
     if best_score > 0.3:
         return {"section": best_section}
     return {}
 
 
 # ---------------------------------------------------------------------------
-# 3. Fusion Retrieval — BM25 + Vector search merged with RRF
+# 4. Fusion Retrieval — BM25 + Vector search merged with RRF
 # ---------------------------------------------------------------------------
 
 def bm25_search(query: str, chunks: list[str], top_k: int = 10) -> list[str]:
@@ -126,7 +168,7 @@ def rrf_fusion(vector_chunks: list[str], bm25_chunks: list[str], k: int = 60) ->
 
 
 # ---------------------------------------------------------------------------
-# 4. Re-ranking — score every candidate chunk with a Cross-Encoder
+# 5. Re-ranking — score every candidate chunk with a Cross-Encoder
 # ---------------------------------------------------------------------------
 
 def rerank(query: str, chunks: list[str], top_k: int = 3) -> list[str]:
@@ -145,32 +187,43 @@ def rerank(query: str, chunks: list[str], top_k: int = 3) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# 5. Main retrieve pipeline: expand → classify → fetch → fuse → re-rank
+# 6. Main retrieve pipeline: route → expand → classify → fuse → re-rank
 # ---------------------------------------------------------------------------
 
 def retrieve(query: str, candidate_id: str, top_k: int = 3) -> list[str]:
     """Full advanced retrieval pipeline.
 
     Steps:
-        1. Expand the query into multiple variations via Ollama.
-        2. Classify the query → find the most relevant section semantically.
-        3. For each variation, fetch chunks via vector search (filtered by section).
-        4. Run BM25 keyword search on the same candidate chunks.
-        5. Fuse vector and BM25 results using RRF.
-        6. Re-rank fused candidates with a Cross-Encoder.
-        7. Return the top_k best chunks.
+        1. Route — broad query → summary index, specific → vector index.
+        2. Expand the query into multiple variations via Ollama.
+        3. Classify the query → find the most relevant section semantically.
+        4. For each variation, fetch chunks via vector search (filtered by section).
+        5. Run BM25 keyword search on the same candidate chunks.
+        6. Fuse vector and BM25 results using RRF.
+        7. Re-rank fused candidates with a Cross-Encoder.
+        8. Return the top_k best chunks.
     """
     collection = client.get_or_create_collection(name=candidate_id)
 
-    # --- Step 1: Query Expansion ---
+    # --- Step 1: Route — summary index for broad queries ---
+    if is_broad_query(query, candidate_id):
+        print(f"[Retriever] Broad query detected → searching summary index")
+        summary_collection = client.get_or_create_collection(f"{candidate_id}_summaries")
+        q_embedding = embedder.encode([query]).tolist()
+        results = summary_collection.query(query_embeddings=q_embedding, n_results=top_k)
+        summaries = results["documents"][0]
+        print(f"[Retriever] Returning {len(summaries)} summaries")
+        return summaries
+
+    # --- Step 2: Query Expansion ---
     queries = expand_query(query)
     print(f"[Retriever] Expanded '{query}' → {queries}")
 
-    # --- Step 2: Classify → get metadata filter ---
+    # --- Step 3: Classify → get metadata filter ---
     metadata_filter = classify_query(query, collection)
     print(f"[Retriever] Metadata filter: {metadata_filter}")
 
-    # --- Step 3: Vector search for every query variation ---
+    # --- Step 4: Vector search for every query variation ---
     fetch_per_query = 10
     vector_chunks: list[str] = []
     seen: set[str] = set()
@@ -189,8 +242,7 @@ def retrieve(query: str, candidate_id: str, top_k: int = 3) -> list[str]:
 
     print(f"[Retriever] Vector search → {len(vector_chunks)} unique chunks")
 
-    # --- Step 4: BM25 search on the same filtered chunks ---
-    # Get all chunks in the filtered section for BM25 to search over
+    # --- Step 5: BM25 search on the same filtered chunks ---
     all_docs = collection.get(
         where=metadata_filter if metadata_filter else None,
         include=["documents"]
@@ -200,11 +252,11 @@ def retrieve(query: str, candidate_id: str, top_k: int = 3) -> list[str]:
     bm25_chunks = bm25_search(query, all_chunks_in_section, top_k=fetch_per_query)
     print(f"[Retriever] BM25 search → {len(bm25_chunks)} chunks")
 
-    # --- Step 5: Fuse vector + BM25 results with RRF ---
+    # --- Step 6: Fuse vector + BM25 results with RRF ---
     fused = rrf_fusion(vector_chunks, bm25_chunks)
     print(f"[Retriever] RRF fusion → {len(fused)} chunks")
 
-    # --- Step 6: Re-rank and return the best ---
+    # --- Step 7: Re-rank and return the best ---
     best = rerank(query, fused, top_k=top_k)
     print(f"[Retriever] Re-ranked → returning top {len(best)} chunks")
     return best

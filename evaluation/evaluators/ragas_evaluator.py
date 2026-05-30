@@ -9,7 +9,7 @@ Metrics computed:
 """
 
 import pandas as pd
-from ragas import evaluate, EvaluationDataset, SingleTurnSample
+from ragas import evaluate, EvaluationDataset, SingleTurnSample, RunConfig
 from ragas.metrics import (
     Faithfulness,
     ResponseRelevancy,
@@ -24,7 +24,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 def _build_llm(model: str = "qwen3"):
     """Create a RAGAS-compatible LLM wrapper around Ollama."""
-    return LangchainLLMWrapper(ChatOllama(model=model))
+    return LangchainLLMWrapper(ChatOllama(model=model, reasoning=False))
 
 
 def _build_embeddings(model: str = "all-MiniLM-L6-v2"):
@@ -81,6 +81,7 @@ def run_ragas_evaluation(
     results = evaluate(
         dataset=dataset,
         metrics=metrics,
+        run_config=RunConfig(timeout=600, max_workers=1, max_retries=3),
     )
 
     df = results.to_pandas()

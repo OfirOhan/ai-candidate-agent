@@ -25,6 +25,9 @@ REPORT_FORMAT = "html"
 # If True, only run the RAG pipeline (collect answers) without scoring
 DRY_RUN = False
 
+# If True, skip the RAG pipeline and reuse existing pipeline_results.json
+REUSE_PIPELINE_RESULTS = False
+
 # Number of chunks the retriever returns
 TOP_K = 3
 
@@ -42,6 +45,7 @@ if __name__ == "__main__":
         judge_model=JUDGE_MODEL,
         dry_run=DRY_RUN,
         report_format=REPORT_FORMAT,
+        reuse_results=REUSE_PIPELINE_RESULTS,
     )
 
     # Print summary

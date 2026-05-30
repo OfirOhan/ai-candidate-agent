@@ -38,9 +38,10 @@ class OllamaJudge(DeepEvalBaseLLM):
         response = ollama_client.chat(
             model=self._model_name,
             messages=[{"role": "user", "content": prompt}],
+            think=False,
         )
         content = response["message"]["content"]
-        # Strip <think>...</think> tags if present (qwen3 thinking mode)
+        # Fallback: strip <think>...</think> tags if still present
         import re
         content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
         return content
@@ -115,6 +116,7 @@ def run_deepeval_evaluation(
                 actual_output=d["answer"],
                 expected_output=d["ground_truth"],
                 retrieval_context=d["contexts"],
+                context=d["contexts"],
             )
         )
 

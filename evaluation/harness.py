@@ -140,6 +140,7 @@ def run_evaluation(
     judge_model: str = "qwen3",
     dry_run: bool = False,
     report_format: str = "html",
+    reuse_results: bool = False,
 ) -> dict:
     """
     Full evaluation pipeline:
@@ -167,31 +168,44 @@ def run_evaluation(
     print(f"  Category   : {category_filter or 'all'}")
     print(f"  Top-K      : {top_k}")
     print(f"  Dry run    : {dry_run}")
+    print(f"  Reuse      : {reuse_results}")
     print("=" * 70)
 
     # ── Step 1: Load dataset ────────────────────────────────────────
     dataset = _load_golden_dataset(category_filter)
     print(f"\n[Harness] Loaded {len(dataset)} questions from golden dataset.")
 
-    # ── Step 2: Seed data ───────────────────────────────────────────
-    backup_path = _seed_structured_data()
-    _cleanup_eval_collection()
-    _seed_documents()
-    set_candidate_id(EVAL_CANDIDATE_ID)
+    backup_path = None
+
+    if reuse_results:
+        # ── Load existing pipeline results ──────────────────────────
+        raw_path = REPORTS_DIR / "pipeline_results.json"
+        with open(raw_path, "r", encoding="utf-8") as f:
+            pipeline_results = json.load(f)
+        if category_filter:
+            pipeline_results = [r for r in pipeline_results if r["category"] == category_filter]
+        print(f"[Harness] Reusing {len(pipeline_results)} results from {raw_path}")
+    else:
+        # ── Step 2: Seed data ───────────────────────────────────────
+        backup_path = _seed_structured_data()
+        _cleanup_eval_collection()
+        _seed_documents()
+        set_candidate_id(EVAL_CANDIDATE_ID)
 
     try:
-        # ── Step 3: Run pipeline ────────────────────────────────────
-        start_time = time.time()
-        pipeline_results = _run_pipeline_on_dataset(dataset, top_k=top_k)
-        pipeline_elapsed = time.time() - start_time
-        print(f"\n[Harness] Pipeline completed in {pipeline_elapsed:.1f}s")
+        if not reuse_results:
+            # ── Step 3: Run pipeline ────────────────────────────────
+            start_time = time.time()
+            pipeline_results = _run_pipeline_on_dataset(dataset, top_k=top_k)
+            pipeline_elapsed = time.time() - start_time
+            print(f"\n[Harness] Pipeline completed in {pipeline_elapsed:.1f}s")
 
-        # Save raw results
-        REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-        raw_path = REPORTS_DIR / "pipeline_results.json"
-        with open(raw_path, "w", encoding="utf-8") as f:
-            json.dump(pipeline_results, f, indent=2, ensure_ascii=False)
-        print(f"[Harness] Raw results saved to {raw_path}")
+            # Save raw results
+            REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+            raw_path = REPORTS_DIR / "pipeline_results.json"
+            with open(raw_path, "w", encoding="utf-8") as f:
+                json.dump(pipeline_results, f, indent=2, ensure_ascii=False)
+            print(f"[Harness] Raw results saved to {raw_path}")
 
         # ── Step 4: Evaluate ────────────────────────────────────────
         ragas_df = None
@@ -232,9 +246,10 @@ def run_evaluation(
 
     finally:
         # ── Cleanup ─────────────────────────────────────────────────
-        restore_candidate_id()
-        _restore_structured_data(backup_path)
-        _cleanup_eval_collection()
+        if not reuse_results:
+            restore_candidate_id()
+            _restore_structured_data(backup_path)
+            _cleanup_eval_collection()
 
     print("\n" + "=" * 70)
     print("  EVALUATION COMPLETE")

@@ -81,7 +81,7 @@ def run_ragas_evaluation(
     results = evaluate(
         dataset=dataset,
         metrics=metrics,
-        run_config=RunConfig(timeout=600, max_workers=1, max_retries=3),
+        run_config=RunConfig(timeout=600, max_workers=4, max_retries=3),
     )
 
     df = results.to_pandas()

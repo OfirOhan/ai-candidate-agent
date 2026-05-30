@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RAG Evaluation Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0f172a; color: #e2e8f0;
+    padding: 2rem; line-height: 1.6;
+  }
+  h1 { color: #f8fafc; margin-bottom: 0.5rem; font-size: 1.8rem; }
+  h2 { color: #94a3b8; margin: 2rem 0 1rem; font-size: 1.3rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+  .meta { color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }
+  .metrics-grid {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;
+  }
+  .metric-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 1.2rem 1.5rem; min-width: 160px; text-align: center;
+  }
+  .metric-score { font-size: 1.8rem; font-weight: 700; }
+  .metric-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.3rem; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 1rem 0;
+    background: #1e293b; border-radius: 8px; overflow: hidden;
+  }
+  th { background: #334155; color: #e2e8f0; padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+  tr:hover { background: #334155; }
+  .answer-cell, .gt-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .summary-stat { display: inline-block; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 0.8rem 1.2rem; margin: 0.3rem; }
+  .summary-stat strong { color: #38bdf8; }
+</style>
+</head>
+<body>
+
+<h1>RAG Evaluation Report</h1>
+<div class="meta">Generated: 2026-05-29 15:50:03 | Questions: 75 | Avg Latency: 29.24s</div>
+
+<h2>Overall Metric Scores</h2>
+<div class="metrics-grid">
+  
+        <div class="metric-card">
+          <div class="metric-score" style="color:#eab308">0.734</div>
+          <div class="metric-label">Faithfulness</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-score" style="color:#22c55e">0.847</div>
+          <div class="metric-label">Answer Relevancy</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-score" style="color:#22c55e">0.833</div>
+          <div class="metric-label">Llm Context Precision With Reference</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-score" style="color:#eab308">0.570</div>
+          <div class="metric-label">Context Recall</div>
+        </div>
+</div>
+
+<h2>Category Breakdown</h2>
+<table>
+  <thead><tr><th>Category</th><th>Count</th><th>Avg Latency</th><th>Metrics</th></tr></thead>
+  <tbody>
+        <tr>
+          <td>personal</td>
+          <td>8</td>
+          <td>24.31s</td>
+          <td style="font-size:0.85em">N/A</td>
+        </tr>
+        <tr>
+          <td>education</td>
+          <td>8</td>
+          <td>17.54s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">faithfulness: 0.900</span> <span style="color:#22c55e">answer_relevancy: 0.945</span> <span style="color:#eab308">llm_context_precision_with_reference: 0.778</span> <span style="color:#22c55e">context_recall: 0.857</span> </td>
+        </tr>
+        <tr>
+          <td>experience</td>
+          <td>10</td>
+          <td>17.29s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">answer_relevancy: 0.849</span> <span style="color:#ef4444">context_recall: 0.417</span> </td>
+        </tr>
+        <tr>
+          <td>skills</td>
+          <td>12</td>
+          <td>17.75s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">faithfulness: 0.880</span> <span style="color:#22c55e">answer_relevancy: 0.873</span> <span style="color:#eab308">llm_context_precision_with_reference: 0.750</span> <span style="color:#22c55e">context_recall: 0.819</span> </td>
+        </tr>
+        <tr>
+          <td>projects</td>
+          <td>10</td>
+          <td>91.52s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">faithfulness: 0.978</span> <span style="color:#22c55e">answer_relevancy: 0.834</span> <span style="color:#eab308">context_recall: 0.739</span> </td>
+        </tr>
+        <tr>
+          <td>certifications</td>
+          <td>5</td>
+          <td>16.26s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">faithfulness: 0.950</span> <span style="color:#22c55e">answer_relevancy: 0.887</span> <span style="color:#22c55e">llm_context_precision_with_reference: 1.000</span> <span style="color:#22c55e">context_recall: 1.000</span> </td>
+        </tr>
+        <tr>
+          <td>preferences</td>
+          <td>8</td>
+          <td>11.5s</td>
+          <td style="font-size:0.85em"><span style="color:#22c55e">answer_relevancy: 0.847</span> <span style="color:#ef4444">context_recall: 0.125</span> </td>
+        </tr>
+        <tr>
+          <td>scheduling</td>
+          <td>4</td>
+          <td>43.78s</td>
+          <td style="font-size:0.85em"><span style="color:#ef4444">faithfulness: 0.000</span> <span style="color:#eab308">answer_relevancy: 0.621</span> <span style="color:#ef4444">context_recall: 0.000</span> </td>
+        </tr>
+        <tr>
+          <td>negative</td>
+          <td>5</td>
+          <td>11.34s</td>
+          <td style="font-size:0.85em"><span style="color:#ef4444">faithfulness: 0.248</span> <span style="color:#eab308">answer_relevancy: 0.784</span> <span style="color:#ef4444">context_recall: 0.167</span> </td>
+        </tr>
+        <tr>
+          <td>complex</td>
+          <td>5</td>
+          <td>30.35s</td>
+          <td style="font-size:0.85em">N/A</td>
+        </tr></tbody>
+</table>
+
+<h2>Per-Question Details</h2>
+<table>
+  <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Answer</th><th>Ground Truth</th><th>Scores</th><th>Latency</th></tr></thead>
+  <tbody>
+        <tr>
+          <td>q001</td>
+          <td>personal</td>
+          <td title="What is the candidate's full name?">What is the candidate's full name?</td>
+          <td class="answer-cell" title="The candidate's full name is **Ofir Ohan**.">The candidate's full name is **Ofir Ohan**....</td>
+          <td class="gt-cell" title="Ofir Ohan">Ofir Ohan...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>106.62s</td>
+        </tr>
+        <tr>
+          <td>q002</td>
+          <td>personal</td>
+          <td title="What is the candidate's email address?">What is the candidate's email address?</td>
+          <td class="answer-cell" title="The candidate's email address is **ofir.ohan@gmail.com**.">The candidate's email address is **ofir.ohan@gmail.com**....</td>
+          <td class="gt-cell" title="ofir.ohan@gmail.com">ofir.ohan@gmail.com...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>12.35s</td>
+        </tr>
+        <tr>
+          <td>q003</td>
+          <td>personal</td>
+          <td title="What is the candidate's phone number?">What is the candidate's phone number?</td>
+          <td class="answer-cell" title="The candidate's phone number is **54-123-4567**.">The candidate's phone number is **54-123-4567**....</td>
+          <td class="gt-cell" title="+972 54-123-4567">+972 54-123-4567...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.95s</td>
+        </tr>
+        <tr>
+          <td>q004</td>
+          <td>personal</td>
+          <td title="What is the candidate's LinkedIn profile?">What is the candidate's LinkedIn profile?</td>
+          <td class="answer-cell" title="The candidate's LinkedIn profile is: [https://linkedin.com/in/ofirohan](https://linkedin.com/in/ofirohan)">The candidate's LinkedIn profile is: [https://linkedin.com/in/ofirohan](https://linkedin.com/in/ofirohan)...</td>
+          <td class="gt-cell" title="https://linkedin.com/in/ofirohan">https://linkedin.com/in/ofirohan...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>13.29s</td>
+        </tr>
+        <tr>
+          <td>q005</td>
+          <td>personal</td>
+          <td title="What is the candidate's GitHub profile URL?">What is the candidate's GitHub profile URL?</td>
+          <td class="answer-cell" title="The candidate's GitHub profile URL is [https://github.com/ofirohan](https://github.com/ofirohan).">The candidate's GitHub profile URL is [https://github.com/ofirohan](https://github.com/ofirohan)....</td>
+          <td class="gt-cell" title="https://github.com/ofirohan">https://github.com/ofirohan...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>12.43s</td>
+        </tr>
+        <tr>
+          <td>q006</td>
+          <td>personal</td>
+          <td title="How can I contact the candidate?">How can I contact the candidate?</td>
+          <td class="answer-cell" title="The candidate's email address and phone number are not available in the structured data. Would you like me to assist with any other information or ans">The candidate's email address and phone number are not available in the structured data. Would you like me to assist with any other information or ans...</td>
+          <td class="gt-cell" title="You can contact Ofir Ohan via email at ofir.ohan@gmail.com, by phone at +972 54-123-4567, or through LinkedIn at https://linkedin.com/in/ofirohan.">You can contact Ofir Ohan via email at ofir.ohan@gmail.com, by phone at +972 54-123-4567, or through LinkedIn at https://linkedin.com/in/ofirohan....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>11.22s</td>
+        </tr>
+        <tr>
+          <td>q007</td>
+          <td>personal</td>
+          <td title="What country is the candidate based in?">What country is the candidate based in?</td>
+          <td class="answer-cell" title="The candidate is based in Israel.">The candidate is based in Israel....</td>
+          <td class="gt-cell" title="Israel. The candidate is based in Tel Aviv, Israel.">Israel. The candidate is based in Tel Aviv, Israel....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>16.09s</td>
+        </tr>
+        <tr>
+          <td>q008</td>
+          <td>personal</td>
+          <td title="What is the candidate's country dialing code?">What is the candidate's country dialing code?</td>
+          <td class="answer-cell" title="The candidate's country dialing code is **+972**.">The candidate's country dialing code is **+972**....</td>
+          <td class="gt-cell" title="+972">+972...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>11.57s</td>
+        </tr>
+        <tr>
+          <td>q009</td>
+          <td>education</td>
+          <td title="What degree does the candidate hold?">What degree does the candidate hold?</td>
+          <td class="answer-cell" title="The candidate holds a **Bachelor's degree**. 
+
+If you'd like to know the specific field of study or other details, let me know!">The candidate holds a **Bachelor's degree**. 
+
+If you'd like to know the specific field of study or other details, let me know!...</td>
+          <td class="gt-cell" title="Bachelor's degree in Computer Science from Tel Aviv University.">Bachelor's degree in Computer Science from Tel Aviv University....</td>
+          <td><span style="color:#eab308" title="faithfulness">0.500</span> <span style="color:#eab308" title="answer_relevancy">0.799</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>11.38s</td>
+        </tr>
+        <tr>
+          <td>q010</td>
+          <td>education</td>
+          <td title="What did the candidate study?">What did the candidate study?</td>
+          <td class="answer-cell" title="The candidate studied **Computer Science**.">The candidate studied **Computer Science**....</td>
+          <td class="gt-cell" title="Computer Science">Computer Science...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.958</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.29s</td>
+        </tr>
+        <tr>
+          <td>q011</td>
+          <td>education</td>
+          <td title="Where did the candidate study?">Where did the candidate study?</td>
+          <td class="answer-cell" title="The candidate studied at Tel Aviv University.">The candidate studied at Tel Aviv University....</td>
+          <td class="gt-cell" title="Tel Aviv University">Tel Aviv University...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.833</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>11.32s</td>
+        </tr>
+        <tr>
+          <td>q012</td>
+          <td>education</td>
+          <td title="When did the candidate graduate?">When did the candidate graduate?</td>
+          <td class="answer-cell" title="The candidate graduated in 2021.">The candidate graduated in 2021....</td>
+          <td class="gt-cell" title="2021">2021...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.973</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>8.86s</td>
+        </tr>
+        <tr>
+          <td>q013</td>
+          <td>education</td>
+          <td title="What is the candidate's GPA?">What is the candidate's GPA?</td>
+          <td class="answer-cell" title="The candidate's GPA is **89/100**.">The candidate's GPA is **89/100**....</td>
+          <td class="gt-cell" title="89/100">89/100...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.55s</td>
+        </tr>
+        <tr>
+          <td>q014</td>
+          <td>education</td>
+          <td title="Tell me about the candidate's educational background.">Tell me about the candidate's educational background.</td>
+          <td class="answer-cell" title="The candidate's educational background includes:
+
+**Bachelor of Science in Computer Science**  
+**Tel Aviv University | 2017 – 2021 | GPA: 89/100**  
+">The candidate's educational background includes:
+
+**Bachelor of Science in Computer Science**  
+**Tel Aviv University | 2017 – 2021 | GPA: 89/100**  
+...</td>
+          <td class="gt-cell" title="Ofir Ohan holds a Bachelor's degree in Computer Science from Tel Aviv University, graduating in 2021 with a GPA of 89/100. He was on the Dean's List i">Ofir Ohan holds a Bachelor's degree in Computer Science from Tel Aviv University, graduating in 2021 with a GPA of 89/100. He was on the Dean's List i...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.900</span> <span style="color:#22c55e" title="answer_relevancy">0.954</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>43.98s</td>
+        </tr>
+        <tr>
+          <td>q015</td>
+          <td>education</td>
+          <td title="What was the candidate's capstone project about?">What was the candidate's capstone project about?</td>
+          <td class="answer-cell" title="The candidate's capstone project was titled **"Autonomous Drone Navigation"**. It involved developing a computer vision system for indoor drone naviga">The candidate's capstone project was titled **"Autonomous Drone Navigation"**. It involved developing a computer vision system for indoor drone naviga...</td>
+          <td class="gt-cell" title="The capstone project was Autonomous Drone Navigation — a computer vision system for indoor drone navigation using reinforcement learning with visual i">The capstone project was Autonomous Drone Navigation — a computer vision system for indoor drone navigation using reinforcement learning with visual i...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.957</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>26.56s</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td>education</td>
+          <td title="Was the candidate on the Dean's List?">Was the candidate on the Dean's List?</td>
+          <td class="answer-cell" title="The candidate was on the Dean's List in **2019** and **2020**. This is explicitly mentioned in the documents provided.">The candidate was on the Dean's List in **2019** and **2020**. This is explicitly mentioned in the documents provided....</td>
+          <td class="gt-cell" title="Yes, Ofir was on the Dean's List in 2019 and 2020 at Tel Aviv University.">Yes, Ofir was on the Dean's List in 2019 and 2020 at Tel Aviv University....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.922</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>18.39s</td>
+        </tr>
+        <tr>
+          <td>q017</td>
+          <td>experience</td>
+          <td title="How many years of experience does the candidate have?">How many years of experience does the candidate have?</td>
+          <td class="answer-cell" title="The candidate has 4 years of experience.">The candidate has 4 years of experience....</td>
+          <td class="gt-cell" title="4 years of experience.">4 years of experience....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.99s</td>
+        </tr>
+        <tr>
+          <td>q018</td>
+          <td>experience</td>
+          <td title="What is the candidate's current role?">What is the candidate's current role?</td>
+          <td class="answer-cell" title="The candidate's current role is **Machine Learning Engineer at DataSphere Technologies**.">The candidate's current role is **Machine Learning Engineer at DataSphere Technologies**....</td>
+          <td class="gt-cell" title="Machine Learning Engineer at DataSphere Technologies">Machine Learning Engineer at DataSphere Technologies...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.27s</td>
+        </tr>
+        <tr>
+          <td>q019</td>
+          <td>experience</td>
+          <td title="Describe the candidate's current job responsibilities.">Describe the candidate's current job responsibilities.</td>
+          <td class="answer-cell" title="The candidate's current job responsibilities include designing and deploying production ML pipelines for NLP and recommendation systems. They lead a t">The candidate's current job responsibilities include designing and deploying production ML pipelines for NLP and recommendation systems. They lead a t...</td>
+          <td class="gt-cell" title="Designing and deploying production ML pipelines for NLP and recommendation systems. Leading a team of 3 engineers. Working with large-scale datasets (">Designing and deploying production ML pipelines for NLP and recommendation systems. Leading a team of 3 engineers. Working with large-scale datasets (...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.944</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.333</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.62s</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td>experience</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td class="answer-cell" title="The candidate has previously worked as a Machine Learning Engineer at **DataSphere Technologies** in **Tel Aviv, Israel** from **January 2022 to prese">The candidate has previously worked as a Machine Learning Engineer at **DataSphere Technologies** in **Tel Aviv, Israel** from **January 2022 to prese...</td>
+          <td class="gt-cell" title="Before DataSphere Technologies, Ofir worked as a Junior Data Scientist at TechStart Solutions in Herzliya, Israel from June 2021 to December 2021.">Before DataSphere Technologies, Ofir worked as a Junior Data Scientist at TechStart Solutions in Herzliya, Israel from June 2021 to December 2021....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#eab308" title="answer_relevancy">0.594</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>19.79s</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td>experience</td>
+          <td title="What was the candidate's first job?">What was the candidate's first job?</td>
+          <td class="answer-cell" title="The candidate's first job is not explicitly mentioned in the provided documents or structured data. The available information details their current ro">The candidate's first job is not explicitly mentioned in the provided documents or structured data. The available information details their current ro...</td>
+          <td class="gt-cell" title="Junior Data Scientist at TechStart Solutions (June 2021 – December 2021).">Junior Data Scientist at TechStart Solutions (June 2021 – December 2021)....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>18.09s</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td>experience</td>
+          <td title="Describe the candidate's work at TechStart Solutions.">Describe the candidate's work at TechStart Solutions.</td>
+          <td class="answer-cell" title="The candidate served as a **Junior Data Scientist** at TechStart Solutions in Herzliya, Israel, from **June 2021 to December 2021**. Their work focuse">The candidate served as a **Junior Data Scientist** at TechStart Solutions in Herzliya, Israel, from **June 2021 to December 2021**. Their work focuse...</td>
+          <td class="gt-cell" title="At TechStart Solutions, Ofir developed customer churn prediction models with 92% accuracy using XGBoost and LightGBM, built automated data pipelines w">At TechStart Solutions, Ofir developed customer churn prediction models with 92% accuracy using XGBoost and LightGBM, built automated data pipelines w...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#eab308" title="answer_relevancy">0.739</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>25.57s</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td>experience</td>
+          <td title="Has the candidate led a team?">Has the candidate led a team?</td>
+          <td class="answer-cell" title="The candidate has led a team of 3 ML engineers, conducting code reviews, sprint planning, and mentoring junior developers. This experience is explicit">The candidate has led a team of 3 ML engineers, conducting code reviews, sprint planning, and mentoring junior developers. This experience is explicit...</td>
+          <td class="gt-cell" title="Yes, Ofir leads a team of 3 ML engineers at DataSphere Technologies, conducting code reviews, sprint planning, and mentoring junior developers.">Yes, Ofir leads a team of 3 ML engineers at DataSphere Technologies, conducting code reviews, sprint planning, and mentoring junior developers....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#ef4444" title="answer_relevancy">0.455</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>17.46s</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td>experience</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td class="answer-cell" title="The candidate has worked in the following industries:
+
+- **Fintech**: Focused on fraud detection and risk scoring solutions.  
+- **E-commerce**: Speci">The candidate has worked in the following industries:
+
+- **Fintech**: Focused on fraud detection and risk scoring solutions.  
+- **E-commerce**: Speci...</td>
+          <td class="gt-cell" title="Fintech (fraud detection, risk scoring) and e-commerce (recommendations, search ranking).">Fintech (fraud detection, risk scoring) and e-commerce (recommendations, search ranking)....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>22.03s</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td>experience</td>
+          <td title="How did the candidate reduce model inference latency?">How did the candidate reduce model inference latency?</td>
+          <td class="answer-cell" title="The candidate reduced model inference latency by 40% through **TensorRT optimization** and **model distillation techniques**. These methods likely inv">The candidate reduced model inference latency by 40% through **TensorRT optimization** and **model distillation techniques**. These methods likely inv...</td>
+          <td class="gt-cell" title="Ofir reduced model inference latency by 40% through TensorRT optimization and model distillation techniques at DataSphere Technologies.">Ofir reduced model inference latency by 40% through TensorRT optimization and model distillation techniques at DataSphere Technologies....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.911</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>21.39s</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td>experience</td>
+          <td title="Has the candidate worked as a teaching assistant?">Has the candidate worked as a teaching assistant?</td>
+          <td class="answer-cell" title="Yes, the candidate served as a Teaching Assistant for **Introduction to Machine Learning** from **2020 to 2021**.">Yes, the candidate served as a Teaching Assistant for **Introduction to Machine Learning** from **2020 to 2021**....</td>
+          <td class="gt-cell" title="Yes, Ofir served as a Teaching Assistant for Introduction to Machine Learning at Tel Aviv University (2020-2021).">Yes, Ofir served as a Teaching Assistant for Introduction to Machine Learning at Tel Aviv University (2020-2021)....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>17.65s</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td>skills</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know?</td>
+          <td class="answer-cell" title="The candidate knows the following programming languages: Python, SQL, JavaScript, and Bash.">The candidate knows the following programming languages: Python, SQL, JavaScript, and Bash....</td>
+          <td class="gt-cell" title="Python, SQL, JavaScript, and Bash.">Python, SQL, JavaScript, and Bash....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.987</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>15.53s</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td>skills</td>
+          <td title="What ML and deep learning frameworks does the candidate use?">What ML and deep learning frameworks does the candidate use?</td>
+          <td class="answer-cell" title="The candidate uses the following ML and deep learning frameworks:
+
+- **Deep Learning:** PyTorch, TensorFlow, Hugging Face Transformers, ONNX, TensorRT">The candidate uses the following ML and deep learning frameworks:
+
+- **Deep Learning:** PyTorch, TensorFlow, Hugging Face Transformers, ONNX, TensorRT...</td>
+          <td class="gt-cell" title="PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers, XGBoost, LightGBM, ONNX, and TensorRT.">PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers, XGBoost, LightGBM, ONNX, and TensorRT....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>18.21s</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td>skills</td>
+          <td title="What cloud platforms does the candidate have experience with?">What cloud platforms does the candidate have experience with</td>
+          <td class="answer-cell" title="The candidate has experience with the following cloud platforms:
+
+**AWS:** SageMaker, EC2, S3, Lambda, Bedrock  
+**GCP:** BigQuery, Vertex AI  
+
+These">The candidate has experience with the following cloud platforms:
+
+**AWS:** SageMaker, EC2, S3, Lambda, Bedrock  
+**GCP:** BigQuery, Vertex AI  
+
+These...</td>
+          <td class="gt-cell" title="AWS (SageMaker, EC2, S3, Lambda, Bedrock) and GCP (BigQuery, Vertex AI).">AWS (SageMaker, EC2, S3, Lambda, Bedrock) and GCP (BigQuery, Vertex AI)....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.993</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>14.02s</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td>skills</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td class="answer-cell" title="The candidate has worked with the following databases:
+
+- **PostgreSQL**
+- **MongoDB**
+- **Redis**
+- **Elasticsearch**">The candidate has worked with the following databases:
+
+- **PostgreSQL**
+- **MongoDB**
+- **Redis**
+- **Elasticsearch**...</td>
+          <td class="gt-cell" title="PostgreSQL, MongoDB, Redis, and Elasticsearch.">PostgreSQL, MongoDB, Redis, and Elasticsearch....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.986</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>19.04s</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td>skills</td>
+          <td title="Does the candidate have DevOps experience?">Does the candidate have DevOps experience?</td>
+          <td class="answer-cell" title="The candidate has DevOps experience, as evidenced by their proficiency with tools such as **Docker**, **Kubernetes**, **GitHub Actions CI/CD**, and **">The candidate has DevOps experience, as evidenced by their proficiency with tools such as **Docker**, **Kubernetes**, **GitHub Actions CI/CD**, and **...</td>
+          <td class="gt-cell" title="Yes, the candidate has experience with Docker, Kubernetes, MLflow, Weights & Biases, GitHub Actions CI/CD, and Terraform.">Yes, the candidate has experience with Docker, Kubernetes, MLflow, Weights & Biases, GitHub Actions CI/CD, and Terraform....</td>
+          <td><span style="color:#eab308" title="faithfulness">0.667</span> <span style="color:#eab308" title="answer_relevancy">0.704</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>20.66s</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td>skills</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td class="answer-cell" title="The candidate is proficient in Python, as indicated by their technical skills section which explicitly lists Python as one of the programming language">The candidate is proficient in Python, as indicated by their technical skills section which explicitly lists Python as one of the programming language...</td>
+          <td class="gt-cell" title="Yes, Python is the candidate's primary programming language, used extensively across all roles and projects.">Yes, Python is the candidate's primary programming language, used extensively across all roles and projects....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.839</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>13.45s</td>
+        </tr>
+        <tr>
+          <td>q033</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with PyTorch?">Does the candidate have experience with PyTorch?</td>
+          <td class="answer-cell" title="Yes, the candidate has experience with PyTorch. They used it in a real-time fraud detection pipeline processing 10,000 transactions per second and in ">Yes, the candidate has experience with PyTorch. They used it in a real-time fraud detection pipeline processing 10,000 transactions per second and in ...</td>
+          <td class="gt-cell" title="Yes, the candidate uses PyTorch extensively for deep learning projects including the recommendation engine, fraud detection pipeline, and the capstone">Yes, the candidate uses PyTorch extensively for deep learning projects including the recommendation engine, fraud detection pipeline, and the capstone...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.934</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>15.71s</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td>skills</td>
+          <td title="Does the candidate have frontend development skills?">Does the candidate have frontend development skills?</td>
+          <td class="answer-cell" title="The candidate has frontend development skills. The Technical Skills section lists **JavaScript** as a programming language, and the Capstone Project m">The candidate has frontend development skills. The Technical Skills section lists **JavaScript** as a programming language, and the Capstone Project m...</td>
+          <td class="gt-cell" title="The candidate has some JavaScript knowledge and has built dashboards with Plotly and Streamlit, but frontend development is not a primary skill area.">The candidate has some JavaScript knowledge and has built dashboards with Plotly and Streamlit, but frontend development is not a primary skill area....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.250</span> <span style="color:#22c55e" title="answer_relevancy">0.865</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.333</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>17.16s</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td>skills</td>
+          <td title="What NLP experience does the candidate have?">What NLP experience does the candidate have?</td>
+          <td class="answer-cell" title="The candidate has 4 years of experience specializing in NLP, with a focus on developing production systems. Key NLP experience includes:
+
+- **Conversa">The candidate has 4 years of experience specializing in NLP, with a focus on developing production systems. Key NLP experience includes:
+
+- **Conversa...</td>
+          <td class="gt-cell" title="Extensive NLP experience including BERT, GPT fine-tuning, spaCy, LangChain, RAG systems, text classification, named entity recognition, and sentiment ">Extensive NLP experience including BERT, GPT fine-tuning, spaCy, LangChain, RAG systems, text classification, named entity recognition, and sentiment ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.868</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#eab308" title="context_recall">0.500</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>21.36s</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td>skills</td>
+          <td title="Does the candidate have computer vision experience?">Does the candidate have computer vision experience?</td>
+          <td class="answer-cell" title="The candidate has significant computer vision experience. They developed a computer vision system for indoor drone navigation as part of their capston">The candidate has significant computer vision experience. They developed a computer vision system for indoor drone navigation as part of their capston...</td>
+          <td class="gt-cell" title="Yes, the candidate has experience with OpenCV, image classification, object detection (YOLO), and built an autonomous drone navigation system using co">Yes, the candidate has experience with OpenCV, image classification, object detection (YOLO), and built an autonomous drone navigation system using co...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.737</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>17.07s</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes?</td>
+          <td class="answer-cell" title="The candidate has experience with Kubernetes. They architected a real-time fraud detection pipeline using Kubernetes alongside Apache Kafka, PyTorch, ">The candidate has experience with Kubernetes. They architected a real-time fraud detection pipeline using Kubernetes alongside Apache Kafka, PyTorch, ...</td>
+          <td class="gt-cell" title="Yes, the candidate has experience with Kubernetes, using it in the real-time fraud detection pipeline and as part of their MLOps/DevOps skill set.">Yes, the candidate has experience with Kubernetes, using it in the real-time fraud detection pipeline and as part of their MLOps/DevOps skill set....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.685</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>16.83s</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td>skills</td>
+          <td title="What data engineering tools does the candidate know?">What data engineering tools does the candidate know?</td>
+          <td class="answer-cell" title="The candidate is proficient in the following **data engineering tools**:
+
+- **Data Engineering:** Apache Kafka, Apache Airflow, Apache Spark  
+- **Clo">The candidate is proficient in the following **data engineering tools**:
+
+- **Data Engineering:** Apache Kafka, Apache Airflow, Apache Spark  
+- **Clo...</td>
+          <td class="gt-cell" title="Apache Kafka, Apache Airflow, and Apache Spark.">Apache Kafka, Apache Airflow, and Apache Spark....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.880</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>23.94s</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td>projects</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td class="answer-cell" title="The candidate has worked on the following projects:
+
+1. **Autonomous Drone Navigation**  
+   - Developed a computer vision system for indoor drone nav">The candidate has worked on the following projects:
+
+1. **Autonomous Drone Navigation**  
+   - Developed a computer vision system for indoor drone nav...</td>
+          <td class="gt-cell" title="Smart Recommendation Engine, Conversational AI Customer Support Bot, Real-time Fraud Detection Pipeline, Open-Source Contribution to LangChain, and Ac">Smart Recommendation Engine, Conversational AI Customer Support Bot, Real-time Fraud Detection Pipeline, Open-Source Contribution to LangChain, and Ac...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.889</span> <span style="color:#22c55e" title="answer_relevancy">0.959</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.400</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>717.22s</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td>projects</td>
+          <td title="Tell me about the recommendation engine project.">Tell me about the recommendation engine project.</td>
+          <td class="answer-cell" title="The candidate worked on the **Smart Recommendation Engine** project at DataSphere Technologies, where they developed a hybrid collaborative and conten">The candidate worked on the **Smart Recommendation Engine** project at DataSphere Technologies, where they developed a hybrid collaborative and conten...</td>
+          <td class="gt-cell" title="Built a hybrid collaborative and content-based recommendation system serving 2M+ users at DataSphere Technologies. Combines matrix factorization with ">Built a hybrid collaborative and content-based recommendation system serving 2M+ users at DataSphere Technologies. Combines matrix factorization with ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.561</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>22.95s</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td>projects</td>
+          <td title="What was the outcome of the fraud detection project?">What was the outcome of the fraud detection project?</td>
+          <td class="answer-cell" title="The fraud detection project resulted in a real-time pipeline processing **10,000 transactions per second** with **sub-100ms inference latency**. Key o">The fraud detection project resulted in a real-time pipeline processing **10,000 transactions per second** with **sub-100ms inference latency**. Key o...</td>
+          <td class="gt-cell" title="The real-time fraud detection pipeline processes 10,000 transactions per second with sub-100ms inference latency, using an ensemble of gradient boosti">The real-time fraud detection pipeline processes 10,000 transactions per second with sub-100ms inference latency, using an ensemble of gradient boosti...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.958</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>22.43s</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td>projects</td>
+          <td title="What technologies were used in the chatbot project?">What technologies were used in the chatbot project?</td>
+          <td class="answer-cell" title="The chatbot project utilized the following technologies:  
+- **LangChain** (for Retrieval-Augmented Generation architecture)  
+- **Hugging Face Transf">The chatbot project utilized the following technologies:  
+- **LangChain** (for Retrieval-Augmented Generation architecture)  
+- **Hugging Face Transf...</td>
+          <td class="gt-cell" title="LangChain, Hugging Face Transformers, ChromaDB, and FastAPI.">LangChain, Hugging Face Transformers, ChromaDB, and FastAPI....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.933</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>21.85s</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td>projects</td>
+          <td title="What is the candidate's most significant project?">What is the candidate's most significant project?</td>
+          <td class="answer-cell" title="The candidate's most significant project appears to be the **Smart Recommendation Engine** developed at DataSphere Technologies. This project involved">The candidate's most significant project appears to be the **Smart Recommendation Engine** developed at DataSphere Technologies. This project involved...</td>
+          <td class="gt-cell" title="The Smart Recommendation Engine at DataSphere Technologies, serving 2M+ users and improving CTR by 35%, or the Real-time Fraud Detection Pipeline proc">The Smart Recommendation Engine at DataSphere Technologies, serving 2M+ users and improving CTR by 35%, or the Real-time Fraud Detection Pipeline proc...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.816</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>17.07s</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td>projects</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source projects?</td>
+          <td class="answer-cell" title="Yes, the candidate has contributed to open-source projects. They developed a **document loader module for Hebrew text processing** for the **LangChain">Yes, the candidate has contributed to open-source projects. They developed a **document loader module for Hebrew text processing** for the **LangChain...</td>
+          <td class="gt-cell" title="Yes, Ofir contributed a document loader module for Hebrew text processing to LangChain. The contribution was merged and received 50+ stars on GitHub.">Yes, Ofir contributed a document loader module for Hebrew text processing to LangChain. The contribution was merged and received 50+ stars on GitHub....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.865</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>24.16s</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td>projects</td>
+          <td title="What ML models has the candidate built?">What ML models has the candidate built?</td>
+          <td class="answer-cell" title="The candidate has built the following ML models and related systems:
+
+1. **Customer Churn Prediction Models**  
+   - **Models Used**: XGBoost, LightGB">The candidate has built the following ML models and related systems:
+
+1. **Customer Churn Prediction Models**  
+   - **Models Used**: XGBoost, LightGB...</td>
+          <td class="gt-cell" title="Recommendation system (hybrid collaborative/content-based), customer churn prediction (XGBoost/LightGBM with 92% accuracy), fraud detection (ensemble ">Recommendation system (hybrid collaborative/content-based), customer churn prediction (XGBoost/LightGBM with 92% accuracy), fraud detection (ensemble ...</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.941</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#eab308" title="context_recall">0.750</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>22.65s</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td>projects</td>
+          <td title="Does the candidate have real-time systems experience?">Does the candidate have real-time systems experience?</td>
+          <td class="answer-cell" title="The candidate has real-time systems experience. They developed a real-time fraud detection pipeline processing 10,000 transactions per second with sub">The candidate has real-time systems experience. They developed a real-time fraud detection pipeline processing 10,000 transactions per second with sub...</td>
+          <td class="gt-cell" title="Yes, the candidate built a real-time fraud detection pipeline processing 10,000 transactions per second with sub-100ms latency using Apache Kafka, PyT">Yes, the candidate built a real-time fraud detection pipeline processing 10,000 transactions per second with sub-100ms latency using Apache Kafka, PyT...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.810</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>19.32s</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td>projects</td>
+          <td title="Has the candidate worked on any NLP projects?">Has the candidate worked on any NLP projects?</td>
+          <td class="answer-cell" title="The candidate has worked on NLP projects, including:
+
+1. **Conversational AI Customer Support Bot** (DataSphere Technologies)  
+   - Developed an NLP ">The candidate has worked on NLP projects, including:
+
+1. **Conversational AI Customer Support Bot** (DataSphere Technologies)  
+   - Developed an NLP ...</td>
+          <td class="gt-cell" title="Yes, the candidate built a Conversational AI Customer Support Bot using RAG architecture (LangChain, ChromaDB, Hugging Face) that handles 70% of suppo">Yes, the candidate built a Conversational AI Customer Support Bot using RAG architecture (LangChain, ChromaDB, Hugging Face) that handles 70% of suppo...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.926</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#eab308" title="context_recall">0.500</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>27.87s</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td>projects</td>
+          <td title="What is the largest dataset the candidate has worked with?">What is the largest dataset the candidate has worked with?</td>
+          <td class="answer-cell" title="The candidate has worked with datasets exceeding **50 million rows**, primarily on AWS infrastructure (SageMaker, EC2, S3, Lambda). These datasets wer">The candidate has worked with datasets exceeding **50 million rows**, primarily on AWS infrastructure (SageMaker, EC2, S3, Lambda). These datasets wer...</td>
+          <td class="gt-cell" title="The candidate has worked extensively with large-scale datasets exceeding 50 million rows on AWS infrastructure.">The candidate has worked extensively with large-scale datasets exceeding 50 million rows on AWS infrastructure....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.572</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>19.69s</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td>certifications</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td class="answer-cell" title="The candidate holds the following certifications:
+
+1. **AWS Certified Machine Learning — Specialty** (March 2023, Amazon Web Services)  
+2. **Deep Lea">The candidate holds the following certifications:
+
+1. **AWS Certified Machine Learning — Specialty** (March 2023, Amazon Web Services)  
+2. **Deep Lea...</td>
+          <td class="gt-cell" title="AWS Certified Machine Learning — Specialty (March 2023), Deep Learning Specialization from DeepLearning.AI via Coursera (September 2022), and Professi">AWS Certified Machine Learning — Specialty (March 2023), Deep Learning Specialization from DeepLearning.AI via Coursera (September 2022), and Professi...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.800</span> <span style="color:#22c55e" title="answer_relevancy">0.973</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>14.84s</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td>certifications</td>
+          <td title="Does the candidate have any AWS certifications?">Does the candidate have any AWS certifications?</td>
+          <td class="answer-cell" title="The candidate holds the **AWS Certified Machine Learning — Specialty** certification (March 2023, Amazon Web Services). They also have other certifica">The candidate holds the **AWS Certified Machine Learning — Specialty** certification (March 2023, Amazon Web Services). They also have other certifica...</td>
+          <td class="gt-cell" title="Yes, the candidate holds the AWS Certified Machine Learning — Specialty certification, obtained in March 2023.">Yes, the candidate holds the AWS Certified Machine Learning — Specialty certification, obtained in March 2023....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.913</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>18.97s</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td>certifications</td>
+          <td title="Does the candidate have a deep learning certification?">Does the candidate have a deep learning certification?</td>
+          <td class="answer-cell" title="The candidate has the **Deep Learning Specialization** certification from DeepLearning.AI via Coursera (September 2022).">The candidate has the **Deep Learning Specialization** certification from DeepLearning.AI via Coursera (September 2022)....</td>
+          <td class="gt-cell" title="Yes, the candidate completed the Deep Learning Specialization from DeepLearning.AI via Coursera in September 2022.">Yes, the candidate completed the Deep Learning Specialization from DeepLearning.AI via Coursera in September 2022....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.765</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>16.75s</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td>certifications</td>
+          <td title="When did the candidate get their AWS certification?">When did the candidate get their AWS certification?</td>
+          <td class="answer-cell" title="The candidate obtained their **AWS Certified Machine Learning — Specialty** certification in **March 2023**.">The candidate obtained their **AWS Certified Machine Learning — Specialty** certification in **March 2023**....</td>
+          <td class="gt-cell" title="March 2023.">March 2023....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.859</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>16.07s</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td>certifications</td>
+          <td title="Does the candidate have any project management certifications?">Does the candidate have any project management certification</td>
+          <td class="answer-cell" title="The candidate holds the **Professional Scrum Master I (PSM I)** certification from Scrum.org, which is a project management-related certification. Oth">The candidate holds the **Professional Scrum Master I (PSM I)** certification from Scrum.org, which is a project management-related certification. Oth...</td>
+          <td class="gt-cell" title="Yes, the candidate holds the Professional Scrum Master I (PSM I) certification from Scrum.org, obtained in June 2022.">Yes, the candidate holds the Professional Scrum Master I (PSM I) certification from Scrum.org, obtained in June 2022....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.922</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>14.68s</td>
+        </tr>
+        <tr>
+          <td>q054</td>
+          <td>preferences</td>
+          <td title="What is the candidate's salary expectation?">What is the candidate's salary expectation?</td>
+          <td class="answer-cell" title="The candidate's monthly salary expectation is **30,000 ILS**.">The candidate's monthly salary expectation is **30,000 ILS**....</td>
+          <td class="gt-cell" title="30,000 ILS per month.">30,000 ILS per month....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.862</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.01s</td>
+        </tr>
+        <tr>
+          <td>q055</td>
+          <td>preferences</td>
+          <td title="Where does the candidate prefer to work?">Where does the candidate prefer to work?</td>
+          <td class="answer-cell" title="The candidate prefers to work in Tel Aviv, Israel.">The candidate prefers to work in Tel Aviv, Israel....</td>
+          <td class="gt-cell" title="Tel Aviv, Israel.">Tel Aviv, Israel....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.16s</td>
+        </tr>
+        <tr>
+          <td>q056</td>
+          <td>preferences</td>
+          <td title="When is the candidate available to start?">When is the candidate available to start?</td>
+          <td class="answer-cell" title="The candidate is available to start in **July 2026**.">The candidate is available to start in **July 2026**....</td>
+          <td class="gt-cell" title="July 2026.">July 2026....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.84s</td>
+        </tr>
+        <tr>
+          <td>q057</td>
+          <td>preferences</td>
+          <td title="Does the candidate prefer remote, hybrid, or onsite work?">Does the candidate prefer remote, hybrid, or onsite work?</td>
+          <td class="answer-cell" title="The candidate prefers hybrid work arrangements.">The candidate prefers hybrid work arrangements....</td>
+          <td class="gt-cell" title="Hybrid.">Hybrid....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#888" title="answer_relevancy">N/A</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>11.18s</td>
+        </tr>
+        <tr>
+          <td>q058</td>
+          <td>preferences</td>
+          <td title="Is the candidate open to relocation?">Is the candidate open to relocation?</td>
+          <td class="answer-cell" title="The candidate is open to relocation.">The candidate is open to relocation....</td>
+          <td class="gt-cell" title="Yes.">Yes....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.93s</td>
+        </tr>
+        <tr>
+          <td>q059</td>
+          <td>preferences</td>
+          <td title="What job title is the candidate looking for?">What job title is the candidate looking for?</td>
+          <td class="answer-cell" title="The candidate is currently seeking a **Machine Learning Engineer** role at DataSphere Technologies.">The candidate is currently seeking a **Machine Learning Engineer** role at DataSphere Technologies....</td>
+          <td class="gt-cell" title="Senior Machine Learning Engineer.">Senior Machine Learning Engineer....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#ef4444" title="answer_relevancy">0.443</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>15.28s</td>
+        </tr>
+        <tr>
+          <td>q060</td>
+          <td>preferences</td>
+          <td title="Would the candidate work fully onsite?">Would the candidate work fully onsite?</td>
+          <td class="answer-cell" title="The candidate's work type is listed as **Hybrid**. They are not available for fully onsite work. Would you like more details about their hybrid arrang">The candidate's work type is listed as **Hybrid**. They are not available for fully onsite work. Would you like more details about their hybrid arrang...</td>
+          <td class="gt-cell" title="The candidate prefers hybrid work, but is open to relocation and may consider onsite roles.">The candidate prefers hybrid work, but is open to relocation and may consider onsite roles....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#eab308" title="answer_relevancy">0.684</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>12.14s</td>
+        </tr>
+        <tr>
+          <td>q061</td>
+          <td>preferences</td>
+          <td title="When can the candidate start working?">When can the candidate start working?</td>
+          <td class="answer-cell" title="The candidate is available to start working in **July 2026**. Let me know if you'd like to discuss further details or proceed with the next steps!">The candidate is available to start working in **July 2026**. Let me know if you'd like to discuss further details or proceed with the next steps!...</td>
+          <td class="gt-cell" title="July 2026.">July 2026....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.940</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>14.49s</td>
+        </tr>
+        <tr>
+          <td>q062</td>
+          <td>scheduling</td>
+          <td title="I'd like to schedule an interview for next Tuesday.">I'd like to schedule an interview for next Tuesday.</td>
+          <td class="answer-cell" title="The interview has been scheduled for next Tuesday. The candidate will receive a confirmation email shortly. Let me know if you need any further detail">The interview has been scheduled for next Tuesday. The candidate will receive a confirmation email shortly. Let me know if you need any further detail...</td>
+          <td class="gt-cell" title="A meeting request has been noted. The candidate will confirm via email shortly.">A meeting request has been noted. The candidate will confirm via email shortly....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.000</span> <span style="color:#eab308" title="answer_relevancy">0.699</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>9.27s</td>
+        </tr>
+        <tr>
+          <td>q063</td>
+          <td>scheduling</td>
+          <td title="Can we set up a technical interview for June 15th at 2 PM?">Can we set up a technical interview for June 15th at 2 PM?</td>
+          <td class="answer-cell" title="The technical interview has been scheduled for June 15th at 2 PM. The candidate will confirm via email shortly. Let me know if you need further assist">The technical interview has been scheduled for June 15th at 2 PM. The candidate will confirm via email shortly. Let me know if you need further assist...</td>
+          <td class="gt-cell" title="A meeting request has been noted for June 15th at 2 PM. The candidate will confirm via email shortly.">A meeting request has been noted for June 15th at 2 PM. The candidate will confirm via email shortly....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.000</span> <span style="color:#eab308" title="answer_relevancy">0.720</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>12.54s</td>
+        </tr>
+        <tr>
+          <td>q064</td>
+          <td>scheduling</td>
+          <td title="Is the candidate available for an interview this week?">Is the candidate available for an interview this week?</td>
+          <td class="answer-cell" title="The candidate has been scheduled for an interview this week. They will send a confirmation email shortly to finalize the details. Let me know if you'd">The candidate has been scheduled for an interview this week. They will send a confirmation email shortly to finalize the details. Let me know if you'd...</td>
+          <td class="gt-cell" title="The candidate is available starting July 2026. I can note an interview request and the candidate will confirm availability via email.">The candidate is available starting July 2026. I can note an interview request and the candidate will confirm availability via email....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.000</span> <span style="color:#eab308" title="answer_relevancy">0.741</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>142.59s</td>
+        </tr>
+        <tr>
+          <td>q065</td>
+          <td>scheduling</td>
+          <td title="Can we book a 30-minute call for tomorrow morning?">Can we book a 30-minute call for tomorrow morning?</td>
+          <td class="answer-cell" title="The candidate has been notified of the meeting request for tomorrow morning. They will confirm the details via email shortly. Let me know if you need ">The candidate has been notified of the meeting request for tomorrow morning. They will confirm the details via email shortly. Let me know if you need ...</td>
+          <td class="gt-cell" title="A meeting request has been noted for tomorrow morning. The candidate will confirm via email shortly.">A meeting request has been noted for tomorrow morning. The candidate will confirm via email shortly....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.000</span> <span style="color:#ef4444" title="answer_relevancy">0.323</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>10.72s</td>
+        </tr>
+        <tr>
+          <td>q066</td>
+          <td>negative</td>
+          <td title="What is the candidate's blood type?">What is the candidate's blood type?</td>
+          <td class="answer-cell" title="The candidate's blood type is not mentioned in the provided documents or structured data fields.">The candidate's blood type is not mentioned in the provided documents or structured data fields....</td>
+          <td class="gt-cell" title="I don't have information about the candidate's blood type. This is not part of the professional profile.">I don't have information about the candidate's blood type. This is not part of the professional profile....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.000</span> <span style="color:#22c55e" title="answer_relevancy">0.919</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>15.81s</td>
+        </tr>
+        <tr>
+          <td>q067</td>
+          <td>negative</td>
+          <td title="What are the candidate's political opinions?">What are the candidate's political opinions?</td>
+          <td class="answer-cell" title="The candidate's political opinions are not included in the structured data fields or documented information available through the provided tools. I ca">The candidate's political opinions are not included in the structured data fields or documented information available through the provided tools. I ca...</td>
+          <td class="gt-cell" title="I don't have information about the candidate's political views. I can only provide professional and career-related information.">I don't have information about the candidate's political views. I can only provide professional and career-related information....</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.143</span> <span style="color:#22c55e" title="answer_relevancy">0.907</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>8.2s</td>
+        </tr>
+        <tr>
+          <td>q068</td>
+          <td>negative</td>
+          <td title="Is the candidate married?">Is the candidate married?</td>
+          <td class="answer-cell" title="The question about the candidate's marital status is not covered by the available tools. I don't have access to this information through the provided ">The question about the candidate's marital status is not covered by the available tools. I don't have access to this information through the provided ...</td>
+          <td class="gt-cell" title="I don't have information about the candidate's marital status. I can only share professional profile details.">I don't have information about the candidate's marital status. I can only share professional profile details....</td>
+          <td><span style="color:#eab308" title="faithfulness">0.600</span> <span style="color:#eab308" title="answer_relevancy">0.710</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>6.68s</td>
+        </tr>
+        <tr>
+          <td>q069</td>
+          <td>negative</td>
+          <td title="What is the candidate's religion?">What is the candidate's religion?</td>
+          <td class="answer-cell" title="The candidate's religion is not mentioned in the provided documents or structured data.">The candidate's religion is not mentioned in the provided documents or structured data....</td>
+          <td class="gt-cell" title="I don't have information about the candidate's religious beliefs. I can only provide professional and career-related information.">I don't have information about the candidate's religious beliefs. I can only provide professional and career-related information....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#eab308" title="answer_relevancy">0.560</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#eab308" title="context_recall">0.667</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>18.51s</td>
+        </tr>
+        <tr>
+          <td>q070</td>
+          <td>negative</td>
+          <td title="What is the candidate's credit score?">What is the candidate's credit score?</td>
+          <td class="answer-cell" title="The candidate's credit score is not available in the provided data or documents. I cannot access this information.">The candidate's credit score is not available in the provided data or documents. I cannot access this information....</td>
+          <td class="gt-cell" title="I don't have information about the candidate's credit score. This is not part of the professional profile.">I don't have information about the candidate's credit score. This is not part of the professional profile....</td>
+          <td><span style="color:#888" title="faithfulness">N/A</span> <span style="color:#22c55e" title="answer_relevancy">0.825</span> <span style="color:#888" title="llm_context_precision_with_reference">N/A</span> <span style="color:#888" title="context_recall">N/A</span> <span style="color:#888" title="DE:ContextualRelevancyMetric">N/A</span> <span style="color:#888" title="DE:FaithfulnessMetric">N/A</span> <span style="color:#888" title="DE:HallucinationMetric">N/A</span> <span style="color:#888" title="DE:GEval">N/A</span> </td>
+          <td>7.49s</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td>complex</td>
+          <td title="Is this candidate overqualified for a junior data scientist role?">Is this candidate overqualified for a junior data scientist </td>
+          <td class="answer-cell" title="The candidate has **4 years of experience**, which is typically more than what is expected for a junior data scientist role. While experience is valua">The candidate has **4 years of experience**, which is typically more than what is expected for a junior data scientist role. While experience is valua...</td>
+          <td class="gt-cell" title="Likely yes. With 4 years of experience, a team leadership role at DataSphere Technologies, multiple advanced certifications (AWS ML Specialty), and ex">Likely yes. With 4 years of experience, a team leadership role at DataSphere Technologies, multiple advanced certifications (AWS ML Specialty), and ex...</td>
+          <td>N/A</td>
+          <td>16.04s</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td>complex</td>
+          <td title="Would this candidate be a good fit for a remote ML role in Europe?">Would this candidate be a good fit for a remote ML role in E</td>
+          <td class="answer-cell" title="The candidate's **work_type** is listed as *Hybrid*, which may indicate a preference for in-office work alongside remote days. However, their **open_t">The candidate's **work_type** is listed as *Hybrid*, which may indicate a preference for in-office work alongside remote days. However, their **open_t...</td>
+          <td class="gt-cell" title="Potentially yes. The candidate prefers hybrid work but is open to relocation. He has strong ML skills (PyTorch, TensorFlow, NLP, recommendation system">Potentially yes. The candidate prefers hybrid work but is open to relocation. He has strong ML skills (PyTorch, TensorFlow, NLP, recommendation system...</td>
+          <td>N/A</td>
+          <td>24.68s</td>
+        </tr>
+        <tr>
+          <td>q073</td>
+          <td>complex</td>
+          <td title="Compare the candidate's academic and professional experience.">Compare the candidate's academic and professional experience</td>
+          <td class="answer-cell" title="The candidate holds a Bachelor's degree in Computer Science (academic experience) and has 4 years of professional experience in the field. Academicall">The candidate holds a Bachelor's degree in Computer Science (academic experience) and has 4 years of professional experience in the field. Academicall...</td>
+          <td class="gt-cell" title="Academically, Ofir earned a BSc in Computer Science from Tel Aviv University with a GPA of 89/100, was on the Dean's List, and completed a capstone on">Academically, Ofir earned a BSc in Computer Science from Tel Aviv University with a GPA of 89/100, was on the Dean's List, and completed a capstone on...</td>
+          <td>N/A</td>
+          <td>41.87s</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td>complex</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candidate offer?</td>
+          <td class="answer-cell" title="The candidate offers a unique blend of expertise in **Natural Language Processing (NLP)**, **Machine Learning (ML)**, and **Computer Vision (CV)**, co">The candidate offers a unique blend of expertise in **Natural Language Processing (NLP)**, **Machine Learning (ML)**, and **Computer Vision (CV)**, co...</td>
+          <td class="gt-cell" title="Ofir combines deep ML/NLP expertise (PyTorch, RAG systems, LangChain) with production engineering skills (Kubernetes, Docker, real-time pipelines), cl">Ofir combines deep ML/NLP expertise (PyTorch, RAG systems, LangChain) with production engineering skills (Kubernetes, Docker, real-time pipelines), cl...</td>
+          <td>N/A</td>
+          <td>19.55s</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td>complex</td>
+          <td title="Summarize why I should consider this candidate for a senior ML engineer position.">Summarize why I should consider this candidate for a senior </td>
+          <td class="answer-cell" title="The candidate is a strong contender for a senior ML engineer position due to:  
+- **4 years of experience** as a Machine Learning Engineer at DataSphe">The candidate is a strong contender for a senior ML engineer position due to:  
+- **4 years of experience** as a Machine Learning Engineer at DataSphe...</td>
+          <td class="gt-cell" title="Ofir Ohan is a strong candidate for a senior ML engineer role: 4 years of experience building production ML systems, leads a team of 3 engineers, expe">Ofir Ohan is a strong candidate for a senior ML engineer role: 4 years of experience building production ML systems, leads a team of 3 engineers, expe...</td>
+          <td>N/A</td>
+          <td>49.6s</td>
+        </tr></tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+[global]
+developmentMode = false
+
+[server]
+port = 3000
+enableCORS = false
+enableXsrfProtection = false

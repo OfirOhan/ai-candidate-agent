@@ -8,6 +8,9 @@ Metrics computed:
   - Hallucination:        Does the answer contain fabricated information?
 """
 
+import json
+import re
+
 import pandas as pd
 import ollama as ollama_client
 from deepeval.models import DeepEvalBaseLLM
@@ -26,7 +29,13 @@ from deepeval.test_case import LLMTestCaseParams
 # ---------------------------------------------------------------------------
 
 class OllamaJudge(DeepEvalBaseLLM):
-    """Wraps a local Ollama model so DeepEval can use it as evaluator."""
+    """Wraps a local Ollama model so DeepEval can use it as evaluator.
+
+    DeepEval's latest API passes a Pydantic ``schema`` to ``generate()``.
+    When a schema is provided we force Ollama to return JSON and parse the
+    response into the expected Pydantic model so that DeepEval can access
+    attributes like ``.verdicts``, ``.truths``, ``.steps``, etc.
+    """
 
     def __init__(self, model_name: str = "qwen3"):
         self._model_name = model_name
@@ -34,20 +43,40 @@ class OllamaJudge(DeepEvalBaseLLM):
     def load_model(self):
         return self._model_name
 
-    def generate(self, prompt: str, **kwargs) -> str:
-        response = ollama_client.chat(
+    def _strip_think(self, text: str) -> str:
+        """Remove <think>...</think> blocks produced by reasoning models."""
+        return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+
+    def generate(self, prompt: str, schema=None, **kwargs):
+        """Generate a response, optionally parsed into a Pydantic schema."""
+        chat_kwargs = dict(
             model=self._model_name,
             messages=[{"role": "user", "content": prompt}],
             think=False,
         )
-        content = response["message"]["content"]
-        # Fallback: strip <think>...</think> tags if still present
-        import re
-        content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
+        # When DeepEval passes a schema, force JSON output
+        if schema is not None:
+            chat_kwargs["format"] = "json"
+
+        response = ollama_client.chat(**chat_kwargs)
+        content = self._strip_think(response["message"]["content"])
+
+        if schema is not None:
+            try:
+                data = json.loads(content)
+                return schema(**data)
+            except (json.JSONDecodeError, Exception) as e:
+                # If parsing fails, try to extract JSON from the response
+                match = re.search(r"\{.*\}", content, re.DOTALL)
+                if match:
+                    data = json.loads(match.group())
+                    return schema(**data)
+                raise e
+
         return content
 
-    async def a_generate(self, prompt: str, **kwargs) -> str:
-        return self.generate(prompt, **kwargs)
+    async def a_generate(self, prompt: str, schema=None, **kwargs):
+        return self.generate(prompt, schema=schema, **kwargs)
 
     def get_model_name(self) -> str:
         return self._model_name

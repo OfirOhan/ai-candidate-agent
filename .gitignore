@@ -4,7 +4,6 @@
 !evaluation/data/*.json
 *.bin
 *.pdf
-evaluation/reports/
 __pycache__/
 *.pyc
 chroma_db

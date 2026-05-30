@@ -2,6 +2,7 @@
 .idea
 *.json
 !evaluation/data/*.json
+!evaluation/reports/*.json
 *.bin
 *.pdf
 __pycache__/

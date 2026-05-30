@@ -16,7 +16,7 @@ FRAMEWORKS = ["ragas", "deepeval"]
 
 # Filter golden dataset to a specific category, or None for all
 # Options: "personal", "education", "experience", "skills", "projects",
-#          "certifications", "preferences", "scheduling", "negative", "complex"
+#          "certifications", "preferences", "negative", "complex"
 CATEGORY_FILTER = None
 
 # Report output format: "html", "json", or "csv"

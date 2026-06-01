@@ -159,7 +159,7 @@ def check_length_proficiency_correlation(personas: list[dict], documents_db: dic
         "spearman_r": round(float(corr), 4),
         "p_value": round(float(p_val), 6),
         "threshold": 0.3,
-        "passed": bool(abs(float(corr)) < 0.3),
+        "passed": abs(corr) < 0.3,
         "total_pairs": len(lengths),
     }
 

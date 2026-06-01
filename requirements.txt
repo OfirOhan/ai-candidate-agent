@@ -1,15 +1,26 @@
+# Core agent
 streamlit
 chromadb
 sentence-transformers
 ollama
-PyMuPDF
 langchain-text-splitters
+langchain-ollama
+langchain-huggingface
+
+# Document parsing
+PyMuPDF
 python-docx
 pytesseract
 Pillow
+
+# Evaluation
 ragas
 deepeval
 pandas
 jinja2
-langchain-ollama
-langchain-huggingface
+
+# SPE dataset generation
+aiohttp
+scikit-learn
+scipy
+numpy

@@ -1,0 +1,67 @@
+question,deepeval_correctness
+What is the candidate's full name?,1.0
+What is the candidate's email address?,1.0
+What is the candidate's phone number?,0.8
+What is the candidate's LinkedIn profile?,1.0
+What is the candidate's GitHub profile URL?,0.9
+How can I contact the candidate?,0.0
+What country is the candidate based in?,0.6
+What is the candidate's country dialing code?,1.0
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.9
+Tell me about the candidate's educational background.,0.5
+What was the candidate's capstone project about?,0.0
+Was the candidate on the Dean's List?,0.0
+How many years of experience does the candidate have?,1.0
+What is the candidate's current role?,1.0
+Describe the candidate's current job responsibilities.,0.9
+Where has the candidate worked previously?,0.0
+What was the candidate's first job?,0.0
+Describe the candidate's work at TechStart Solutions.,0.0
+Has the candidate led a team?,0.2
+What industries has the candidate worked in?,1.0
+How did the candidate reduce model inference latency?,0.9
+Has the candidate worked as a teaching assistant?,0.0
+What programming languages does the candidate know?,1.0
+What ML and deep learning frameworks does the candidate use?,1.0
+What cloud platforms does the candidate have experience with?,0.5
+What databases has the candidate worked with?,0.0
+Does the candidate have DevOps experience?,0.6
+Does the candidate know Python?,0.6
+Does the candidate have experience with PyTorch?,0.6
+Does the candidate have frontend development skills?,0.6
+What NLP experience does the candidate have?,0.7
+Does the candidate have computer vision experience?,0.8
+Does the candidate have experience with Kubernetes?,0.0
+What data engineering tools does the candidate know?,0.8
+What projects has the candidate worked on?,0.2
+Tell me about the recommendation engine project.,0.7
+What was the outcome of the fraud detection project?,0.6
+What technologies were used in the chatbot project?,0.6
+What is the candidate's most significant project?,0.0
+Has the candidate contributed to open-source projects?,0.8
+What ML models has the candidate built?,0.6
+Does the candidate have real-time systems experience?,0.8
+Has the candidate worked on any NLP projects?,0.7
+What is the largest dataset the candidate has worked with?,0.6
+What certifications does the candidate have?,1.0
+Does the candidate have any AWS certifications?,0.8
+Does the candidate have a deep learning certification?,0.8
+When did the candidate get their AWS certification?,0.9
+Does the candidate have any project management certifications?,0.0
+What is the candidate's salary expectation?,1.0
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.9
+"Does the candidate prefer remote, hybrid, or onsite work?",0.9
+Is the candidate open to relocation?,0.1
+What job title is the candidate looking for?,0.9
+Would the candidate work fully onsite?,0.2
+When can the candidate start working?,0.9
+Is this candidate overqualified for a junior data scientist role?,0.6
+Would this candidate be a good fit for a remote ML role in Europe?,0.0
+Compare the candidate's academic and professional experience.,0.5
+What unique combination of skills does this candidate offer?,0.6
+Summarize why I should consider this candidate for a senior ML engineer position.,0.5

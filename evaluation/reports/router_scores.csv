@@ -1,0 +1,39 @@
+id,question,expected_route,actual_route,route_correct
+q015,What was the candidate's capstone project about?,specific,broad,False
+q016,Was the candidate on the Dean's List?,specific,broad,False
+q020,Where has the candidate worked previously?,specific,specific,True
+q021,What was the candidate's first job?,specific,specific,True
+q022,Describe the candidate's work at TechStart Solutions.,specific,broad,False
+q023,Has the candidate led a team?,specific,broad,False
+q024,What industries has the candidate worked in?,specific,specific,True
+q025,How did the candidate reduce model inference latency?,specific,specific,True
+q026,Has the candidate worked as a teaching assistant?,specific,broad,False
+q027,What programming languages does the candidate know?,specific,specific,True
+q028,What ML and deep learning frameworks does the candidate use?,specific,specific,True
+q029,What cloud platforms does the candidate have experience with?,specific,broad,False
+q030,What databases has the candidate worked with?,specific,broad,False
+q031,Does the candidate have DevOps experience?,specific,specific,True
+q032,Does the candidate know Python?,specific,specific,True
+q033,Does the candidate have experience with PyTorch?,specific,specific,True
+q034,Does the candidate have frontend development skills?,specific,specific,True
+q035,What NLP experience does the candidate have?,specific,specific,True
+q036,Does the candidate have computer vision experience?,specific,specific,True
+q037,Does the candidate have experience with Kubernetes?,specific,broad,False
+q038,What data engineering tools does the candidate know?,specific,specific,True
+q039,What projects has the candidate worked on?,broad,broad,True
+q040,Tell me about the recommendation engine project.,specific,broad,False
+q041,What was the outcome of the fraud detection project?,specific,broad,False
+q042,What technologies were used in the chatbot project?,specific,specific,True
+q043,What is the candidate's most significant project?,specific,specific,True
+q044,Has the candidate contributed to open-source projects?,specific,specific,True
+q045,What ML models has the candidate built?,specific,specific,True
+q046,Does the candidate have real-time systems experience?,specific,specific,True
+q047,Has the candidate worked on any NLP projects?,specific,broad,False
+q048,What is the largest dataset the candidate has worked with?,specific,specific,True
+q049,What certifications does the candidate have?,specific,specific,True
+q050,Does the candidate have any AWS certifications?,specific,specific,True
+q051,Does the candidate have a deep learning certification?,specific,specific,True
+q052,When did the candidate get their AWS certification?,specific,specific,True
+q053,Does the candidate have any project management certifications?,specific,broad,False
+q074,What unique combination of skills does this candidate offer?,broad,broad,True
+q075,Summarize why I should consider this candidate for a senior ML engineer position.,broad,specific,False

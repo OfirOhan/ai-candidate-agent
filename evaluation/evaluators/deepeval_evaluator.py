@@ -1,11 +1,11 @@
 """
 DeepEval evaluator — wraps DeepEval with a custom Ollama-based judge LLM.
 
-Metrics computed:
-  - ContextualRelevancy:  Are retrieved chunks relevant to the query?
-  - Faithfulness:         Is the answer factually aligned with context?
-  - GEval (Correctness):  Custom LLM-judge scoring answer correctness
+Metrics computed (after removing redundancies with RAGAS):
   - Hallucination:        Does the answer contain fabricated information?
+                          (requires retrieval context — RAG-only)
+  - GEval (Correctness):  Custom LLM-judge scoring answer correctness
+                          (reference-based — all questions)
 """
 
 import json
@@ -16,8 +16,6 @@ import ollama as ollama_client
 from deepeval.models import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import (
-    ContextualRelevancyMetric,
-    FaithfulnessMetric,
     HallucinationMetric,
     GEval,
 )
@@ -83,42 +81,89 @@ class OllamaJudge(DeepEvalBaseLLM):
 
 
 # ---------------------------------------------------------------------------
-# Public evaluation function
+# Hallucination evaluation (RAG-only — requires contexts)
 # ---------------------------------------------------------------------------
 
-def run_deepeval_evaluation(
+def run_deepeval_hallucination(
     data: list[dict],
     judge_model: str = "qwen3",
 ) -> pd.DataFrame:
     """
-    Run DeepEval evaluation on collected pipeline results.
+    Run DeepEval HallucinationMetric on RAG-routed questions.
 
     Args:
         data: List of dicts with keys:
             - question (str)
             - answer (str)
-            - contexts (list[str])
+            - contexts (list[str]) — must be non-empty
             - ground_truth (str)
         judge_model: Ollama model name for LLM-as-judge
 
     Returns:
-        DataFrame with per-question metric scores.
+        DataFrame with per-question hallucination scores.
     """
     model = OllamaJudge(model_name=judge_model)
 
-    # Define metrics
-    contextual_relevancy = ContextualRelevancyMetric(
-        model=model,
-        threshold=0.5,
-    )
-    faithfulness = FaithfulnessMetric(
-        model=model,
-        threshold=0.5,
-    )
     hallucination = HallucinationMetric(
         model=model,
         threshold=0.5,
     )
+
+    test_cases = []
+    for d in data:
+        test_cases.append(
+            LLMTestCase(
+                input=d["question"],
+                actual_output=d["answer"],
+                expected_output=d["ground_truth"],
+                retrieval_context=d["contexts"],
+                context=d["contexts"],
+            )
+        )
+
+    print(f"[DeepEval] Evaluating {len(test_cases)} test cases for Hallucination...")
+
+    rows = []
+    for i, tc in enumerate(test_cases):
+        row = {"question": tc.input}
+        try:
+            hallucination.measure(tc)
+            row["deepeval_hallucination"] = hallucination.score
+        except Exception as e:
+            print(f"  [DeepEval] Hallucination failed on q{i+1}: {e}")
+            row["deepeval_hallucination"] = None
+        rows.append(row)
+
+        if (i + 1) % 10 == 0:
+            print(f"  [DeepEval] Hallucination progress: {i+1}/{len(test_cases)}")
+
+    print(f"[DeepEval] Hallucination evaluation complete.")
+    return pd.DataFrame(rows)
+
+
+# ---------------------------------------------------------------------------
+# GEval evaluation (all questions — reference-based, no contexts needed)
+# ---------------------------------------------------------------------------
+
+def run_deepeval_geval(
+    data: list[dict],
+    judge_model: str = "qwen3",
+) -> pd.DataFrame:
+    """
+    Run DeepEval GEval (Correctness) on all questions.
+
+    Args:
+        data: List of dicts with keys:
+            - question (str)
+            - answer (str)
+            - ground_truth (str)
+        judge_model: Ollama model name for LLM-as-judge
+
+    Returns:
+        DataFrame with per-question correctness scores.
+    """
+    model = OllamaJudge(model_name=judge_model)
+
     correctness = GEval(
         name="Correctness",
         criteria=(
@@ -134,9 +179,6 @@ def run_deepeval_evaluation(
         threshold=0.5,
     )
 
-    all_metrics = [contextual_relevancy, faithfulness, hallucination, correctness]
-
-    # Build test cases
     test_cases = []
     for d in data:
         test_cases.append(
@@ -144,28 +186,24 @@ def run_deepeval_evaluation(
                 input=d["question"],
                 actual_output=d["answer"],
                 expected_output=d["ground_truth"],
-                retrieval_context=d["contexts"],
-                context=d["contexts"],
             )
         )
 
-    print(f"[DeepEval] Evaluating {len(test_cases)} test cases with judge='{judge_model}'...")
+    print(f"[DeepEval] Evaluating {len(test_cases)} test cases for GEval Correctness...")
 
-    # Evaluate each test case against all metrics
     rows = []
     for i, tc in enumerate(test_cases):
         row = {"question": tc.input}
-        for metric in all_metrics:
-            try:
-                metric.measure(tc)
-                row[f"deepeval_{metric.__class__.__name__}"] = metric.score
-            except Exception as e:
-                print(f"  [DeepEval] Metric {metric.__class__.__name__} failed on q{i+1}: {e}")
-                row[f"deepeval_{metric.__class__.__name__}"] = None
+        try:
+            correctness.measure(tc)
+            row["deepeval_correctness"] = correctness.score
+        except Exception as e:
+            print(f"  [DeepEval] GEval failed on q{i+1}: {e}")
+            row["deepeval_correctness"] = None
         rows.append(row)
 
         if (i + 1) % 10 == 0:
-            print(f"  [DeepEval] Progress: {i+1}/{len(test_cases)}")
+            print(f"  [DeepEval] GEval progress: {i+1}/{len(test_cases)}")
 
-    print(f"[DeepEval] Evaluation complete.")
+    print(f"[DeepEval] GEval evaluation complete.")
     return pd.DataFrame(rows)

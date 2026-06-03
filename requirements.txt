@@ -24,3 +24,6 @@ aiohttp
 scikit-learn
 scipy
 numpy
+
+# RAG Fusion
+rank_bm25

@@ -1,7 +1,9 @@
 """
 Report generator — produces HTML, JSON, or CSV evaluation reports.
+Organized by evaluation component.
 """
 
+import html
 import json
 from datetime import datetime
 from pathlib import Path
@@ -11,53 +13,12 @@ import pandas as pd
 REPORTS_DIR = Path(__file__).parent / "reports"
 
 
-def _compute_summary(pipeline_results: list[dict], ragas_df, deepeval_df) -> dict:
-    """Compute aggregate summary statistics."""
-    summary = {
-        "total_questions": len(pipeline_results),
-        "avg_latency_s": round(
-            sum(r["latency_s"] for r in pipeline_results) / len(pipeline_results), 2
-        ),
-        "categories": {},
-        "ragas_means": {},
-        "deepeval_means": {},
-    }
-
-    # Category breakdown
-    cats = {}
-    for r in pipeline_results:
-        cat = r["category"]
-        if cat not in cats:
-            cats[cat] = {"count": 0, "avg_latency": 0}
-        cats[cat]["count"] += 1
-        cats[cat]["avg_latency"] += r["latency_s"]
-    for cat in cats:
-        cats[cat]["avg_latency"] = round(cats[cat]["avg_latency"] / cats[cat]["count"], 2)
-    summary["categories"] = cats
-
-    # RAGAS means
-    if ragas_df is not None:
-        metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
-        for col in metric_cols:
-            vals = ragas_df[col].dropna()
-            if len(vals) > 0:
-                summary["ragas_means"][col] = round(vals.mean(), 4)
-
-    # DeepEval means
-    if deepeval_df is not None:
-        metric_cols = [c for c in deepeval_df.columns if c.startswith("deepeval_")]
-        for col in metric_cols:
-            vals = deepeval_df[col].dropna()
-            if len(vals) > 0:
-                summary["deepeval_means"][col] = round(vals.mean(), 4)
-
-    return summary
-
-
 def _score_color(score) -> str:
     """Return CSS color for a metric score."""
-    if score is None or pd.isna(score):
+    if score is None or (isinstance(score, float) and pd.isna(score)):
         return "#888"
+    if isinstance(score, bool):
+        return "#22c55e" if score else "#ef4444"
     if score >= 0.8:
         return "#22c55e"
     if score >= 0.5:
@@ -69,88 +30,395 @@ def _format_score(score) -> str:
     """Format a score for display."""
     if score is None or (isinstance(score, float) and pd.isna(score)):
         return "N/A"
+    if isinstance(score, bool):
+        return "✓" if score else "✗"
     return f"{score:.3f}"
 
 
-def _generate_html(pipeline_results, ragas_df, deepeval_df, summary) -> str:
-    """Generate a self-contained HTML report."""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def _pct(num, total) -> str:
+    """Format a percentage."""
+    if total == 0:
+        return "N/A"
+    return f"{num/total*100:.1f}%"
 
-    # Build metric cards
-    metric_cards_html = ""
-    all_means = {**summary.get("ragas_means", {}), **summary.get("deepeval_means", {})}
-    for metric_name, mean_val in all_means.items():
-        color = _score_color(mean_val)
-        label = metric_name.replace("deepeval_", "DE: ").replace("_", " ").title()
-        metric_cards_html += f"""
-        <div class="metric-card">
-          <div class="metric-score" style="color:{color}">{_format_score(mean_val)}</div>
-          <div class="metric-label">{label}</div>
-        </div>"""
 
-    # Build category breakdown rows
-    cat_rows = ""
-    for cat, info in summary["categories"].items():
-        # Get per-category metric means
-        cat_metrics = ""
-        if ragas_df is not None:
-            cat_indices = [i for i, r in enumerate(pipeline_results) if r["category"] == cat]
-            if cat_indices:
-                cat_subset = ragas_df.iloc[[idx for idx in cat_indices if idx < len(ragas_df)]]
-                metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
-                for col in metric_cols:
-                    vals = cat_subset[col].dropna()
-                    if len(vals) > 0:
-                        v = vals.mean()
-                        cat_metrics += f'<span style="color:{_score_color(v)}">{col}: {_format_score(v)}</span> '
+def _build_overview_section(pipeline_results, eval_results) -> str:
+    """Build the overview section with summary cards."""
+    total = len(pipeline_results)
+    avg_latency = round(sum(r["latency_s"] for r in pipeline_results) / total, 2) if total else 0
 
-        cat_rows += f"""
-        <tr>
-          <td>{cat}</td>
-          <td>{info['count']}</td>
-          <td>{info['avg_latency']}s</td>
-          <td style="font-size:0.85em">{cat_metrics or 'N/A'}</td>
-        </tr>"""
+    cards = f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">{total}</div>
+      <div class="metric-label">Total Questions</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">{avg_latency}s</div>
+      <div class="metric-label">Avg Latency</div>
+    </div>"""
 
-    # Build per-question detail rows
-    detail_rows = ""
-    for i, r in enumerate(pipeline_results):
-        # Collect scores for this question
-        scores_html = ""
-        if ragas_df is not None and i < len(ragas_df):
-            metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
-            for col in metric_cols:
-                val = ragas_df.iloc[i][col]
-                color = _score_color(val)
-                scores_html += f'<span style="color:{color}" title="{col}">{_format_score(val)}</span> '
+    # Tool selection accuracy
+    tool_df = eval_results.get("tool_eval_df")
+    if tool_df is not None and len(tool_df) > 0:
+        acc = tool_df["tool_correct"].sum()
+        cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(acc/len(tool_df))}">{_pct(acc, len(tool_df))}</div>
+      <div class="metric-label">Tool Accuracy</div>
+    </div>"""
 
-        if deepeval_df is not None and i < len(deepeval_df):
-            metric_cols = [c for c in deepeval_df.columns if c.startswith("deepeval_")]
-            for col in metric_cols:
-                val = deepeval_df.iloc[i][col]
-                color = _score_color(val)
-                label = col.replace("deepeval_", "DE:")
-                scores_html += f'<span style="color:{color}" title="{label}">{_format_score(val)}</span> '
+    # RAGAS means
+    ragas_df = eval_results.get("ragas_df")
+    if ragas_df is not None:
+        metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
+        for col in metric_cols:
+            vals = ragas_df[col].dropna()
+            if len(vals) > 0:
+                mean_val = vals.mean()
+                label = col.replace("_", " ").title()
+                cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(mean_val)}">{_format_score(mean_val)}</div>
+      <div class="metric-label">RAG: {label}</div>
+    </div>"""
 
-        answer_preview = r["answer"][:150].replace("<", "&lt;").replace(">", "&gt;")
-        gt_preview = r["ground_truth"][:150].replace("<", "&lt;").replace(">", "&gt;")
+    # GEval mean
+    geval_df = eval_results.get("geval_df")
+    if geval_df is not None and "deepeval_correctness" in geval_df.columns:
+        vals = geval_df["deepeval_correctness"].dropna()
+        if len(vals) > 0:
+            mean_val = vals.mean()
+            cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(mean_val)}">{_format_score(mean_val)}</div>
+      <div class="metric-label">Answer Correctness</div>
+    </div>"""
 
-        detail_rows += f"""
+    # Refusal accuracy
+    refusal_df = eval_results.get("refusal_df")
+    if refusal_df is not None and len(refusal_df) > 0:
+        correct = refusal_df["refused_correctly"].sum()
+        cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(correct/len(refusal_df))}">{_pct(correct, len(refusal_df))}</div>
+      <div class="metric-label">Refusal Accuracy</div>
+    </div>"""
+
+    # Router accuracy
+    router_df = eval_results.get("router_df")
+    if router_df is not None and len(router_df) > 0:
+        correct = router_df["route_correct"].sum()
+        cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(correct/len(router_df))}">{_pct(correct, len(router_df))}</div>
+      <div class="metric-label">Router Accuracy</div>
+    </div>"""
+
+    return cards
+
+
+def _build_tool_section(tool_df) -> str:
+    """Build the Tool Selection section."""
+    if tool_df is None or len(tool_df) == 0:
+        return "<p>No tool selection data.</p>"
+
+    total = len(tool_df)
+    correct = tool_df["tool_correct"].sum()
+    fallbacks = tool_df["used_fallback"].sum()
+    missing = tool_df["missing_fallback"].sum()
+
+    summary = f"""
+    <div class="summary-stat"><strong>{correct}/{total}</strong> correct ({_pct(correct, total)})</div>
+    <div class="summary-stat"><strong>{fallbacks}</strong> fallbacks</div>
+    <div class="summary-stat"><strong>{missing}</strong> missing fallbacks</div>
+    """
+
+    rows = ""
+    for _, r in tool_df.iterrows():
+        color = "#22c55e" if r["tool_correct"] else "#ef4444"
+        fb = "⤵️" if r["used_fallback"] else ""
+        mfb = "⚠️" if r["missing_fallback"] else ""
+        q = html.escape(str(r["question"])[:60], quote=True)
+        rows += f"""
         <tr>
           <td>{r['id']}</td>
-          <td>{r['category']}</td>
-          <td title="{r['question']}">{r['question'][:60]}</td>
-          <td class="answer-cell" title="{answer_preview}">{answer_preview}...</td>
-          <td class="gt-cell" title="{gt_preview}">{gt_preview}...</td>
-          <td>{scores_html or 'N/A'}</td>
+          <td title="{q}">{q}</td>
+          <td>{r['expected_tool']}</td>
+          <td style="color:{color}">{r['actual_tool']}</td>
+          <td>{fb}{mfb}</td>
+          <td style="font-size:0.8em">{html.escape(str(r['trajectory_summary']), quote=True)}</td>
+        </tr>"""
+
+    return f"""
+    {summary}
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Flags</th><th>Trajectory</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _build_rag_section(ragas_df, hallucination_df, pipeline_results) -> str:
+    """Build the RAG Quality section."""
+    if ragas_df is None or len(ragas_df) == 0:
+        return "<p>No RAG-routed questions to evaluate.</p>"
+
+    # RAGAS summary
+    metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
+    means_html = ""
+    for col in metric_cols:
+        vals = ragas_df[col].dropna()
+        if len(vals) > 0:
+            v = vals.mean()
+            means_html += f'<div class="summary-stat"><strong style="color:{_score_color(v)}">{_format_score(v)}</strong> {col.replace("_", " ").title()}</div>'
+
+    # Per-question rows
+    rag_results = [r for r in pipeline_results if r.get("final_tool") == "search_documents" and r.get("contexts")]
+    rows = ""
+    for i, r in enumerate(rag_results):
+        if i >= len(ragas_df):
+            break
+        scores = ""
+        for col in metric_cols:
+            val = ragas_df.iloc[i][col]
+            scores += f'<span style="color:{_score_color(val)}" title="{col}">{_format_score(val)}</span> '
+
+        # Hallucination score
+        if hallucination_df is not None and i < len(hallucination_df):
+            h_val = hallucination_df.iloc[i].get("deepeval_hallucination")
+            scores += f'<span style="color:{_score_color(h_val)}" title="Hallucination">{_format_score(h_val)}</span>'
+
+        answer = html.escape(str(r["answer"])[:100], quote=True)
+        rows += f"""
+        <tr>
+          <td>{r['id']}</td>
+          <td title="{html.escape(str(r['question']), quote=True)}">{html.escape(str(r['question'])[:50], quote=True)}</td>
+          <td>{r.get('route', 'N/A')}</td>
+          <td class="answer-cell" title="{answer}">{answer}...</td>
+          <td>{scores}</td>
           <td>{r['latency_s']}s</td>
         </tr>"""
 
-    html = f"""<!DOCTYPE html>
+    return f"""
+    <p style="color:#94a3b8;margin-bottom:1rem">Showing only questions routed through search_documents ({len(rag_results)} questions)</p>
+    {means_html}
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Route</th><th>Answer</th><th>Scores</th><th>Latency</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _build_geval_section(geval_df, pipeline_results) -> str:
+    """Build the Answer Correctness (GEval) section."""
+    if geval_df is None or len(geval_df) == 0:
+        return "<p>No GEval data.</p>"
+
+    vals = geval_df["deepeval_correctness"].dropna()
+    mean_val = vals.mean() if len(vals) > 0 else 0
+
+    summary = f'<div class="summary-stat"><strong style="color:{_score_color(mean_val)}">{_format_score(mean_val)}</strong> Mean Correctness ({len(geval_df)} questions)</div>'
+
+    non_neg = [r for r in pipeline_results if r["category"] != "negative"]
+    rows = ""
+    for i, r in enumerate(non_neg):
+        if i >= len(geval_df):
+            break
+        val = geval_df.iloc[i].get("deepeval_correctness")
+        answer = html.escape(str(r["answer"])[:100], quote=True)
+        gt = html.escape(str(r["ground_truth"])[:100], quote=True)
+        rows += f"""
+        <tr>
+          <td>{r['id']}</td>
+          <td>{r['category']}</td>
+          <td title="{html.escape(str(r['question']), quote=True)}">{html.escape(str(r['question'])[:50], quote=True)}</td>
+          <td class="answer-cell" title="{answer}">{answer}...</td>
+          <td class="gt-cell" title="{gt}">{gt}...</td>
+          <td style="color:{_score_color(val)}">{_format_score(val)}</td>
+        </tr>"""
+
+    return f"""
+    {summary}
+    <table>
+      <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Answer</th><th>Ground Truth</th><th>Correctness</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _build_refusal_section(refusal_df) -> str:
+    """Build the Refusal Accuracy section."""
+    if refusal_df is None or len(refusal_df) == 0:
+        return "<p>No negative questions evaluated.</p>"
+
+    correct = refusal_df["refused_correctly"].sum()
+    halluc = refusal_df["hallucinated"].sum()
+    redir = refusal_df["professional_redirect"].sum()
+    total = len(refusal_df)
+
+    summary = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(correct/total)}">{correct}/{total}</strong> Correct Refusals</div>
+    <div class="summary-stat"><strong style="color:{_score_color(1 - halluc/total)}">{halluc}</strong> Hallucinations</div>
+    <div class="summary-stat"><strong>{redir}/{total}</strong> Professional Redirects</div>
+    """
+
+    rows = ""
+    for _, r in refusal_df.iterrows():
+        refused_icon = "✓" if r["refused_correctly"] else "✗"
+        refused_color = "#22c55e" if r["refused_correctly"] else "#ef4444"
+        halluc_icon = "⚠️" if r["hallucinated"] else "✓"
+        redir_icon = "✓" if r["professional_redirect"] else "—"
+        answer = html.escape(str(r["answer_preview"])[:120], quote=True)
+        rows += f"""
+        <tr>
+          <td>{r['id']}</td>
+          <td>{html.escape(str(r['question']), quote=True)}</td>
+          <td style="color:{refused_color}">{refused_icon}</td>
+          <td>{halluc_icon}</td>
+          <td>{redir_icon}</td>
+          <td class="answer-cell" title="{answer}">{answer}...</td>
+        </tr>"""
+
+    return f"""
+    {summary}
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Refused</th><th>Halluc</th><th>Redirect</th><th>Answer</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _build_ingestion_section(ingestion_report) -> str:
+    """Build the Ingestion Quality section."""
+    if not ingestion_report or "error" in ingestion_report:
+        return f"<p>Ingestion evaluation error: {ingestion_report.get('error', 'unknown')}</p>"
+
+    cs = ingestion_report.get("chunk_stats", {})
+    sc = ingestion_report.get("section_coverage", {})
+    dc = ingestion_report.get("duplicate_check", {})
+    sq = ingestion_report.get("summary_quality", {})
+    ep = ingestion_report.get("embedding_probes", {})
+
+    # Chunk stats
+    chunk_html = f"""
+    <div class="summary-stat"><strong>{cs.get('total_chunks', 0)}</strong> Total Chunks</div>
+    <div class="summary-stat"><strong>{cs.get('avg_chunk_size', 0)}</strong> Avg Size</div>
+    <div class="summary-stat"><strong>{cs.get('min_chunk_size', 0)}-{cs.get('max_chunk_size', 0)}</strong> Size Range</div>
+    <div class="summary-stat"><strong>{cs.get('empty_or_tiny_chunks', 0)}</strong> Empty/Tiny</div>
+    """
+
+    # Section coverage
+    coverage_pct = sc.get("coverage_pct", 0)
+    missing = sc.get("missing", [])
+    section_html = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(coverage_pct/100)}">{coverage_pct}%</strong> Section Coverage</div>
+    """
+    if missing:
+        section_html += f'<div class="summary-stat">Missing: {", ".join(missing)}</div>'
+    if not sc.get("has_section_metadata", False):
+        section_html += '<div class="summary-stat" style="color:#ef4444">⚠️ No section metadata found</div>'
+
+    # Duplicates
+    dup_html = f"""
+    <div class="summary-stat"><strong>{dc.get('exact_duplicates', 0)}</strong> Exact Duplicates</div>
+    <div class="summary-stat"><strong>{dc.get('near_duplicates_sampled', 0)}</strong> Near Duplicates</div>
+    """
+
+    # Summary quality
+    sq_score = sq.get("llm_score", 0)
+    sq_items = sq.get("checklist_items_found", 0)
+    sq_total = sq.get("checklist_total", 5)
+    summary_html = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(sq_score or 0)}">{_format_score(sq_score)}</strong> Summary Score</div>
+    <div class="summary-stat"><strong>{sq_items}/{sq_total}</strong> Checklist Items</div>
+    <div class="summary-stat">Exists: {'✓' if sq.get('summary_exists') else '✗'}</div>
+    """
+
+    # Embedding probes
+    hit_rate = ep.get("hit_rate", 0)
+    probe_rows = ""
+    for p in ep.get("probes", []):
+        icon = "✓" if p["found_in_top1"] else "✗"
+        color = "#22c55e" if p["found_in_top1"] else "#ef4444"
+        preview = html.escape(str(p["top1_preview"]), quote=True)
+        probe_rows += f'<tr><td>{html.escape(p["term"])}</td><td style="color:{color}">{icon}</td><td style="font-size:0.8em" title="{preview}">{preview}...</td></tr>'
+
+    probe_html = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(hit_rate)}">{hit_rate*100:.0f}%</strong> Embedding Hit Rate</div>
+    <table>
+      <thead><tr><th>Probe Term</th><th>Found</th><th>Top-1 Preview</th></tr></thead>
+      <tbody>{probe_rows}</tbody>
+    </table>
+    """
+
+    return f"""
+    <h3 style="color:#94a3b8;font-size:1rem">Chunk Statistics</h3>
+    {chunk_html}
+    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Section Coverage</h3>
+    {section_html}
+    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Duplicate Check</h3>
+    {dup_html}
+    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Summary Quality</h3>
+    {summary_html}
+    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Embedding Coverage</h3>
+    {probe_html}
+    """
+
+
+def _build_router_section(router_df) -> str:
+    """Build the Router Accuracy section."""
+    if router_df is None or len(router_df) == 0:
+        return "<p>No router decisions evaluated.</p>"
+
+    total = len(router_df)
+    correct = router_df["route_correct"].sum()
+    false_broad = len(router_df[(router_df["expected_route"] == "specific") & (router_df["actual_route"] == "broad")])
+    false_specific = len(router_df[(router_df["expected_route"] == "broad") & (router_df["actual_route"] == "specific")])
+
+    summary = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(correct/total)}">{correct}/{total}</strong> Correct ({_pct(correct, total)})</div>
+    <div class="summary-stat"><strong>{false_broad}</strong> False Broad</div>
+    <div class="summary-stat"><strong>{false_specific}</strong> False Specific</div>
+    """
+
+    rows = ""
+    for _, r in router_df.iterrows():
+        color = "#22c55e" if r["route_correct"] else "#ef4444"
+        q = html.escape(str(r["question"])[:60], quote=True)
+        rows += f"""
+        <tr>
+          <td>{r['id']}</td>
+          <td title="{q}">{q}</td>
+          <td>{r['expected_route']}</td>
+          <td style="color:{color}">{r['actual_route']}</td>
+          <td style="color:{color}">{'✓' if r['route_correct'] else '✗'}</td>
+        </tr>"""
+
+    return f"""
+    {summary}
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Correct</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _generate_html(pipeline_results, eval_results) -> str:
+    """Generate a self-contained component-based HTML report."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    overview_cards = _build_overview_section(pipeline_results, eval_results)
+    tool_section = _build_tool_section(eval_results.get("tool_eval_df"))
+    rag_section = _build_rag_section(
+        eval_results.get("ragas_df"),
+        eval_results.get("hallucination_df"),
+        pipeline_results,
+    )
+    geval_section = _build_geval_section(eval_results.get("geval_df"), pipeline_results)
+    refusal_section = _build_refusal_section(eval_results.get("refusal_df"))
+    ingestion_section = _build_ingestion_section(eval_results.get("ingestion_report"))
+    router_section = _build_router_section(eval_results.get("router_df"))
+
+    html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>RAG Evaluation Report</title>
+<title>Component-Based Evaluation Report</title>
 <style>
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
   body {{
@@ -160,16 +428,17 @@ def _generate_html(pipeline_results, ragas_df, deepeval_df, summary) -> str:
   }}
   h1 {{ color: #f8fafc; margin-bottom: 0.5rem; font-size: 1.8rem; }}
   h2 {{ color: #94a3b8; margin: 2rem 0 1rem; font-size: 1.3rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }}
+  h3 {{ color: #94a3b8; }}
   .meta {{ color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }}
   .metrics-grid {{
     display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;
   }}
   .metric-card {{
     background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-    padding: 1.2rem 1.5rem; min-width: 160px; text-align: center;
+    padding: 1.2rem 1.5rem; min-width: 140px; text-align: center;
   }}
-  .metric-score {{ font-size: 1.8rem; font-weight: 700; }}
-  .metric-label {{ font-size: 0.8rem; color: #94a3b8; margin-top: 0.3rem; }}
+  .metric-score {{ font-size: 1.6rem; font-weight: 700; }}
+  .metric-label {{ font-size: 0.75rem; color: #94a3b8; margin-top: 0.3rem; }}
   table {{
     width: 100%; border-collapse: collapse; margin: 1rem 0;
     background: #1e293b; border-radius: 8px; overflow: hidden;
@@ -180,39 +449,57 @@ def _generate_html(pipeline_results, ragas_df, deepeval_df, summary) -> str:
   .answer-cell, .gt-cell {{ max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
   .summary-stat {{ display: inline-block; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 0.8rem 1.2rem; margin: 0.3rem; }}
   .summary-stat strong {{ color: #38bdf8; }}
+  .component-section {{ margin: 2rem 0; padding: 1.5rem; background: #1e293b22; border-radius: 12px; border: 1px solid #334155; }}
 </style>
 </head>
 <body>
 
-<h1>RAG Evaluation Report</h1>
-<div class="meta">Generated: {timestamp} | Questions: {summary['total_questions']} | Avg Latency: {summary['avg_latency_s']}s</div>
+<h1>Component-Based Evaluation Report</h1>
+<div class="meta">Generated: {timestamp} | Questions: {len(pipeline_results)}</div>
 
-<h2>Overall Metric Scores</h2>
+<h2>Overview</h2>
 <div class="metrics-grid">
-  {metric_cards_html if metric_cards_html else '<p style="color:#64748b">No metrics computed (dry run?)</p>'}
+  {overview_cards}
 </div>
 
-<h2>Category Breakdown</h2>
-<table>
-  <thead><tr><th>Category</th><th>Count</th><th>Avg Latency</th><th>Metrics</th></tr></thead>
-  <tbody>{cat_rows}</tbody>
-</table>
+<div class="component-section">
+<h2>1. Tool Selection</h2>
+{tool_section}
+</div>
 
-<h2>Per-Question Details</h2>
-<table>
-  <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Answer</th><th>Ground Truth</th><th>Scores</th><th>Latency</th></tr></thead>
-  <tbody>{detail_rows}</tbody>
-</table>
+<div class="component-section">
+<h2>2. RAG Quality (RAGAS + Hallucination)</h2>
+{rag_section}
+</div>
+
+<div class="component-section">
+<h2>3. Answer Correctness (GEval)</h2>
+{geval_section}
+</div>
+
+<div class="component-section">
+<h2>4. Refusal Accuracy</h2>
+{refusal_section}
+</div>
+
+<div class="component-section">
+<h2>5. Ingestion Quality</h2>
+{ingestion_section}
+</div>
+
+<div class="component-section">
+<h2>6. Router Accuracy</h2>
+{router_section}
+</div>
 
 </body>
 </html>"""
-    return html
+    return html_content
 
 
 def generate_report(
     pipeline_results: list[dict],
-    ragas_df=None,
-    deepeval_df=None,
+    eval_results: dict,
     output_format: str = "html",
 ) -> str:
     """
@@ -220,8 +507,7 @@ def generate_report(
 
     Args:
         pipeline_results: List of pipeline result dicts
-        ragas_df: RAGAS results DataFrame (or None)
-        deepeval_df: DeepEval results DataFrame (or None)
+        eval_results: Dict containing all component DataFrames/reports
         output_format: "html", "json", or "csv"
 
     Returns:
@@ -230,23 +516,26 @@ def generate_report(
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    summary = _compute_summary(pipeline_results, ragas_df, deepeval_df)
-
     if output_format == "html":
-        html = _generate_html(pipeline_results, ragas_df, deepeval_df, summary)
+        html_content = _generate_html(pipeline_results, eval_results)
         path = REPORTS_DIR / f"eval_report_{timestamp}.html"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(html)
+            f.write(html_content)
 
     elif output_format == "json":
+        # Serialize DataFrames to records
         report_data = {
-            "summary": summary,
-            "results": pipeline_results,
+            "timestamp": timestamp,
+            "total_questions": len(pipeline_results),
+            "pipeline_results": pipeline_results,
         }
-        if ragas_df is not None:
-            report_data["ragas_scores"] = ragas_df.to_dict(orient="records")
-        if deepeval_df is not None:
-            report_data["deepeval_scores"] = deepeval_df.to_dict(orient="records")
+        for key in ["tool_eval_df", "ragas_df", "hallucination_df", "geval_df", "refusal_df", "router_df"]:
+            df = eval_results.get(key)
+            if df is not None:
+                report_data[key.replace("_df", "_scores")] = df.to_dict(orient="records")
+
+        if eval_results.get("ingestion_report"):
+            report_data["ingestion_report"] = eval_results["ingestion_report"]
 
         path = REPORTS_DIR / f"eval_report_{timestamp}.json"
         with open(path, "w", encoding="utf-8") as f:
@@ -255,17 +544,12 @@ def generate_report(
     elif output_format == "csv":
         # Merge all results into a single flat table
         df = pd.DataFrame(pipeline_results)
-        if ragas_df is not None:
-            metric_cols = [c for c in ragas_df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
-            for col in metric_cols:
-                if len(ragas_df) == len(df):
-                    df[f"ragas_{col}"] = ragas_df[col].values
-
-        if deepeval_df is not None:
-            metric_cols = [c for c in deepeval_df.columns if c.startswith("deepeval_")]
-            for col in metric_cols:
-                if len(deepeval_df) == len(df):
-                    df[col] = deepeval_df[col].values
+        # Add tool eval columns
+        tool_df = eval_results.get("tool_eval_df")
+        if tool_df is not None and len(tool_df) == len(df):
+            for col in ["actual_tool", "tool_correct", "used_fallback", "missing_fallback"]:
+                if col in tool_df.columns:
+                    df[col] = tool_df[col].values
 
         path = REPORTS_DIR / f"eval_report_{timestamp}.csv"
         df.to_csv(path, index=False)

@@ -100,18 +100,31 @@ def rerank(query: str, chunks: list[str], top_k: int = 3) -> list[str]:
 # 5. Main retrieve pipeline
 # ---------------------------------------------------------------------------
 
-def retrieve(query: str, candidate_id: str, top_k: int = 3) -> list[str]:
+def retrieve(query: str, candidate_id: str, top_k: int = 3) -> dict:
+    """
+    Run the full retrieval pipeline for a query.
+
+    Returns a dict with:
+        - chunks: list[str] — the retrieved text chunks
+        - route: "broad" | "specific" — how the query was classified
+        - expanded_queries: list[str] | None — query variations (specific only)
+    """
     collection = client.get_or_create_collection(name=candidate_id)
 
     # --- Step 1: Route via LLM ---
-    if is_broad_query_llm(query):
+    is_broad = is_broad_query_llm(query)
+
+    if is_broad:
         print(f"[Retriever] Broad query detected → searching summary index")
         summary_collection = client.get_or_create_collection(f"{candidate_id}_summaries")
         q_embedding = embedder.encode([query]).tolist()
         results = summary_collection.query(query_embeddings=q_embedding, n_results=top_k)
-        if results["documents"] and results["documents"][0]:
-            return results["documents"][0]
-        return []
+        chunks = results["documents"][0] if results["documents"] and results["documents"][0] else []
+        return {
+            "chunks": chunks,
+            "route": "broad",
+            "expanded_queries": None,
+        }
 
     # --- Step 2: Query Expansion ---
     queries = expand_query(query)
@@ -138,4 +151,10 @@ def retrieve(query: str, candidate_id: str, top_k: int = 3) -> list[str]:
     fused = rrf_fusion(vector_chunks, bm25_chunks)
 
     # --- Step 6: Re-rank and return the best ---
-    return rerank(query, fused, top_k=top_k)
+    top_chunks = rerank(query, fused, top_k=top_k)
+
+    return {
+        "chunks": top_chunks,
+        "route": "specific",
+        "expanded_queries": queries,
+    }

@@ -19,7 +19,7 @@ if user_input:
     
     # 2. Run the agent while showing a spinner
     with st.spinner("Thinking..."):
-        answer, updated_history = run(st.session_state.history.copy(), user_input)
+        answer, updated_history, _ = run(st.session_state.history.copy(), user_input)
         
     # 3. Show the agent's answer immediately
     st.chat_message("assistant").write(answer)

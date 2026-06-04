@@ -1,13 +1,13 @@
 .venv
 .idea
 *.json
-!evaluation/data/**/*.json
-!evaluation/data/**/*.pdf
-!evaluation/reports/*.json
-!spe/data/**/*.json
 *.bin
 *.pdf
 __pycache__/
 *.pyc
 chroma_db
 uploads
+!evaluation/data/**/*.json
+!evaluation/data/**/*.pdf
+!evaluation/reports/*.json
+!spe/data/**/*.json

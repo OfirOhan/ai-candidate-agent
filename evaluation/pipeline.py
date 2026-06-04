@@ -6,13 +6,7 @@ without requiring Streamlit or a running server.
 """
 
 import agent.tools as tools_module
-from rag.retriever import retrieve
 from agent.agent import run as agent_run
-
-
-def run_retrieval(question: str, candidate_id: str, top_k: int = 3) -> dict:
-    """Run retrieval only, return full result dict with chunks, route, expanded_queries."""
-    return retrieve(question, candidate_id, top_k=top_k)
 
 
 def run_agent_answer(question: str) -> tuple[str, list]:

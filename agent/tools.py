@@ -3,6 +3,9 @@ from store.structured import get_field
 
 CANDIDATE_ID = "candidate_001"  # later: dynamic per candidate
 
+# Store the last retrieval metadata for evaluation access
+_last_retrieval_meta = {}
+
 # -- Tool schemas (sent to Ollama) ------------------------------------------
 
 TOOL_SCHEMAS = [
@@ -66,12 +69,19 @@ TOOL_SCHEMAS = [
 
 
 def search_documents(**kwargs) -> str:
+    global _last_retrieval_meta
     # Accept any argument name the LLM uses (query, field, etc.)
     query = kwargs.get("query", next(iter(kwargs.values()), ""))
     # Auto-recover if the LLM passes a dict instead of a string
     if isinstance(query, dict):
         query = query.get("query", query.get("description", str(query)))
-    chunks = retrieve(str(query), CANDIDATE_ID)
+    result = retrieve(str(query), CANDIDATE_ID)
+    chunks = result["chunks"]
+    # Store retrieval metadata for evaluation
+    _last_retrieval_meta = {
+        "route": result["route"],
+        "expanded_queries": result["expanded_queries"],
+    }
     if not chunks:
         return "No relevant information found in documents."
     return "\n\n".join(chunks)
@@ -87,6 +97,10 @@ def get_structured_data(**kwargs) -> str:
     value = get_field(str(field))
     return f"{field}: {value}"
 
+
+def get_last_retrieval_meta() -> dict:
+    """Return the metadata from the last search_documents call."""
+    return _last_retrieval_meta.copy()
 
 
 # -- Dispatcher --------------------------------------------------------------

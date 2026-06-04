@@ -13,11 +13,11 @@ import chromadb
 import pandas as pd
 
 from evaluation.pipeline import (
+    ingest_text_for_eval,
     run_full_pipeline,
     set_candidate_id,
     restore_candidate_id,
 )
-from rag.ingest import ingest_document
 from store.structured import DATA_PATH as STRUCTURED_DATA_PATH
 
 # Paths
@@ -70,28 +70,19 @@ def _restore_structured_data(backup_path: str | None):
 
 
 def _seed_documents():
-    """Ingest the synthetic resume into ChromaDB under the eval collection.
-
-    Uses the real production ingest_document() so the evaluation path is
-    identical to production — section extraction, contextualised chunks,
-    metadata, and summary generation are all included.
-    """
-    ingest_document(str(RESUME_PATH), EVAL_CANDIDATE_ID, doc_type="cv")
+    """Ingest the synthetic resume into ChromaDB under the eval collection."""
+    with open(RESUME_PATH, "r", encoding="utf-8") as f:
+        resume_text = f.read()
+    ingest_text_for_eval(resume_text, EVAL_CANDIDATE_ID)
     print(f"[Harness] Ingested synthetic resume into collection '{EVAL_CANDIDATE_ID}'")
 
 
 def _cleanup_eval_collection():
-    """Delete the evaluation ChromaDB collections (chunks + summaries)."""
+    """Delete the evaluation ChromaDB collection."""
     try:
         client = chromadb.PersistentClient(path=CHROMA_PATH)
         client.delete_collection(name=EVAL_CANDIDATE_ID)
         print(f"[Harness] Cleaned up ChromaDB collection '{EVAL_CANDIDATE_ID}'")
-    except Exception:
-        pass  # Collection may not exist
-    try:
-        client = chromadb.PersistentClient(path=CHROMA_PATH)
-        client.delete_collection(name=f"{EVAL_CANDIDATE_ID}_summaries")
-        print(f"[Harness] Cleaned up ChromaDB summaries collection '{EVAL_CANDIDATE_ID}_summaries'")
     except Exception:
         pass  # Collection may not exist
 

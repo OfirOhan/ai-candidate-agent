@@ -1,0 +1,124 @@
+{
+  "chunk_stats": {
+    "total_chunks": 50,
+    "avg_chunk_size": 148.3,
+    "min_chunk_size": 33,
+    "max_chunk_size": 411,
+    "std_chunk_size": 97.4,
+    "empty_or_tiny_chunks": 0
+  },
+  "section_coverage": {
+    "expected": [
+      "Certifications",
+      "Education",
+      "Interests",
+      "Languages",
+      "Personal Information",
+      "Projects",
+      "Summary",
+      "Technical Skills",
+      "Work Experience"
+    ],
+    "found": [
+      "Academic Capstone: Autonomous Drone Navigation",
+      "Bachelor of Science in Computer Science — Tel Aviv University",
+      "Certifications",
+      "Conversational AI Customer Support Bot (DataSphere Technologies)",
+      "Interests",
+      "Junior Data Scientist — TechStart Solutions",
+      "Languages",
+      "Machine Learning Engineer — DataSphere Technologies",
+      "Open-Source Contribution: LangChain",
+      "Personal Information",
+      "Real-time Fraud Detection Pipeline (DataSphere Technologies)",
+      "Smart Recommendation Engine (DataSphere Technologies)",
+      "Summary",
+      "Technical Skills"
+    ],
+    "missing": [
+      "Education",
+      "Projects",
+      "Work Experience"
+    ],
+    "extra": [
+      "Academic Capstone: Autonomous Drone Navigation",
+      "Bachelor of Science in Computer Science — Tel Aviv University",
+      "Conversational AI Customer Support Bot (DataSphere Technologies)",
+      "Junior Data Scientist — TechStart Solutions",
+      "Machine Learning Engineer — DataSphere Technologies",
+      "Open-Source Contribution: LangChain",
+      "Real-time Fraud Detection Pipeline (DataSphere Technologies)",
+      "Smart Recommendation Engine (DataSphere Technologies)"
+    ],
+    "coverage_pct": 66.7,
+    "has_section_metadata": true
+  },
+  "duplicate_check": {
+    "exact_duplicates": 0,
+    "near_duplicates_sampled": 0,
+    "total_unique": 50
+  },
+  "summary_quality": {
+    "summary_exists": true,
+    "summary_length": 961,
+    "checklist_items_found": 5,
+    "checklist_total": 5,
+    "llm_score": null,
+    "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
+  },
+  "embedding_probes": {
+    "probes": [
+      {
+        "term": "Python",
+        "found_in_top1": false,
+        "top1_preview": "Section: Technical Skills\nTools & Frameworks: Git, Linux, FastAPI, Streamlit, Jupyter, Pandas, NumPy"
+      },
+      {
+        "term": "PyTorch",
+        "found_in_top1": true,
+        "top1_preview": "Section: Technical Skills\nMachine Learning & Deep Learning: PyTorch, TensorFlow, scikit-learn, Huggi"
+      },
+      {
+        "term": "Tel Aviv University",
+        "found_in_top1": true,
+        "top1_preview": "Section: Bachelor of Science in Computer Science — Tel Aviv University\nDean's List: 2019, 2020."
+      },
+      {
+        "term": "fraud detection",
+        "found_in_top1": true,
+        "top1_preview": "Section: Real-time Fraud Detection Pipeline (DataSphere Technologies)\nBuilt an end-to-end streaming "
+      },
+      {
+        "term": "recommendation engine",
+        "found_in_top1": true,
+        "top1_preview": "Section: Smart Recommendation Engine (DataSphere Technologies)\nBuilt a hybrid collaborative and cont"
+      },
+      {
+        "term": "Kubernetes",
+        "found_in_top1": true,
+        "top1_preview": "Section: Technical Skills\nMLOps & DevOps: Docker, Kubernetes, MLflow, Weights & Biases, GitHub Actio"
+      },
+      {
+        "term": "AWS",
+        "found_in_top1": true,
+        "top1_preview": "Section: Technical Skills\nCloud Platforms: AWS (SageMaker, EC2, S3, Lambda, Bedrock), GCP (BigQuery,"
+      },
+      {
+        "term": "LangChain",
+        "found_in_top1": true,
+        "top1_preview": "Section: Open-Source Contribution: LangChain\nContributed a document loader module for Hebrew text pr"
+      },
+      {
+        "term": "Dean's List",
+        "found_in_top1": true,
+        "top1_preview": "Section: Bachelor of Science in Computer Science — Tel Aviv University\nDean's List: 2019, 2020."
+      },
+      {
+        "term": "capstone project",
+        "found_in_top1": true,
+        "top1_preview": "Section: Academic Capstone: Autonomous Drone Navigation\nDeveloped a computer vision system for indoo"
+      }
+    ],
+    "hit_rate": 0.9
+  }
+}

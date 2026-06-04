@@ -3,6 +3,7 @@
 *.json
 !evaluation/data/*.json
 !evaluation/reports/*.json
+!spe/data/**/*.json
 *.bin
 *.pdf
 __pycache__/

@@ -24,18 +24,24 @@ MAX_TOOL_ROUNDS = 3  # safety cap to prevent infinite loops
 llm = LLMClient()
 
 
-def run(conversation_history: list, user_message: str) -> tuple[str, list]:
+def run(conversation_history: list, user_message: str) -> tuple[str, list, list]:
     """
     Main agent turn.
     Supports multiple sequential tool calls so the LLM can fall back
     from structured data to document search when needed.
-    Returns (answer_text, updated_conversation_history)
+    Returns (answer_text, updated_conversation_history, tool_trajectory)
+
+    tool_trajectory is a list of dicts:
+        [{"tool": "get_structured_data", "args": {"field": "full_name"},
+          "result_preview": "full_name: Ofir Ohan"}]
     """
 
     # Add new user message to history
     conversation_history.append({"role": "user", "content": user_message})
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + conversation_history
+
+    tool_trajectory = []
 
     for _ in range(MAX_TOOL_ROUNDS):
         response = llm.call(messages=messages, tools=TOOL_SCHEMAS)
@@ -55,6 +61,13 @@ def run(conversation_history: list, user_message: str) -> tuple[str, list]:
         tool_result = execute_tool(tool_name, tool_args)
         print(f"[Agent] Tool '{tool_name}' returned: {tool_result[:200]}")
 
+        # Record the tool call in the trajectory
+        tool_trajectory.append({
+            "tool": tool_name,
+            "args": tool_args,
+            "result_preview": tool_result[:300],
+        })
+
         # Append the tool interaction so the LLM sees the result
         messages.append({"role": "assistant", "content": "", "tool_calls": [tool_call]})
         messages.append({"role": "tool", "content": tool_result})
@@ -69,4 +82,4 @@ def run(conversation_history: list, user_message: str) -> tuple[str, list]:
     # Update conversation history
     conversation_history.append({"role": "assistant", "content": answer})
 
-    return answer, conversation_history
+    return answer, conversation_history, tool_trajectory

@@ -6,8 +6,20 @@ without requiring Streamlit or a running server.
 """
 
 import agent.tools as tools_module
+from rag.ingest import text_splitter, embedder, get_collection
 from rag.retriever import retrieve
 from agent.agent import run as agent_run
+
+
+def ingest_text_for_eval(text: str, candidate_id: str):
+    """Ingest raw text directly into ChromaDB (bypasses PDF extraction)."""
+    chunks = text_splitter.split_text(text)
+    embeddings = embedder.encode(chunks).tolist()
+    collection = get_collection(candidate_id)
+
+    ids = [f"eval_chunk_{i}" for i in range(len(chunks))]
+    collection.add(documents=chunks, embeddings=embeddings, ids=ids)
+    print(f"[Eval Pipeline] Ingested {len(chunks)} chunks for '{candidate_id}'")
 
 
 def run_retrieval(question: str, candidate_id: str, top_k: int = 3) -> list[str]:

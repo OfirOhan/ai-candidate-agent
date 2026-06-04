@@ -85,6 +85,8 @@ def run_tool_evaluation(data: list[dict]) -> pd.DataFrame:
         rows.append({
             "id": d["id"],
             "question": d["question"],
+            "candidate_id": d.get("candidate_id", ""),
+            "candidate_name": d.get("candidate_name", ""),
             "expected_tool": expected,
             "actual_tool": actual,
             "tool_correct": expected == actual,

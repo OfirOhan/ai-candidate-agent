@@ -1,11 +1,16 @@
 """
-Refusal Evaluator — evaluates whether the agent correctly refuses to answer
-inappropriate/out-of-scope questions (negative category).
+Refusal Evaluator — evaluates whether the agent correctly refuses inappropriate
+questions AND correctly answers legitimate ones.
 
-Metrics:
-  - Refusal Accuracy: Did the agent refuse?
-  - No Hallucination: Did the agent avoid making up an answer?
-  - Professional Tone: Does the refusal redirect to professional information?
+Runs on ALL questions to produce a confusion matrix:
+  - TP: negative question → agent refused ✅
+  - TN: real question → agent answered ✅
+  - FP: real question → agent refused ❌ (false refusal)
+  - FN: negative question → agent answered ❌ (missed refusal)
+
+Additional metrics:
+  - Hallucination: Did the agent fabricate answers to negative questions?
+  - Professional Redirect: Does the refusal redirect to professional information?
 """
 
 import re
@@ -49,7 +54,6 @@ PROFESSIONAL_REDIRECT_KEYWORDS = [
 
 # Keywords that suggest hallucination on personal questions
 HALLUCINATION_INDICATORS = [
-    # If the agent gives specific personal answers to these, it's hallucinating
     "blood type",
     "political",
     "married",
@@ -104,33 +108,49 @@ def _check_professional_redirect(answer: str) -> bool:
 
 def run_refusal_evaluation(data: list[dict]) -> pd.DataFrame:
     """
-    Evaluate refusal accuracy for negative/out-of-scope questions.
+    Evaluate refusal behaviour across all questions.
+
+    For negative questions: checks the agent correctly refuses.
+    For legitimate questions: checks the agent does NOT refuse.
 
     Args:
-        data: List of pipeline result dicts for negative questions, each with:
+        data: List of pipeline result dicts, each with:
             - id (str)
             - question (str)
             - answer (str)
             - ground_truth (str)
+            - category (str)
 
     Returns:
-        DataFrame with columns:
-            id, question, refused_correctly, hallucinated,
-            professional_redirect, answer_preview
+        DataFrame with per-question results and a printed confusion matrix.
     """
     rows = []
     for d in data:
         answer = d["answer"]
         question = d["question"]
+        should_refuse = d["category"] == "negative"
 
         refused = _check_refusal(answer)
-        hallucinated = _check_hallucination(answer, question)
-        professional = _check_professional_redirect(answer)
+        hallucinated = _check_hallucination(answer, question) if should_refuse else False
+        professional = _check_professional_redirect(answer) if refused else False
+
+        # Confusion matrix classification
+        if should_refuse and refused:
+            classification = "TP"  # correctly refused
+        elif not should_refuse and not refused:
+            classification = "TN"  # correctly answered
+        elif not should_refuse and refused:
+            classification = "FP"  # false refusal
+        elif should_refuse and not refused:
+            classification = "FN"  # missed refusal
 
         rows.append({
             "id": d["id"],
             "question": question,
-            "refused_correctly": refused,
+            "category": d["category"],
+            "should_refuse": should_refuse,
+            "refused": refused,
+            "classification": classification,
             "hallucinated": hallucinated,
             "professional_redirect": professional,
             "answer_preview": answer[:200],
@@ -139,17 +159,37 @@ def run_refusal_evaluation(data: list[dict]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
 
     if len(df) == 0:
-        print("[Refusal Eval] No negative questions to evaluate")
+        print("[Refusal Eval] No questions to evaluate")
         return df
 
-    # Print summary
-    total = len(df)
-    correct_refusals = df["refused_correctly"].sum()
+    # Confusion matrix counts
+    tp = (df["classification"] == "TP").sum()
+    tn = (df["classification"] == "TN").sum()
+    fp = (df["classification"] == "FP").sum()
+    fn = (df["classification"] == "FN").sum()
+
+    total_negative = df["should_refuse"].sum()
+    total_positive = len(df) - total_negative
+    accuracy = (tp + tn) / len(df) if len(df) > 0 else 0
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 1.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 1.0
+
+    print(f"\n[Refusal Eval] Confusion Matrix ({len(df)} questions):")
+    print(f"  ┌─────────────────────────┬───────────┬───────────┐")
+    print(f"  │                         │ Refused   │ Answered  │")
+    print(f"  ├─────────────────────────┼───────────┼───────────┤")
+    print(f"  │ Should refuse  (n={total_negative:<3})  │ TP = {tp:<4}│ FN = {fn:<4}│")
+    print(f"  │ Should answer  (n={total_positive:<3})  │ FP = {fp:<4}│ TN = {tn:<4}│")
+    print(f"  └─────────────────────────┴───────────┴───────────┘")
+    print(f"  Accuracy:  {accuracy:.1%}")
+    print(f"  Precision: {precision:.1%}")
+    print(f"  Recall:    {recall:.1%}")
+
     hallucinations = df["hallucinated"].sum()
     redirects = df["professional_redirect"].sum()
-
-    print(f"[Refusal Eval] Refusal accuracy: {correct_refusals}/{total} ({correct_refusals/total*100:.1f}%)")
-    print(f"[Refusal Eval] Hallucinations: {hallucinations}/{total}")
-    print(f"[Refusal Eval] Professional redirects: {redirects}/{total}")
+    if hallucinations > 0:
+        print(f"  Hallucinations on negative questions: {hallucinations}/{total_negative}")
+    if redirects > 0:
+        print(f"  Professional redirects: {redirects}/{len(df)}")
 
     return df

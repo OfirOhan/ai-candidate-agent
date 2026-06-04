@@ -1,12 +1,13 @@
 """
-Evaluation harness — orchestrates data seeding, pipeline execution,
-component evaluations, and report generation.
+Multi-candidate evaluation harness — orchestrates data seeding, pipeline
+execution, component evaluations, and report generation across multiple
+candidates, each with multiple documents.
 
 Components:
   1. Tool Selection — expected vs actual tool
   2. RAG Quality — RAGAS + DeepEval Hallucination (RAG-only)
-  3. Answer Correctness — GEval (all questions except negative)
-  4. Refusal Accuracy — negative questions
+  3. Answer Correctness — GEval (all questions)
+  4. Refusal Accuracy — confusion matrix (all questions)
   5. Ingestion Quality — chunk stats, coverage, summary quality
   6. Router Accuracy — broad/specific classification
 """
@@ -32,37 +33,105 @@ from store.structured import DATA_PATH as STRUCTURED_DATA_PATH
 EVAL_DIR = Path(__file__).parent
 DATA_DIR = EVAL_DIR / "data"
 REPORTS_DIR = EVAL_DIR / "reports"
-
-GOLDEN_DATASET_PATH = DATA_DIR / "golden_dataset.json"
-CANDIDATE_SEED_PATH = DATA_DIR / "candidate_seed.json"
-RESUME_PATH = DATA_DIR / "synthetic_resume.md"
-
-EVAL_CANDIDATE_ID = "eval_candidate"
 CHROMA_PATH = "./chroma_db"
 
 
-def _load_golden_dataset(category_filter: str | None = None) -> list[dict]:
-    """Load the golden Q&A dataset, optionally filtering by category."""
-    with open(GOLDEN_DATASET_PATH, "r", encoding="utf-8") as f:
+# ── Discovery & helpers ─────────────────────────────────────────────────────
+
+
+def _discover_candidates(candidates_filter: list[int] | None = None) -> list[dict]:
+    """Scan data/ for candidate_* dirs.
+
+    Returns list of:
+        {"idx": 1, "dir": Path, "name": str, "eval_id": "eval_cand_1"}
+    If candidates_filter is provided (e.g. [1, 4]), only those are returned.
+    """
+    candidates = []
+    for d in sorted(DATA_DIR.iterdir()):
+        if not d.is_dir() or not d.name.startswith("candidate_"):
+            continue
+        try:
+            idx = int(d.name.split("_")[1])
+        except (IndexError, ValueError):
+            continue
+
+        if candidates_filter and idx not in candidates_filter:
+            continue
+
+        # Read name from seed
+        seed_path = d / "candidate_seed.json"
+        if not seed_path.exists():
+            continue
+        with open(seed_path, "r", encoding="utf-8") as f:
+            seed = json.load(f)
+
+        candidates.append({
+            "idx": idx,
+            "dir": d,
+            "name": seed.get("full_name", f"Candidate {idx}"),
+            "eval_id": f"eval_cand_{idx}",
+        })
+
+    return candidates
+
+
+def _infer_doc_type(filename: str) -> str:
+    """Infer doc_type from filename prefix."""
+    lower = filename.lower()
+    if lower.startswith("cv_"):
+        return "cv"
+    elif lower.startswith("readme_"):
+        return "readme"
+    elif lower.startswith("recommendation_"):
+        return "recommendation"
+    return "other"
+
+
+def _get_doc_files(candidate_dir: Path) -> list[tuple[Path, str]]:
+    """Return list of (file_path, doc_type) for all document files in the dir.
+
+    Excludes candidate_seed.json and golden_dataset.json.
+    """
+    skip = {"candidate_seed.json", "golden_dataset.json"}
+    doc_files = []
+    for f in sorted(candidate_dir.iterdir()):
+        if f.is_dir() or f.name in skip:
+            continue
+        doc_type = _infer_doc_type(f.name)
+        doc_files.append((f, doc_type))
+    return doc_files
+
+
+# ── Seeding ──────────────────────────────────────────────────────────────────
+
+
+def _load_golden_dataset(
+    candidate_dir: Path,
+    category_filter: str | None = None,
+) -> list[dict]:
+    """Load golden_dataset.json from the candidate's directory."""
+    path = candidate_dir / "golden_dataset.json"
+    with open(path, "r", encoding="utf-8") as f:
         dataset = json.load(f)
     if category_filter:
         dataset = [q for q in dataset if q["category"] == category_filter]
     return dataset
 
 
-def _seed_structured_data() -> str | None:
-    """
-    Copy candidate_seed.json → store/data/candidate.json.
-    Returns the path to the backup file if one existed, else None.
+def _seed_structured_data(candidate_dir: Path) -> str | None:
+    """Copy candidate_seed.json → store/data/candidate.json.
+
+    Backs up original if it exists. Returns backup path.
     """
     backup_path = None
     if os.path.exists(STRUCTURED_DATA_PATH):
         backup_path = STRUCTURED_DATA_PATH + ".eval_backup"
         shutil.copy2(STRUCTURED_DATA_PATH, backup_path)
 
+    seed_path = candidate_dir / "candidate_seed.json"
     os.makedirs(os.path.dirname(STRUCTURED_DATA_PATH), exist_ok=True)
-    shutil.copy2(CANDIDATE_SEED_PATH, STRUCTURED_DATA_PATH)
-    print(f"[Harness] Seeded structured data from {CANDIDATE_SEED_PATH}")
+    shutil.copy2(str(seed_path), STRUCTURED_DATA_PATH)
+    print(f"[Harness] Seeded structured data from {seed_path}")
     return backup_path
 
 
@@ -76,21 +145,23 @@ def _restore_structured_data(backup_path: str | None):
             os.remove(STRUCTURED_DATA_PATH)
 
 
-def _seed_documents():
-    """Ingest the synthetic resume using the real production pipeline.
+def _seed_documents(candidate_dir: Path, eval_candidate_id: str):
+    """Ingest ALL document files from candidate_dir using production pipeline.
 
-    Calls ingest_document() directly so the eval path is identical to
-    production — section extraction, contextualised chunks, metadata,
-    and summary generation are all included.
+    For each file, infers doc_type from filename prefix and calls
+    ingest_document() with the correct doc_type.
     """
-    ingest_document(str(RESUME_PATH), EVAL_CANDIDATE_ID, doc_type="cv")
-    print(f"[Harness] Ingested synthetic resume into '{EVAL_CANDIDATE_ID}'")
+    doc_files = _get_doc_files(candidate_dir)
+    for file_path, doc_type in doc_files:
+        print(f"[Harness] Ingesting {file_path.name} as '{doc_type}'...")
+        ingest_document(str(file_path), eval_candidate_id, doc_type=doc_type)
+    print(f"[Harness] Ingested {len(doc_files)} documents into '{eval_candidate_id}'")
 
 
-def _cleanup_eval_collections():
+def _cleanup_eval_collections(eval_candidate_id: str):
     """Delete the evaluation ChromaDB collections (chunks + summaries)."""
     client = chromadb.PersistentClient(path=CHROMA_PATH)
-    for name in [EVAL_CANDIDATE_ID, f"{EVAL_CANDIDATE_ID}_summaries"]:
+    for name in [eval_candidate_id, f"{eval_candidate_id}_summaries"]:
         try:
             client.delete_collection(name=name)
             print(f"[Harness] Cleaned up collection '{name}'")
@@ -98,29 +169,28 @@ def _cleanup_eval_collections():
             pass
 
 
+# ── Pipeline runner ──────────────────────────────────────────────────────────
+
+
 def _run_pipeline_on_dataset(
     dataset: list[dict],
+    eval_candidate_id: str,
+    candidate_name: str,
     top_k: int = 3,
 ) -> list[dict]:
-    """
-    Run the RAG pipeline on every question in the golden dataset.
-
-    Returns list of dicts with keys:
-        id, question, answer, contexts, ground_truth, category, expected_source,
-        difficulty, expected_route, tool_trajectory, final_tool, route, latency_s
-    """
+    """Run the agent pipeline on every question and tag results with candidate info."""
     results = []
     total = len(dataset)
 
     for i, item in enumerate(dataset):
         question = item["question"]
-        print(f"\n[Harness] ({i+1}/{total}) Processing: {question[:80]}...")
+        print(f"\n[Harness] ({i+1}/{total}) [{candidate_name}] {question[:80]}...")
 
         start = time.time()
         try:
             pipeline_result = run_full_pipeline(
                 question=question,
-                candidate_id=EVAL_CANDIDATE_ID,
+                candidate_id=eval_candidate_id,
                 top_k=top_k,
             )
             elapsed = time.time() - start
@@ -151,12 +221,15 @@ def _run_pipeline_on_dataset(
             "final_tool": pipeline_result["final_tool"],
             "route": pipeline_result["route"],
             "latency_s": round(elapsed, 2),
+            "candidate_id": eval_candidate_id,
+            "candidate_name": candidate_name,
         })
 
     return results
 
 
-# ── Component runners ───────────────────────────────────────────────────────
+# ── Component runners ────────────────────────────────────────────────────────
+
 
 def _run_tool_selection(pipeline_results: list[dict]) -> pd.DataFrame | None:
     """Evaluate whether the agent picked the expected tool."""
@@ -190,40 +263,58 @@ def _run_rag_quality(pipeline_results: list[dict], judge_model: str) -> tuple:
 
 
 def _run_geval(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
-    """Evaluate answer correctness via GEval on all non-negative questions."""
-    geval_data = [r for r in pipeline_results if r["category"] != "negative"]
-    print(f"[Harness] {len(geval_data)} questions for GEval")
+    """Evaluate answer correctness via GEval on all questions.
 
-    if not geval_data:
+    Includes negative questions — their ground truths are expected refusal
+    statements, so GEval scores whether the agent's refusal wording is correct.
+    """
+    print(f"[Harness] {len(pipeline_results)} questions for GEval")
+
+    if not pipeline_results:
         return None
 
     from evaluation.evaluators.deepeval_evaluator import run_deepeval_geval
-    df = run_deepeval_geval(geval_data, judge_model=judge_model)
+    df = run_deepeval_geval(pipeline_results, judge_model=judge_model)
     df.to_csv(REPORTS_DIR / "geval_scores.csv", index=False)
     return df
 
 
 def _run_refusal(pipeline_results: list[dict]) -> pd.DataFrame | None:
-    """Evaluate whether the agent correctly refuses negative questions."""
-    negative_data = [r for r in pipeline_results if r["category"] == "negative"]
-    print(f"[Harness] {len(negative_data)} negative questions")
+    """Evaluate refusal behaviour on all questions.
 
-    if not negative_data:
+    Checks that the agent refuses negative questions and does NOT refuse
+    legitimate ones.
+    """
+    print(f"[Harness] {len(pipeline_results)} questions for refusal evaluation")
+
+    if not pipeline_results:
         return None
 
     from evaluation.evaluators.refusal_evaluator import run_refusal_evaluation
-    df = run_refusal_evaluation(negative_data)
+    df = run_refusal_evaluation(pipeline_results)
     df.to_csv(REPORTS_DIR / "refusal_scores.csv", index=False)
     return df
 
 
-def _run_ingestion(judge_model: str) -> dict | None:
-    """Evaluate ingestion quality (chunk stats, coverage, summary quality)."""
+def _run_ingestion(candidates_info: list[dict], judge_model: str) -> dict | None:
+    """Run ingestion evaluation for ALL candidates.
+
+    candidates_info: list of {"eval_id": str, "name": str, "doc_files": list}.
+    Returns a dict keyed by eval_id with per-candidate reports.
+    """
     from evaluation.evaluators.ingestion_evaluator import run_ingestion_evaluation
-    report = run_ingestion_evaluation(EVAL_CANDIDATE_ID, judge_model=judge_model)
-    with open(REPORTS_DIR / "ingestion_report.json", "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=2, ensure_ascii=False)
-    return report
+    reports = {}
+    for cand in candidates_info:
+        print(f"[Harness] Ingestion eval for {cand['name']} ({cand['eval_id']})")
+        reports[cand["eval_id"]] = {
+            "name": cand["name"],
+            "report": run_ingestion_evaluation(cand["eval_id"], judge_model=judge_model),
+        }
+
+    ingestion_path = REPORTS_DIR / "ingestion_report.json"
+    with open(ingestion_path, "w", encoding="utf-8") as f:
+        json.dump(reports, f, indent=2, ensure_ascii=False)
+    return reports
 
 
 def _run_router(pipeline_results: list[dict]) -> pd.DataFrame | None:
@@ -240,7 +331,7 @@ def _run_router(pipeline_results: list[dict]) -> pd.DataFrame | None:
     return df
 
 
-# ── Component dispatch table ────────────────────────────────────────────────
+# ── Component dispatch ───────────────────────────────────────────────────────
 
 ALL_COMPONENTS = ["tool_selection", "rag", "geval", "refusal", "ingestion", "router"]
 
@@ -248,6 +339,7 @@ ALL_COMPONENTS = ["tool_selection", "rag", "geval", "refusal", "ingestion", "rou
 # ── Main entry point ────────────────────────────────────────────────────────
 
 def run_evaluation(
+    candidates: list[int] | None = None,
     components: list[str] | None = None,
     category_filter: str | None = None,
     top_k: int = 3,
@@ -257,32 +349,26 @@ def run_evaluation(
     reuse_results: bool = False,
 ) -> dict:
     """
-    Full component-based evaluation pipeline:
-      1. Seed data (structured + documents)
-      2. Run agent pipeline on golden dataset (captures tool trajectory)
-      3. Evaluate each component
-      4. Generate report
+    Multi-candidate component-based evaluation pipeline.
 
-    Args:
-        components: List of components to run. Options:
-            "tool_selection", "rag", "geval", "refusal", "ingestion", "router"
-            None means all components.
-        category_filter: Optional category name to filter the dataset
-        top_k: Number of chunks to retrieve
-        judge_model: Ollama model for LLM-as-judge
-        dry_run: If True, skip metric computation (just run pipeline)
-        report_format: "html", "json", or "csv"
-        reuse_results: If True, load existing pipeline_results.json
+    For each candidate:
+      1. Seeds structured data and ingests all documents
+      2. Runs the agent pipeline on their golden dataset
+      3. Tags results with candidate_id/candidate_name
 
-    Returns:
-        Dict with all evaluation results.
+    Then runs component evaluations on the COMBINED result set and generates
+    a report with both per-candidate and aggregate breakdowns.
     """
     if components is None:
         components = ALL_COMPONENTS
 
+    # ── Discover candidates ─────────────────────────────────────────
+    discovered = _discover_candidates(candidates)
+
     print("=" * 70)
-    print("  COMPONENT-BASED EVALUATION HARNESS")
+    print("  MULTI-CANDIDATE EVALUATION HARNESS")
     print("=" * 70)
+    print(f"  Candidates : {[c['name'] for c in discovered]}")
     print(f"  Components : {components}")
     print(f"  Judge model: {judge_model}")
     print(f"  Category   : {category_filter or 'all'}")
@@ -291,43 +377,102 @@ def run_evaluation(
     print(f"  Reuse      : {reuse_results}")
     print("=" * 70)
 
-    # ── Step 1: Load dataset ────────────────────────────────────────
-    dataset = _load_golden_dataset(category_filter)
-    print(f"\n[Harness] Loaded {len(dataset)} questions from golden dataset.")
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    backup_path = None
+    all_pipeline_results = []
+    candidates_info = []  # for ingestion eval + reporting
+    eval_candidate_ids = []  # for cleanup
 
     if reuse_results:
         raw_path = REPORTS_DIR / "pipeline_results.json"
         with open(raw_path, "r", encoding="utf-8") as f:
-            pipeline_results = json.load(f)
+            all_pipeline_results = json.load(f)
         if category_filter:
-            pipeline_results = [r for r in pipeline_results if r["category"] == category_filter]
-        print(f"[Harness] Reusing {len(pipeline_results)} results from {raw_path}")
+            all_pipeline_results = [
+                r for r in all_pipeline_results
+                if r["category"] == category_filter
+            ]
+        # Reconstruct candidates_info from results
+        seen = {}
+        for r in all_pipeline_results:
+            eid = r.get("candidate_id", "unknown")
+            if eid not in seen:
+                seen[eid] = {
+                    "eval_id": eid,
+                    "name": r.get("candidate_name", eid),
+                    "doc_files": [],
+                    "doc_count": 0,
+                    "question_count": 0,
+                }
+            seen[eid]["question_count"] += 1
+        candidates_info = list(seen.values())
+        eval_candidate_ids = [c["eval_id"] for c in candidates_info]
+        print(f"[Harness] Reusing {len(all_pipeline_results)} results from {raw_path}")
     else:
-        # ── Step 2: Seed data ───────────────────────────────────────
-        backup_path = _seed_structured_data()
-        _cleanup_eval_collections()
-        _seed_documents()
-        set_candidate_id(EVAL_CANDIDATE_ID)
+        # ── Run pipeline per candidate ──────────────────────────────
+        backup_path = None
+        start_time = time.time()
 
+        for cand in discovered:
+            print(f"\n{'=' * 70}")
+            print(f"  CANDIDATE: {cand['name']} (candidate_{cand['idx']})")
+            print(f"{'=' * 70}")
+
+            eval_id = cand["eval_id"]
+            eval_candidate_ids.append(eval_id)
+
+            # Seed structured data
+            backup_path = _seed_structured_data(cand["dir"])
+
+            # Clean + ingest documents
+            _cleanup_eval_collections(eval_id)
+            _seed_documents(cand["dir"], eval_id)
+
+            # Set candidate ID for the agent
+            set_candidate_id(eval_id)
+
+            # Load golden dataset
+            dataset = _load_golden_dataset(cand["dir"], category_filter)
+            print(f"[Harness] {len(dataset)} questions for {cand['name']}")
+
+            # Run pipeline
+            results = _run_pipeline_on_dataset(
+                dataset, eval_id, cand["name"], top_k
+            )
+            all_pipeline_results.extend(results)
+
+            # Track candidate info
+            doc_files = _get_doc_files(cand["dir"])
+            candidates_info.append({
+                "idx": cand["idx"],
+                "eval_id": eval_id,
+                "name": cand["name"],
+                "doc_count": len(doc_files),
+                "question_count": len(dataset),
+                "doc_files": [(str(f), dt) for f, dt in doc_files],
+            })
+
+            # Restore structured data after each candidate
+            _restore_structured_data(backup_path)
+            backup_path = None
+
+            print(f"[Harness] ✓ {cand['name']}: {len(results)} results collected")
+
+        pipeline_elapsed = time.time() - start_time
+        print(f"\n[Harness] Pipeline completed in {pipeline_elapsed:.1f}s "
+              f"({len(all_pipeline_results)} total results)")
+
+        # Save combined results
+        raw_path = REPORTS_DIR / "pipeline_results.json"
+        with open(raw_path, "w", encoding="utf-8") as f:
+            json.dump(all_pipeline_results, f, indent=2, ensure_ascii=False)
+        print(f"[Harness] Raw results saved to {raw_path}")
+
+    # ── Component evaluations ───────────────────────────────────────
     try:
-        if not reuse_results:
-            # ── Step 3: Run pipeline ────────────────────────────────
-            start_time = time.time()
-            pipeline_results = _run_pipeline_on_dataset(dataset, top_k=top_k)
-            pipeline_elapsed = time.time() - start_time
-            print(f"\n[Harness] Pipeline completed in {pipeline_elapsed:.1f}s")
-
-            REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-            raw_path = REPORTS_DIR / "pipeline_results.json"
-            with open(raw_path, "w", encoding="utf-8") as f:
-                json.dump(pipeline_results, f, indent=2, ensure_ascii=False)
-            print(f"[Harness] Raw results saved to {raw_path}")
-
-        # ── Step 4: Component Evaluations ───────────────────────────
         eval_results = {
-            "pipeline_results": pipeline_results,
+            "pipeline_results": all_pipeline_results,
+            "candidates": candidates_info,
             "tool_eval_df": None,
             "ragas_df": None,
             "hallucination_df": None,
@@ -341,38 +486,38 @@ def run_evaluation(
         if dry_run:
             print("\n[Harness] Dry run — skipping all evaluations")
         else:
-            REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-
             for component in components:
                 print(f"\n{'─' * 50}")
                 print(f"  Component: {component}")
                 print("─" * 50)
 
                 if component == "tool_selection":
-                    eval_results["tool_eval_df"] = _run_tool_selection(pipeline_results)
+                    eval_results["tool_eval_df"] = _run_tool_selection(all_pipeline_results)
 
                 elif component == "rag":
-                    ragas_df, hall_df = _run_rag_quality(pipeline_results, judge_model)
+                    ragas_df, hall_df = _run_rag_quality(all_pipeline_results, judge_model)
                     eval_results["ragas_df"] = ragas_df
                     eval_results["hallucination_df"] = hall_df
 
                 elif component == "geval":
-                    eval_results["geval_df"] = _run_geval(pipeline_results, judge_model)
+                    eval_results["geval_df"] = _run_geval(all_pipeline_results, judge_model)
 
                 elif component == "refusal":
-                    eval_results["refusal_df"] = _run_refusal(pipeline_results)
+                    eval_results["refusal_df"] = _run_refusal(all_pipeline_results)
 
                 elif component == "ingestion":
-                    eval_results["ingestion_report"] = _run_ingestion(judge_model)
+                    eval_results["ingestion_report"] = _run_ingestion(
+                        candidates_info, judge_model
+                    )
 
                 elif component == "router":
-                    eval_results["router_df"] = _run_router(pipeline_results)
+                    eval_results["router_df"] = _run_router(all_pipeline_results)
 
-        # ── Step 5: Generate report ─────────────────────────────────
+        # ── Generate report ─────────────────────────────────────────
         if not dry_run:
             from evaluation.report import generate_report
             report_path = generate_report(
-                pipeline_results=pipeline_results,
+                pipeline_results=all_pipeline_results,
                 eval_results=eval_results,
                 output_format=report_format,
             )
@@ -382,8 +527,11 @@ def run_evaluation(
     finally:
         if not reuse_results:
             restore_candidate_id()
-            _restore_structured_data(backup_path)
-            _cleanup_eval_collections()
+            if backup_path:
+                _restore_structured_data(backup_path)
+            # Cleanup all eval collections
+            for eval_id in eval_candidate_ids:
+                _cleanup_eval_collections(eval_id)
 
     print("\n" + "=" * 70)
     print("  EVALUATION COMPLETE")

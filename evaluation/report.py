@@ -47,7 +47,15 @@ def _build_overview_section(pipeline_results, eval_results) -> str:
     total = len(pipeline_results)
     avg_latency = round(sum(r["latency_s"] for r in pipeline_results) / total, 2) if total else 0
 
+    # Count unique candidates
+    candidate_names = set(r.get("candidate_name", "?") for r in pipeline_results)
+    num_candidates = len(candidate_names)
+
     cards = f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">{num_candidates}</div>
+      <div class="metric-label">Candidates</div>
+    </div>
     <div class="metric-card">
       <div class="metric-score" style="color:#38bdf8">{total}</div>
       <div class="metric-label">Total Questions</div>
@@ -97,10 +105,12 @@ def _build_overview_section(pipeline_results, eval_results) -> str:
     # Refusal accuracy
     refusal_df = eval_results.get("refusal_df")
     if refusal_df is not None and len(refusal_df) > 0:
-        correct = refusal_df["refused_correctly"].sum()
+        tp = (refusal_df["classification"] == "TP").sum()
+        tn = (refusal_df["classification"] == "TN").sum()
+        acc = (tp + tn) / len(refusal_df)
         cards += f"""
     <div class="metric-card">
-      <div class="metric-score" style="color:{_score_color(correct/len(refusal_df))}">{_pct(correct, len(refusal_df))}</div>
+      <div class="metric-score" style="color:{_score_color(acc)}">{_pct(tp + tn, len(refusal_df))}</div>
       <div class="metric-label">Refusal Accuracy</div>
     </div>"""
 
@@ -217,9 +227,8 @@ def _build_geval_section(geval_df, pipeline_results) -> str:
 
     summary = f'<div class="summary-stat"><strong style="color:{_score_color(mean_val)}">{_format_score(mean_val)}</strong> Mean Correctness ({len(geval_df)} questions)</div>'
 
-    non_neg = [r for r in pipeline_results if r["category"] != "negative"]
     rows = ""
-    for i, r in enumerate(non_neg):
+    for i, r in enumerate(pipeline_results):
         if i >= len(geval_df):
             break
         val = geval_df.iloc[i].get("deepeval_correctness")
@@ -244,33 +253,69 @@ def _build_geval_section(geval_df, pipeline_results) -> str:
 
 
 def _build_refusal_section(refusal_df) -> str:
-    """Build the Refusal Accuracy section."""
+    """Build the Refusal Accuracy section with confusion matrix."""
     if refusal_df is None or len(refusal_df) == 0:
-        return "<p>No negative questions evaluated.</p>"
+        return "<p>No refusal data.</p>"
 
-    correct = refusal_df["refused_correctly"].sum()
-    halluc = refusal_df["hallucinated"].sum()
-    redir = refusal_df["professional_redirect"].sum()
+    tp = (refusal_df["classification"] == "TP").sum()
+    tn = (refusal_df["classification"] == "TN").sum()
+    fp = (refusal_df["classification"] == "FP").sum()
+    fn = (refusal_df["classification"] == "FN").sum()
     total = len(refusal_df)
+    accuracy = (tp + tn) / total if total > 0 else 0
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 1.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 1.0
+    halluc = refusal_df["hallucinated"].sum()
 
-    summary = f"""
-    <div class="summary-stat"><strong style="color:{_score_color(correct/total)}">{correct}/{total}</strong> Correct Refusals</div>
-    <div class="summary-stat"><strong style="color:{_score_color(1 - halluc/total)}">{halluc}</strong> Hallucinations</div>
-    <div class="summary-stat"><strong>{redir}/{total}</strong> Professional Redirects</div>
+    # Confusion matrix as HTML table
+    cm_html = f"""
+    <table style="width:auto;margin:1rem 0">
+      <thead>
+        <tr><th></th><th>Refused</th><th>Answered</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Should refuse</strong></td>
+          <td style="color:#22c55e">TP = {tp}</td>
+          <td style="color:#ef4444">FN = {fn}</td>
+        </tr>
+        <tr>
+          <td><strong>Should answer</strong></td>
+          <td style="color:#ef4444">FP = {fp}</td>
+          <td style="color:#22c55e">TN = {tn}</td>
+        </tr>
+      </tbody>
+    </table>
     """
 
+    summary = f"""
+    <div class="summary-stat"><strong style="color:{_score_color(accuracy)}">{_pct(tp + tn, total)}</strong> Accuracy</div>
+    <div class="summary-stat"><strong style="color:{_score_color(precision)}">{precision:.1%}</strong> Precision</div>
+    <div class="summary-stat"><strong style="color:{_score_color(recall)}">{recall:.1%}</strong> Recall</div>
+    <div class="summary-stat"><strong style="color:{_score_color(1 - halluc/total if total else 1)}">{halluc}</strong> Hallucinations</div>
+    {cm_html}
+    """
+
+    # Per-question table — show misclassifications first
+    sorted_df = refusal_df.sort_values(
+        by="classification",
+        key=lambda s: s.map({"FP": 0, "FN": 1, "TP": 2, "TN": 3}),
+    )
+
     rows = ""
-    for _, r in refusal_df.iterrows():
-        refused_icon = "✓" if r["refused_correctly"] else "✗"
-        refused_color = "#22c55e" if r["refused_correctly"] else "#ef4444"
-        halluc_icon = "⚠️" if r["hallucinated"] else "✓"
-        redir_icon = "✓" if r["professional_redirect"] else "—"
+    for _, r in sorted_df.iterrows():
+        cls = r["classification"]
+        cls_color = "#22c55e" if cls in ("TP", "TN") else "#ef4444"
+        halluc_icon = "⚠️" if r["hallucinated"] else ""
+        redir_icon = "✓" if r["professional_redirect"] else ""
         answer = html.escape(str(r["answer_preview"])[:120], quote=True)
         rows += f"""
         <tr>
           <td>{r['id']}</td>
-          <td>{html.escape(str(r['question']), quote=True)}</td>
-          <td style="color:{refused_color}">{refused_icon}</td>
+          <td>{r['category']}</td>
+          <td title="{html.escape(str(r['question']), quote=True)}">{html.escape(str(r['question'])[:50], quote=True)}</td>
+          <td style="color:{cls_color};font-weight:bold">{cls}</td>
+          <td>{'Yes' if r['refused'] else 'No'}</td>
           <td>{halluc_icon}</td>
           <td>{redir_icon}</td>
           <td class="answer-cell" title="{answer}">{answer}...</td>
@@ -279,86 +324,99 @@ def _build_refusal_section(refusal_df) -> str:
     return f"""
     {summary}
     <table>
-      <thead><tr><th>ID</th><th>Question</th><th>Refused</th><th>Halluc</th><th>Redirect</th><th>Answer</th></tr></thead>
+      <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Class</th><th>Refused</th><th>Halluc</th><th>Redirect</th><th>Answer</th></tr></thead>
       <tbody>{rows}</tbody>
     </table>"""
 
 
 def _build_ingestion_section(ingestion_report) -> str:
-    """Build the Ingestion Quality section."""
-    if not ingestion_report or "error" in ingestion_report:
-        return f"<p>Ingestion evaluation error: {ingestion_report.get('error', 'unknown')}</p>"
+    """Build the Ingestion Quality section for multiple candidates."""
+    if not ingestion_report:
+        return "<p>No ingestion data.</p>"
 
-    cs = ingestion_report.get("chunk_stats", {})
-    sc = ingestion_report.get("section_coverage", {})
-    dc = ingestion_report.get("duplicate_check", {})
-    sq = ingestion_report.get("summary_quality", {})
-    ep = ingestion_report.get("embedding_probes", {})
+    # If it's a single-candidate report (legacy), wrap it
+    if "chunk_stats" in ingestion_report:
+        ingestion_report = {"single": {"name": "Candidate", "report": ingestion_report}}
 
-    # Chunk stats
-    chunk_html = f"""
-    <div class="summary-stat"><strong>{cs.get('total_chunks', 0)}</strong> Total Chunks</div>
-    <div class="summary-stat"><strong>{cs.get('avg_chunk_size', 0)}</strong> Avg Size</div>
-    <div class="summary-stat"><strong>{cs.get('min_chunk_size', 0)}-{cs.get('max_chunk_size', 0)}</strong> Size Range</div>
-    <div class="summary-stat"><strong>{cs.get('empty_or_tiny_chunks', 0)}</strong> Empty/Tiny</div>
-    """
+    sections = ""
+    for eval_id, entry in ingestion_report.items():
+        name = entry.get("name", eval_id)
+        report = entry.get("report", {})
 
-    # Section coverage
-    coverage_pct = sc.get("coverage_pct", 0)
-    missing = sc.get("missing", [])
-    section_html = f"""
-    <div class="summary-stat"><strong style="color:{_score_color(coverage_pct/100)}">{coverage_pct}%</strong> Section Coverage</div>
-    """
-    if missing:
-        section_html += f'<div class="summary-stat">Missing: {", ".join(missing)}</div>'
-    if not sc.get("has_section_metadata", False):
-        section_html += '<div class="summary-stat" style="color:#ef4444">⚠️ No section metadata found</div>'
+        if "error" in report:
+            sections += f'<p style="color:#ef4444">{name}: {report["error"]}</p>'
+            continue
 
-    # Duplicates
-    dup_html = f"""
-    <div class="summary-stat"><strong>{dc.get('exact_duplicates', 0)}</strong> Exact Duplicates</div>
-    <div class="summary-stat"><strong>{dc.get('near_duplicates_sampled', 0)}</strong> Near Duplicates</div>
-    """
+        cs = report.get("chunk_stats", {})
+        sc = report.get("section_coverage", {})
+        dc = report.get("duplicate_check", {})
+        sq = report.get("summary_quality", {})
+        ep = report.get("embedding_probes", {})
+        dtb = report.get("doc_type_breakdown", {})
 
-    # Summary quality
-    sq_score = sq.get("llm_score", 0)
-    sq_items = sq.get("checklist_items_found", 0)
-    sq_total = sq.get("checklist_total", 5)
-    summary_html = f"""
-    <div class="summary-stat"><strong style="color:{_score_color(sq_score or 0)}">{_format_score(sq_score)}</strong> Summary Score</div>
-    <div class="summary-stat"><strong>{sq_items}/{sq_total}</strong> Checklist Items</div>
-    <div class="summary-stat">Exists: {'✓' if sq.get('summary_exists') else '✗'}</div>
-    """
+        # Chunk stats
+        chunk_html = f"""
+        <div class="summary-stat"><strong>{cs.get('total_chunks', 0)}</strong> Chunks</div>
+        <div class="summary-stat"><strong>{cs.get('avg_chunk_size', 0)}</strong> Avg Size</div>
+        <div class="summary-stat"><strong>{cs.get('min_chunk_size', 0)}-{cs.get('max_chunk_size', 0)}</strong> Range</div>
+        <div class="summary-stat"><strong>{cs.get('empty_or_tiny_chunks', 0)}</strong> Tiny</div>
+        """
 
-    # Embedding probes
-    hit_rate = ep.get("hit_rate", 0)
-    probe_rows = ""
-    for p in ep.get("probes", []):
-        icon = "✓" if p["found_in_top1"] else "✗"
-        color = "#22c55e" if p["found_in_top1"] else "#ef4444"
-        preview = html.escape(str(p["top1_preview"]), quote=True)
-        probe_rows += f'<tr><td>{html.escape(p["term"])}</td><td style="color:{color}">{icon}</td><td style="font-size:0.8em" title="{preview}">{preview}...</td></tr>'
+        # Doc-type breakdown table
+        dt_rows = ""
+        if dtb:
+            for dt, stats in dtb.items():
+                dt_rows += f'<tr><td>{dt}</td><td>{stats["chunk_count"]}</td><td>{stats["avg_size"]}</td><td>{stats["min_size"]}</td><td>{stats["max_size"]}</td></tr>'
+            chunk_html += f"""
+            <table style="margin-top:0.5rem">
+              <thead><tr><th>Doc Type</th><th>Chunks</th><th>Avg Size</th><th>Min</th><th>Max</th></tr></thead>
+              <tbody>{dt_rows}</tbody>
+            </table>
+            """
 
-    probe_html = f"""
-    <div class="summary-stat"><strong style="color:{_score_color(hit_rate)}">{hit_rate*100:.0f}%</strong> Embedding Hit Rate</div>
-    <table>
-      <thead><tr><th>Probe Term</th><th>Found</th><th>Top-1 Preview</th></tr></thead>
-      <tbody>{probe_rows}</tbody>
-    </table>
-    """
+        # Section coverage
+        coverage_pct = sc.get("coverage_pct", 0)
+        missing = sc.get("missing", [])
+        section_html = f'<div class="summary-stat"><strong style="color:{_score_color(coverage_pct/100)}">{coverage_pct}%</strong> Coverage</div>'
+        if missing:
+            section_html += f'<div class="summary-stat">Missing: {", ".join(missing)}</div>'
 
-    return f"""
-    <h3 style="color:#94a3b8;font-size:1rem">Chunk Statistics</h3>
-    {chunk_html}
-    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Section Coverage</h3>
-    {section_html}
-    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Duplicate Check</h3>
-    {dup_html}
-    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Summary Quality</h3>
-    {summary_html}
-    <h3 style="color:#94a3b8;font-size:1rem;margin-top:1rem">Embedding Coverage</h3>
-    {probe_html}
-    """
+        # Summary quality
+        sq_score = sq.get("llm_score", 0)
+        sq_items = sq.get("checklist_items_found", 0)
+        sq_total = sq.get("checklist_total", 5)
+        summary_html = f"""
+        <div class="summary-stat"><strong style="color:{_score_color(sq_score or 0)}">{_format_score(sq_score)}</strong> Summary</div>
+        <div class="summary-stat"><strong>{sq_items}/{sq_total}</strong> Checklist</div>
+        """
+
+        # Embedding probes
+        hit_rate = ep.get("hit_rate", 0)
+        probe_html = f'<div class="summary-stat"><strong style="color:{_score_color(hit_rate)}">{hit_rate*100:.0f}%</strong> Embedding Hit Rate</div>'
+
+        # Duplicates
+        dup_html = f"""
+        <div class="summary-stat"><strong>{dc.get('exact_duplicates', 0)}</strong> Exact Dups</div>
+        <div class="summary-stat"><strong>{dc.get('near_duplicates_sampled', 0)}</strong> Near Dups</div>
+        """
+
+        sections += f"""
+        <div style="margin:1rem 0;padding:1rem;background:#1e293b;border-radius:8px;border:1px solid #334155">
+          <h3 style="color:#f8fafc;font-size:1.1rem;margin-bottom:0.8rem">{html.escape(name)}</h3>
+          <h4 style="color:#94a3b8;font-size:0.9rem">Chunks</h4>
+          {chunk_html}
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Sections</h4>
+          {section_html}
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Summaries</h4>
+          {summary_html}
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Embeddings</h4>
+          {probe_html}
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Duplicates</h4>
+          {dup_html}
+        </div>
+        """
+
+    return sections
 
 
 def _build_router_section(router_df) -> str:
@@ -454,8 +512,8 @@ def _generate_html(pipeline_results, eval_results) -> str:
 </head>
 <body>
 
-<h1>Component-Based Evaluation Report</h1>
-<div class="meta">Generated: {timestamp} | Questions: {len(pipeline_results)}</div>
+<h1>Multi-Candidate Evaluation Report</h1>
+<div class="meta">Generated: {timestamp} | Questions: {len(pipeline_results)} | Candidates: {', '.join(sorted(set(r.get('candidate_name', '?') for r in pipeline_results)))}</div>
 
 <h2>Overview</h2>
 <div class="metrics-grid">

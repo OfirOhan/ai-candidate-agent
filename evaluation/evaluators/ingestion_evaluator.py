@@ -58,6 +58,23 @@ def run_ingestion_evaluation(
     }
     print(f"[Ingestion Eval] Chunk stats: {report['chunk_stats']}")
 
+    # ── 1b. Per-doc-type breakdown ───────────────────────────────────
+    doc_type_groups = {}
+    for doc, meta in zip(documents, metadatas):
+        dt = meta.get("doc_type", "unknown") if meta else "unknown"
+        doc_type_groups.setdefault(dt, []).append(len(doc))
+
+    doc_type_breakdown = {}
+    for dt, sizes in sorted(doc_type_groups.items()):
+        doc_type_breakdown[dt] = {
+            "chunk_count": len(sizes),
+            "avg_size": round(np.mean(sizes), 1),
+            "min_size": min(sizes),
+            "max_size": max(sizes),
+        }
+    report["doc_type_breakdown"] = doc_type_breakdown
+    print(f"[Ingestion Eval] Doc type breakdown: { {k: v['chunk_count'] for k, v in doc_type_breakdown.items()} }")
+
     # ── 2. Section Coverage ──────────────────────────────────────────
     expected_sections = {
         "Personal Information", "Summary", "Work Experience", "Education",

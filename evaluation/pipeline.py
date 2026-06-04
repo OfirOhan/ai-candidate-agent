@@ -1,7 +1,7 @@
 """
 Headless pipeline wrapper for evaluation.
 
-Provides functions to run retrieval and the full agent pipeline
+Provides functions to run the full agent pipeline
 without requiring Streamlit or a running server.
 """
 

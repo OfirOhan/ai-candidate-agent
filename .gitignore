@@ -1,7 +1,8 @@
 .venv
 .idea
 *.json
-!evaluation/data/*.json
+!evaluation/data/**/*.json
+!evaluation/data/**/*.pdf
 !evaluation/reports/*.json
 !spe/data/**/*.json
 *.bin

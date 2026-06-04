@@ -1,7 +1,7 @@
 """
 Headless pipeline wrapper for evaluation.
 
-Provides functions to ingest text, run retrieval, and run the full agent
+Provides functions to run retrieval and the full agent pipeline
 without requiring Streamlit or a running server.
 """
 
@@ -10,15 +10,15 @@ from rag.retriever import retrieve
 from agent.agent import run as agent_run
 
 
-def run_retrieval(question: str, candidate_id: str, top_k: int = 3) -> list[str]:
-    """Run retrieval only, return list of context chunks."""
+def run_retrieval(question: str, candidate_id: str, top_k: int = 3) -> dict:
+    """Run retrieval only, return full result dict with chunks, route, expanded_queries."""
     return retrieve(question, candidate_id, top_k=top_k)
 
 
-def run_agent_answer(question: str) -> str:
-    """Run the full agent with a fresh conversation, return answer string."""
-    answer, _ = agent_run([], question)
-    return answer
+def run_agent_answer(question: str) -> tuple[str, list]:
+    """Run the full agent with a fresh conversation, return (answer, tool_trajectory)."""
+    answer, _, trajectory = agent_run([], question)
+    return answer, trajectory
 
 
 def run_full_pipeline(
@@ -27,21 +27,38 @@ def run_full_pipeline(
     top_k: int = 3,
 ) -> dict:
     """
-    Run retrieval + agent for a single question.
+    Run the full agent for a single question and capture all metadata.
 
     Returns:
         {
             "question": str,
-            "contexts": list[str],   # from retriever
-            "answer": str,           # from agent
+            "contexts": list[str],         # retrieved chunks (if RAG was used)
+            "answer": str,                 # from agent
+            "tool_trajectory": list[dict], # sequence of tool calls
+            "final_tool": str | None,      # last tool used (or None)
+            "route": str | None,           # "broad"/"specific" (if RAG was used)
         }
     """
-    contexts = run_retrieval(question, candidate_id, top_k=top_k)
-    answer = run_agent_answer(question)
+    answer, trajectory = run_agent_answer(question)
+
+    final_tool = trajectory[-1]["tool"] if trajectory else None
+
+    # Extract retrieval metadata captured during the agent run
+    # (avoids a second retrieval call which would be non-deterministic)
+    route = None
+    contexts = []
+    if any(t["tool"] == "search_documents" for t in trajectory):
+        retrieval_meta = tools_module.get_last_retrieval_meta()
+        route = retrieval_meta.get("route")
+        contexts = retrieval_meta.get("chunks", [])
+
     return {
         "question": question,
         "contexts": contexts,
         "answer": answer,
+        "tool_trajectory": trajectory,
+        "final_tool": final_tool,
+        "route": route,
     }
 
 

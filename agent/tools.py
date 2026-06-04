@@ -81,6 +81,7 @@ def search_documents(**kwargs) -> str:
     _last_retrieval_meta = {
         "route": result["route"],
         "expanded_queries": result["expanded_queries"],
+        "chunks": chunks,
     }
     if not chunks:
         return "No relevant information found in documents."

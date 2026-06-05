@@ -19,9 +19,16 @@ client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 def expand_query(original_query: str, n_variations: int = 3) -> list[str]:
     prompt = (
-        f"You are a search-query rewriter. Given the user question below, "
-        f"generate exactly {n_variations} alternative search queries that "
-        f"capture the same intent but use different keywords or phrasing.\n\n"
+        f"You are a query-understanding module inside a retrieval pipeline.\n"
+        f"Your generated queries will be used to search a document store using "
+        f"both keyword matching (BM25) and semantic similarity (vector search).\n\n"
+        f"Given the user's question, produce exactly {n_variations} search queries "
+        f"that maximize the chance of retrieving the right chunks.\n\n"
+        f"Think about:\n"
+        f"- What words or phrases likely appear in the stored documents\n"
+        f"- Include at least one short keyword-style query (for BM25)\n"
+        f"- Include at least one natural-language query (for vector search)\n"
+        f"- Cover different angles the answer might be described under\n\n"
         f"User question: \"{original_query}\"\n\n"
         f"Return ONLY the queries, one per line, no numbering, no explanation."
     )
@@ -42,11 +49,25 @@ def expand_query(original_query: str, n_variations: int = 3) -> list[str]:
 def is_broad_query_llm(query: str) -> bool:
     prompt = (
         f"You are a query router for a recruitment search engine.\n"
-        f"Classify the user's search query into one of two categories:\n"
-        f"1. BROAD: General overviews, summaries, introduction requests (e.g., 'tell me about this guy', 'summarize her profile', 'מי זה').\n"
-        f"2. SPECIFIC: Looking for precise skills, specific tools, jobs, or metrics (e.g., 'does he know Python', 'where did she study', 'python skills').\n\n"
-        f"User query: \"{query}\"\n\n"
-        f"Return ONLY the word 'BROAD' or 'SPECIFIC'. No other text."
+        f"Classify the query as BROAD or SPECIFIC.\n\n"
+        f"BROAD = general summary, overview, or 'who is this person' questions.\n"
+        f"SPECIFIC = questions about ANY particular topic, skill, tool, project,\n"
+        f"  company, certification, achievement, or factual detail — even if\n"
+        f"  phrased in a general way like 'tell me about X'.\n\n"
+        f"Examples:\n"
+        f'  "Tell me about the candidate" → BROAD\n'
+        f'  "Summarize the candidate\'s profile" → BROAD\n'
+        f'  "Who is this person?" → BROAD\n'
+        f'  "Give me an overview" → BROAD\n'
+        f'  "Where did the candidate work before their current role?" → SPECIFIC\n'
+        f'  "What skills does the candidate have?" → SPECIFIC\n'
+        f'  "Does he know Python?" → SPECIFIC\n'
+        f'  "Was the candidate on the Dean\'s List?" → SPECIFIC\n'
+        f'  "What databases has the candidate worked with?" → SPECIFIC\n'
+        f'  "Has the candidate led a team?" → SPECIFIC\n'
+        f'  "What certifications do they have?" → SPECIFIC\n\n'
+        f'User query: "{query}"\n\n'
+        f"Return ONLY the word BROAD or SPECIFIC. No other text."
     )
 
     response = ollama.chat(

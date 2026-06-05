@@ -134,20 +134,14 @@ def _build_tool_section(tool_df) -> str:
 
     total = len(tool_df)
     correct = tool_df["tool_correct"].sum()
-    fallbacks = tool_df["used_fallback"].sum()
-    missing = tool_df["missing_fallback"].sum()
 
     summary = f"""
     <div class="summary-stat"><strong>{correct}/{total}</strong> correct ({_pct(correct, total)})</div>
-    <div class="summary-stat"><strong>{fallbacks}</strong> fallbacks</div>
-    <div class="summary-stat"><strong>{missing}</strong> missing fallbacks</div>
     """
 
     rows = ""
     for _, r in tool_df.iterrows():
         color = "#22c55e" if r["tool_correct"] else "#ef4444"
-        fb = "⤵️" if r["used_fallback"] else ""
-        mfb = "⚠️" if r["missing_fallback"] else ""
         q = html.escape(str(r["question"])[:60], quote=True)
         rows += f"""
         <tr>
@@ -155,14 +149,13 @@ def _build_tool_section(tool_df) -> str:
           <td title="{q}">{q}</td>
           <td>{r['expected_tool']}</td>
           <td style="color:{color}">{r['actual_tool']}</td>
-          <td>{fb}{mfb}</td>
           <td style="font-size:0.8em">{html.escape(str(r['trajectory_summary']), quote=True)}</td>
         </tr>"""
 
     return f"""
     {summary}
     <table>
-      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Flags</th><th>Trajectory</th></tr></thead>
+      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Trajectory</th></tr></thead>
       <tbody>{rows}</tbody>
     </table>"""
 

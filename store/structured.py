@@ -86,4 +86,12 @@ def get_field(field: str) -> str:
             lines.append(" ".join(parts))
         return "\n".join(lines) if lines else "Not provided"
 
+    # Handle phone_number specially — prepend country code
+    if field == "phone_number":
+        phone = data.get("phone_number", "Not provided")
+        country_code = data.get("country_code", "")
+        if country_code and phone != "Not provided":
+            return f"{country_code} {phone}"
+        return phone
+
     return data.get(field, "Not provided")

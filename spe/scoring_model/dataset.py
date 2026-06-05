@@ -93,7 +93,7 @@ def load_data():
     test_ds  = ScoringDataset(X_test,  y_test,   tokenizer)
 
     train_loader = DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=True)
-    val_loader   = DataLoader(val_ds,   batch_size=config.BATCH_SIZE)
-    test_loader  = DataLoader(test_ds,  batch_size=config.BATCH_SIZE)
+    val_loader   = DataLoader(val_ds, batch_size=config.BATCH_SIZE)
+    test_loader  = DataLoader(test_ds, batch_size=config.BATCH_SIZE)
 
     return train_loader, val_loader, test_loader

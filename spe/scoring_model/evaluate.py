@@ -4,7 +4,6 @@ MAE, Accuracy, and Confusion Matrix.
 """
 
 import torch
-import numpy as np
 from sklearn.metrics import mean_absolute_error, accuracy_score, confusion_matrix
 
 import config

@@ -43,69 +43,55 @@
           "Work Experience"
         ],
         "found": [
-          "##Academic Thesis: Adversarial ML on IDS",
-          "##Automated Threat Intelligence Platform (CyberArk)",
-          "##Open-Source: CloudSec Scanner",
-          "##Red Team Automation Framework (CyberArk)",
-          "##Security Analyst ? Check Point Software Technologies",
-          "##Senior Security Engineer ? CyberArk",
-          "#Architecture",
-          "#Certifications",
-          "#Contributing",
-          "#Education",
-          "#Interests",
-          "#Key Features",
-          "#Languages",
-          "#License",
-          "#Overview",
-          "#Performance",
-          "#Personal Information",
-          "#Projects",
-          "#Summary",
-          "#Tech Stack",
-          "#Usage",
+          "Academic Thesis: Adversarial ML on IDS",
+          "Architecture",
+          "Automated Threat Intelligence Platform (CyberArk)",
+          "Certifications",
+          "Contributing",
+          "Education",
           "From: Dr. Alon Kaufman, VP of Security Research at CyberArk",
+          "Interests",
+          "Key Features",
+          "Languages",
+          "License",
+          "Open-Source: CloudSec Scanner",
+          "Overview",
+          "Performance",
+          "Personal Information",
+          "Projects",
+          "Red Team Automation Framework (CyberArk)",
           "SIEM & Detection: Splunk, Elastic SIEM, Suricata, Snort, CrowdStrike Falcon",
+          "Security Analyst ? Check Point Software Technologies",
+          "Senior Security Engineer ? CyberArk",
+          "Summary",
+          "Tech Stack",
+          "Usage",
           "general"
         ],
         "missing": [
-          "Certifications",
-          "Education",
-          "Interests",
-          "Languages",
-          "Personal Information",
-          "Projects",
-          "Summary",
           "Technical Skills",
           "Work Experience"
         ],
         "extra": [
-          "##Academic Thesis: Adversarial ML on IDS",
-          "##Automated Threat Intelligence Platform (CyberArk)",
-          "##Open-Source: CloudSec Scanner",
-          "##Red Team Automation Framework (CyberArk)",
-          "##Security Analyst ? Check Point Software Technologies",
-          "##Senior Security Engineer ? CyberArk",
-          "#Architecture",
-          "#Certifications",
-          "#Contributing",
-          "#Education",
-          "#Interests",
-          "#Key Features",
-          "#Languages",
-          "#License",
-          "#Overview",
-          "#Performance",
-          "#Personal Information",
-          "#Projects",
-          "#Summary",
-          "#Tech Stack",
-          "#Usage",
+          "Academic Thesis: Adversarial ML on IDS",
+          "Architecture",
+          "Automated Threat Intelligence Platform (CyberArk)",
+          "Contributing",
           "From: Dr. Alon Kaufman, VP of Security Research at CyberArk",
+          "Key Features",
+          "License",
+          "Open-Source: CloudSec Scanner",
+          "Overview",
+          "Performance",
+          "Red Team Automation Framework (CyberArk)",
           "SIEM & Detection: Splunk, Elastic SIEM, Suricata, Snort, CrowdStrike Falcon",
+          "Security Analyst ? Check Point Software Technologies",
+          "Senior Security Engineer ? CyberArk",
+          "Tech Stack",
+          "Usage",
           "general"
         ],
-        "coverage_pct": 0.0,
+        "coverage_pct": 77.8,
         "has_section_metadata": true
       },
       "duplicate_check": {
@@ -115,66 +101,66 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 893,
-        "checklist_items_found": 4,
+        "summary_length": 885,
+        "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: NO  \nyears of experience: YES  \nSCORE: 0.9 / 1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [
+          {
+            "term": "SPIFFE",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Architecture\nThe system consists of three core layers: an Identity Provider (SPIFFE/SPIRE)"
+          },
           {
             "term": "Python",
             "found_in_top1": true,
             "top1_preview": "Section: #Tech Stack\nLanguage: Go, Python"
           },
           {
-            "term": "PyTorch",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Tech Stack\nLanguage: Go, Python"
+            "term": "Dana",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Personal Information\nFull Name: Dana Levy"
           },
           {
-            "term": "Tel Aviv University",
-            "found_in_top1": false,
-            "top1_preview": "Section: ##Security Analyst ? Check Point Software Technologies\nJuly 2020 ? February 2022 | Tel Aviv"
+            "term": "Dana Levy",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Personal Information\nFull Name: Dana Levy"
           },
           {
-            "term": "fraud detection",
-            "found_in_top1": false,
-            "top1_preview": "Section: ##Academic Thesis: Adversarial ML on IDS\nDeveloped novel evasion techniques against ML-base"
+            "term": "CyberArk",
+            "found_in_top1": true,
+            "top1_preview": "Section: ##Red Team Automation Framework (CyberArk)\nDeveloped an internal red team automation toolki"
           },
           {
-            "term": "recommendation engine",
-            "found_in_top1": false,
-            "top1_preview": "Section: general\nLetter of Recommendation ? Dana Levy"
+            "term": "SPIRE",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Architecture\nThe system consists of three core layers: an Identity Provider (SPIFFE/SPIRE)"
           },
           {
-            "term": "Kubernetes",
-            "found_in_top1": false,
-            "top1_preview": "Section: SIEM & Detection: Splunk, Elastic SIEM, Suricata, Snort, CrowdStrike Falcon\nCloud Security:"
+            "term": "She",
+            "found_in_top1": true,
+            "top1_preview": "Section: From: Dr. Alon Kaufman, VP of Security Research at CyberArk\nBeyond her technical skills, Da"
           },
           {
-            "term": "AWS",
+            "term": "Splunk",
+            "found_in_top1": true,
+            "top1_preview": "Section: ##Automated Threat Intelligence Platform (CyberArk)\nBuilt an end-to-end threat intelligence"
+          },
+          {
+            "term": "Terraform",
             "found_in_top1": true,
             "top1_preview": "Section: SIEM & Detection: Splunk, Elastic SIEM, Suricata, Snort, CrowdStrike Falcon\nCloud Security:"
           },
           {
-            "term": "LangChain",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Languages\nHebrew: Native"
-          },
-          {
-            "term": "Dean's List",
-            "found_in_top1": false,
-            "top1_preview": "Section: general\nDana Levy ? Curriculum Vitae"
-          },
-          {
-            "term": "capstone project",
-            "found_in_top1": false,
-            "top1_preview": "Section: ##Red Team Automation Framework (CyberArk)\nDeveloped an internal red team automation toolki"
+            "term": "Zero",
+            "found_in_top1": true,
+            "top1_preview": "Section: general\nZero-Trust Network Architecture Framework"
           }
         ],
-        "hit_rate": 0.2
+        "hit_rate": 1.0
       }
     }
   },
@@ -284,39 +270,14 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 959,
-        "checklist_items_found": 4,
+        "summary_length": 704,
+        "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: NO  \nyears of experience: YES  \nSCORE: 0.9 /1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
       },
       "embedding_probes": {
         "probes": [
-          {
-            "term": "Python",
-            "found_in_top1": true,
-            "top1_preview": "Section: Tech Stack\nLanguage: Go, Python\n\nInfrastructure: Terraform, Kubernetes\n\nService Mesh: Istio"
-          },
-          {
-            "term": "PyTorch",
-            "found_in_top1": false,
-            "top1_preview": "Section: Bachelor of Science in Software Engineering — Ben-Gurion University of the Negev\n2015 – 201"
-          },
-          {
-            "term": "Tel Aviv University",
-            "found_in_top1": false,
-            "top1_preview": "Section: Personal Information\nFull Name: Yoni Abergel\n\nEmail: yoni.abergel@gmail.com\n\nPhone: +972 50"
-          },
-          {
-            "term": "fraud detection",
-            "found_in_top1": false,
-            "top1_preview": "Section: Bachelor of Science in Software Engineering — Ben-Gurion University of the Negev\n2015 – 201"
-          },
-          {
-            "term": "recommendation engine",
-            "found_in_top1": false,
-            "top1_preview": "Section: Bachelor of Science in Software Engineering — Ben-Gurion University of the Negev\n2015 – 201"
-          },
           {
             "term": "Kubernetes",
             "found_in_top1": true,
@@ -328,22 +289,47 @@
             "top1_preview": "Section: Certifications\n1. AWS Certified Solutions Architect — Professional (February 2022, Amazon W"
           },
           {
-            "term": "LangChain",
-            "found_in_top1": false,
-            "top1_preview": "Section: Languages\nHebrew: Native\n\nEnglish: Fluent (professional proficiency)\n\nFrench: Intermediate"
+            "term": "GCP",
+            "found_in_top1": true,
+            "top1_preview": "Section: Overview\nThis framework enables organizations to migrate workloads between AWS, GCP, and Az"
           },
           {
-            "term": "Dean's List",
-            "found_in_top1": false,
-            "top1_preview": "Section: Languages\nHebrew: Native\n\nEnglish: Fluent (professional proficiency)\n\nFrench: Intermediate"
+            "term": "Terraform",
+            "found_in_top1": true,
+            "top1_preview": "Section: Certifications\n1. AWS Certified Solutions Architect — Professional (February 2022, Amazon W"
           },
           {
-            "term": "capstone project",
+            "term": "Reduced",
             "found_in_top1": true,
             "top1_preview": "Section: Bachelor of Science in Software Engineering — Ben-Gurion University of the Negev\n2015 – 201"
+          },
+          {
+            "term": "Built",
+            "found_in_top1": true,
+            "top1_preview": "Section: Self-Service Deployment Platform (Monday.com)\nBuilt a developer portal enabling 150+ engine"
+          },
+          {
+            "term": "Prometheus",
+            "found_in_top1": true,
+            "top1_preview": "Section: Tech Stack\nLanguage: Go, Python\n\nInfrastructure: Terraform, Kubernetes\n\nService Mesh: Istio"
+          },
+          {
+            "term": "Monday.com",
+            "found_in_top1": true,
+            "top1_preview": "Section: Self-Service Deployment Platform (Monday.com)\nBuilt a developer portal enabling 150+ engine"
+          },
+          {
+            "term": "Yoni",
+            "found_in_top1": true,
+            "top1_preview": "Section: Letter of Recommendation — Yoni Abergel\nFrom: Nir Zohar, VP of Engineering at Monday.com\n\nD"
+          },
+          {
+            "term": "ArgoCD",
+            "found_in_top1": true,
+            "top1_preview": "Section: Technical Skills\nProgramming Languages: Go, Python, Bash, TypeScript, HCL\n\nCloud Platforms:"
           }
         ],
-        "hit_rate": 0.4
+        "hit_rate": 1.0
       }
     }
   },
@@ -391,65 +377,46 @@
           "Work Experience"
         ],
         "found": [
-          "#Architecture",
-          "#Certifications",
-          "#Contributing",
-          "#Education",
-          "#Interests",
-          "#Key Features",
-          "#Languages",
-          "#Overview",
-          "#Performance",
-          "#Personal Information",
-          "#Projects",
-          "#Summary",
-          "#Tech Stack",
-          "#Technical Skills",
-          "#Usage",
-          "#Work Experience",
+          "Architecture",
+          "Certifications",
+          "Contributing",
           "Databases: PostgreSQL, MongoDB, Redis",
+          "Education",
           "Fiverr",
           "Fiverr Design System",
-          "Letter of Recommendation — Maya Chen",
-          "```bash",
-          "system"
-        ],
-        "missing": [
-          "Certifications",
-          "Education",
           "Interests",
+          "Key Features",
           "Languages",
+          "Letter of Recommendation — Maya Chen",
+          "Overview",
+          "Performance",
           "Personal Information",
           "Projects",
           "Summary",
+          "Tech Stack",
           "Technical Skills",
-          "Work Experience"
-        ],
-        "extra": [
-          "#Architecture",
-          "#Certifications",
-          "#Contributing",
-          "#Education",
-          "#Interests",
-          "#Key Features",
-          "#Languages",
-          "#Overview",
-          "#Performance",
-          "#Personal Information",
-          "#Projects",
-          "#Summary",
-          "#Tech Stack",
-          "#Technical Skills",
-          "#Usage",
-          "#Work Experience",
-          "Databases: PostgreSQL, MongoDB, Redis",
-          "Fiverr",
-          "Fiverr Design System",
-          "Letter of Recommendation — Maya Chen",
+          "Usage",
+          "Work Experience",
           "```bash",
           "system"
         ],
-        "coverage_pct": 0.0,
+        "missing": [],
+        "extra": [
+          "Architecture",
+          "Contributing",
+          "Databases: PostgreSQL, MongoDB, Redis",
+          "Fiverr",
+          "Fiverr Design System",
+          "Key Features",
+          "Letter of Recommendation — Maya Chen",
+          "Overview",
+          "Performance",
+          "Tech Stack",
+          "Usage",
+          "```bash",
+          "system"
+        ],
+        "coverage_pct": 100.0,
         "has_section_metadata": true
       },
       "duplicate_check": {
@@ -459,66 +426,66 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 833,
+        "summary_length": 801,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
+        "llm_score": 0.95,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.95 /1.0"
       },
       "embedding_probes": {
         "probes": [
           {
-            "term": "Python",
+            "term": "React",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Tech Stack\nFramework: React 18 with TypeScript\n\nStyling: CSS Modules + design tokens\n\nDocu"
+          },
+          {
+            "term": "TypeScript",
             "found_in_top1": true,
             "top1_preview": "Section: #Technical Skills\nProgramming Languages: TypeScript, JavaScript, HTML5, CSS3, Python"
           },
           {
-            "term": "PyTorch",
-            "found_in_top1": false,
-            "top1_preview": "Section: Letter of Recommendation — Maya Chen\nFrom: Lior Barak, Frontend Team Lead at Fiverr Date: M"
+            "term": "Fiverr",
+            "found_in_top1": true,
+            "top1_preview": "Section: Fiverr Design System\nA comprehensive, accessible component library powering Fiverr's market"
           },
           {
-            "term": "Tel Aviv University",
-            "found_in_top1": false,
+            "term": "Storybook",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Performance\nAll components are tree-shakeable with individual exports. Average component b"
+          },
+          {
+            "term": "Tel Aviv",
+            "found_in_top1": true,
             "top1_preview": "Section: #Personal Information\nFull Name: Maya Chen\n\nEmail: maya.chen@gmail.com\n\nPhone: +972 53\n\n444"
           },
           {
-            "term": "fraud detection",
+            "term": "Built",
             "found_in_top1": false,
-            "top1_preview": "Section: #Education\n##Bachelor of Science in Computer Science — Reichman University (IDC Herzliya) 2"
+            "top1_preview": "Section: #Summary\nFrontend Engineer with 3 years of experience building performant, accessible web a"
           },
           {
-            "term": "recommendation engine",
-            "found_in_top1": false,
+            "term": "WCAG",
+            "found_in_top1": true,
             "top1_preview": "Section: Letter of Recommendation — Maya Chen\nFrom: Lior Barak, Frontend Team Lead at Fiverr Date: M"
           },
           {
-            "term": "Kubernetes",
-            "found_in_top1": false,
-            "top1_preview": "Section: Databases: PostgreSQL, MongoDB, Redis\nDevOps: Docker, GitHub Actions, Vercel, Netlify, AWS "
-          },
-          {
-            "term": "AWS",
+            "term": "Maya",
             "found_in_top1": true,
-            "top1_preview": "Section: Databases: PostgreSQL, MongoDB, Redis\nDevOps: Docker, GitHub Actions, Vercel, Netlify, AWS "
+            "top1_preview": "Section: #Personal Information\nFull Name: Maya Chen\n\nEmail: maya.chen@gmail.com\n\nPhone: +972 53\n\n444"
           },
           {
-            "term": "LangChain",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Languages\nHebrew: Native\n\nEnglish: Fluent (professional proficiency)\n\nMandarin: Conversati"
-          },
-          {
-            "term": "Dean's List",
-            "found_in_top1": false,
-            "top1_preview": "Section: Fiverr\nlior.barak@fiverr.com"
-          },
-          {
-            "term": "capstone project",
+            "term": "She",
             "found_in_top1": true,
-            "top1_preview": "Section: #Education\n##Bachelor of Science in Computer Science — Reichman University (IDC Herzliya) 2"
+            "top1_preview": "Section: Letter of Recommendation — Maya Chen\nMaya is a natural mentor and community builder. She re"
+          },
+          {
+            "term": "WebSockets",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Projects\n##Fiverr Design System (Fiverr) Led development of a shared component library use"
           }
         ],
-        "hit_rate": 0.3
+        "hit_rate": 0.9
       }
     }
   },
@@ -628,48 +595,28 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 921,
-        "checklist_items_found": 4,
+        "summary_length": 831,
+        "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: NO  \nyears of experience: YES  \nSCORE: 0.9 / 1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [
-          {
-            "term": "Python",
-            "found_in_top1": true,
-            "top1_preview": "Section: Technical Skills\nProgramming Languages: Python, SQL, JavaScript, Bash\n\nMachine Learning & D"
-          },
           {
             "term": "PyTorch",
             "found_in_top1": true,
             "top1_preview": "Section: Tech Stack\nDeep Learning: PyTorch for model training and inference\n\nServing: FastAPI with R"
           },
           {
-            "term": "Tel Aviv University",
-            "found_in_top1": false,
-            "top1_preview": "Section: Personal Information\nFull Name: Ofir Ohan\n\nEmail: ofir.ohan@gmail.com\n\nPhone: +972 54-123-4"
+            "term": "Redis",
+            "found_in_top1": true,
+            "top1_preview": "Section: Tech Stack\nDeep Learning: PyTorch for model training and inference\n\nServing: FastAPI with R"
           },
           {
-            "term": "fraud detection",
+            "term": "DataSphere Technologies",
             "found_in_top1": true,
-            "top1_preview": "Section: Real-time Fraud Detection Pipeline (DataSphere Technologies)\nBuilt an end-to-end streaming "
-          },
-          {
-            "term": "recommendation engine",
-            "found_in_top1": true,
-            "top1_preview": "Section: Smart Recommendation Engine\nA hybrid collaborative and content-based recommendation system "
-          },
-          {
-            "term": "Kubernetes",
-            "found_in_top1": true,
-            "top1_preview": "Section: Technical Skills\nProgramming Languages: Python, SQL, JavaScript, Bash\n\nMachine Learning & D"
-          },
-          {
-            "term": "AWS",
-            "found_in_top1": true,
-            "top1_preview": "Section: Certifications\nAWS Certified Machine Learning — Specialty (March 2023, Amazon Web Services)"
+            "top1_preview": "Section: License\nProprietary — DataSphere Technologies"
           },
           {
             "term": "LangChain",
@@ -677,17 +624,37 @@
             "top1_preview": "Section: Open-Source Contribution: LangChain\nContributed a document loader module for Hebrew text pr"
           },
           {
-            "term": "Dean's List",
-            "found_in_top1": false,
-            "top1_preview": "Section: Letter of Recommendation — Ofir Ohan\nEqually impressive is his work on the real-time fraud "
+            "term": "FastAPI",
+            "found_in_top1": true,
+            "top1_preview": "Section: Tech Stack\nDeep Learning: PyTorch for model training and inference\n\nServing: FastAPI with R"
           },
           {
-            "term": "capstone project",
+            "term": "Ofir",
             "found_in_top1": true,
-            "top1_preview": "Section: Academic Capstone: Autonomous Drone Navigation\nDeveloped a computer vision system for indoo"
+            "top1_preview": "Section: Personal Information\nFull Name: Ofir Ohan\n\nEmail: ofir.ohan@gmail.com\n\nPhone: +972 54-123-4"
+          },
+          {
+            "term": "Built",
+            "found_in_top1": false,
+            "top1_preview": "Section: Summary\nMachine Learning Engineer with 4 years of experience designing and deploying produc"
+          },
+          {
+            "term": "Technologies",
+            "found_in_top1": true,
+            "top1_preview": "Section: Machine Learning Engineer — DataSphere Technologies\nIndustries served: fintech (fraud detec"
+          },
+          {
+            "term": "NLP",
+            "found_in_top1": true,
+            "top1_preview": "Section: Conversational AI Customer Support Bot (DataSphere Technologies)\nDeveloped an NLP chatbot u"
+          },
+          {
+            "term": "RAG",
+            "found_in_top1": true,
+            "top1_preview": "Section: Conversational AI Customer Support Bot (DataSphere Technologies)\nDeveloped an NLP chatbot u"
           }
         ],
-        "hit_rate": 0.8
+        "hit_rate": 0.9
       }
     }
   },
@@ -735,53 +702,39 @@
           "Work Experience"
         ],
         "found": [
-          "##Academic: SaaS Chum Prediction",
-          "##ML-Powered Ad Mediation (Unity)",
-          "##Predictive LTV Modeling (Unity)",
-          "##SDK Integration Redesign (ironSource)",
-          "#Architecture",
-          "#Certifications",
-          "#Education",
-          "#Languages",
-          "#Overview",
-          "#Summary",
-          "#Tech Stack",
-          "#Technical Skills",
-          "#Work Experience",
-          "#interests",
           "- Specialization: Technology Management and Innovation",
-          "general"
-        ],
-        "missing": [
+          "Academic: SaaS Chum Prediction",
+          "Architecture",
           "Certifications",
           "Education",
-          "Interests",
           "Languages",
-          "Personal Information",
-          "Projects",
+          "ML-Powered Ad Mediation (Unity)",
+          "Overview",
+          "Predictive LTV Modeling (Unity)",
+          "SDK Integration Redesign (ironSource)",
           "Summary",
+          "Tech Stack",
           "Technical Skills",
-          "Work Experience"
+          "Work Experience",
+          "general",
+          "interests"
+        ],
+        "missing": [
+          "Personal Information",
+          "Projects"
         ],
         "extra": [
-          "##Academic: SaaS Chum Prediction",
-          "##ML-Powered Ad Mediation (Unity)",
-          "##Predictive LTV Modeling (Unity)",
-          "##SDK Integration Redesign (ironSource)",
-          "#Architecture",
-          "#Certifications",
-          "#Education",
-          "#Languages",
-          "#Overview",
-          "#Summary",
-          "#Tech Stack",
-          "#Technical Skills",
-          "#Work Experience",
-          "#interests",
           "- Specialization: Technology Management and Innovation",
+          "Academic: SaaS Chum Prediction",
+          "Architecture",
+          "ML-Powered Ad Mediation (Unity)",
+          "Overview",
+          "Predictive LTV Modeling (Unity)",
+          "SDK Integration Redesign (ironSource)",
+          "Tech Stack",
           "general"
         ],
-        "coverage_pct": 0.0,
+        "coverage_pct": 77.8,
         "has_section_metadata": true
       },
       "duplicate_check": {
@@ -791,66 +744,66 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 875,
+        "summary_length": 794,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
+        "llm_score": 1.0,
         "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [
           {
-            "term": "Python",
+            "term": "Unity",
             "found_in_top1": true,
-            "top1_preview": "Section: #Technical Skills\nProduct Tools: Jira, Confluence, Productboard, Figma, Miro, Amplitude, Mi"
+            "top1_preview": "Section: general\nSincerely,\n\nOren Kaniel VP of Product Unity Technologies oren.kaniel@unity3d.com\n\nf"
           },
           {
-            "term": "PyTorch",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Work Experience\n##Product Manager — itronSource (acquired by Unity) September 2021 — Janua"
+            "term": "Noa",
+            "found_in_top1": true,
+            "top1_preview": "Section: general\nTo Whom It May Concem,\n\nlam delighted to recommend Noa Friedman, who has been an ex"
           },
           {
-            "term": "Tel Aviv University",
+            "term": "SDK",
+            "found_in_top1": true,
+            "top1_preview": "Section: ##SDK Integration Redesign (ironSource)\nRedesigned the SDK integration experience reducing "
+          },
+          {
+            "term": "She",
+            "found_in_top1": true,
+            "top1_preview": "Section: general\nTo Whom It May Concem,\n\nlam delighted to recommend Noa Friedman, who has been an ex"
+          },
+          {
+            "term": "Noa Friedman",
+            "found_in_top1": true,
+            "top1_preview": "Section: general\nNoa Friedman — Curriculum Vitae\n\n#Personal Information\n\n- Full Name: Noa Friedman -"
+          },
+          {
+            "term": "Tel Aviv",
             "found_in_top1": false,
             "top1_preview": "Section: #Education\n##MBA — Hebrew University of Jerusalem 2019 — 2021 | GPA: 3.8/4.0"
           },
           {
-            "term": "fraud detection",
-            "found_in_top1": false,
-            "top1_preview": "Section: ##Academic: SaaS Chum Prediction\nMBA project building a chum prediction system for B2B SaaS"
-          },
-          {
-            "term": "recommendation engine",
-            "found_in_top1": false,
-            "top1_preview": "Section: general\nLetter of Recommendation — Noa Friedman\n\nFrom: Oren Kaniel, VP of Product at Unity "
-          },
-          {
-            "term": "Kubernetes",
+            "term": "BigQuery",
             "found_in_top1": true,
-            "top1_preview": "Section: #Tech Stack\n- Frontend: React, TypeScript, D3js, Recharts\n\nNode\n\n- Backend: js, GraphQL, gR"
+            "top1_preview": "Section: #Architecture\nof\n\nFlink) for\n\nThe platform consists a streaming data pipeline (Kafka + real"
           },
           {
-            "term": "AWS",
-            "found_in_top1": true,
-            "top1_preview": "Section: #Technical Skills\nProduct Tools: Jira, Confluence, Productboard, Figma, Miro, Amplitude, Mi"
-          },
-          {
-            "term": "LangChain",
+            "term": "Israel",
             "found_in_top1": false,
-            "top1_preview": "Section: #Languages\n- Hebrew: Native - English: Fluent (professional proficiency) - Spanish: Interme"
+            "top1_preview": "Section: #Education\n##MBA — Hebrew University of Jerusalem 2019 — 2021 | GPA: 3.8/4.0"
           },
           {
-            "term": "Dean's List",
+            "term": "Work Experience",
+            "found_in_top1": false,
+            "top1_preview": "Section: #Summary\nSenior Product Manager with 5 years of experience driving product strategy for hig"
+          },
+          {
+            "term": "Launched",
             "found_in_top1": false,
             "top1_preview": "Section: #interests\n- Mentoring early-stage startup founders at the Hebrew University incubator - Wr"
-          },
-          {
-            "term": "capstone project",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Tech Stack\n- Used by 50K+ game developers worldwide\n\n#Performance\n\nProcesses 10B+ daily ad"
           }
         ],
-        "hit_rate": 0.3
+        "hit_rate": 0.6
       }
     }
   },
@@ -898,45 +851,31 @@
           "Work Experience"
         ],
         "found": [
-          "##Real-Time Event Enrichment Pipeline (AppsFlyer)",
-          "##Staff Backend Engineer ? AppsFlyer",
-          "#Certifications",
-          "#Education",
-          "#Interests",
-          "#Languages",
-          "#Personal Information",
-          "#Summary",
           "Architecture",
+          "Certifications",
+          "Education",
           "Installation",
+          "Interests",
           "Key Features",
+          "Languages",
           "Letter of Recommendation — Tal Ben-David",
           "License",
           "Overview",
           "Performance",
+          "Personal Information",
           "Real-Time Event Enrichment Pipeline",
+          "Real-Time Event Enrichment Pipeline (AppsFlyer)",
+          "Staff Backend Engineer ? AppsFlyer",
+          "Summary",
           "Tech Stack",
           "general"
         ],
         "missing": [
-          "Certifications",
-          "Education",
-          "Interests",
-          "Languages",
-          "Personal Information",
           "Projects",
-          "Summary",
           "Technical Skills",
           "Work Experience"
         ],
         "extra": [
-          "##Real-Time Event Enrichment Pipeline (AppsFlyer)",
-          "##Staff Backend Engineer ? AppsFlyer",
-          "#Certifications",
-          "#Education",
-          "#Interests",
-          "#Languages",
-          "#Personal Information",
-          "#Summary",
           "Architecture",
           "Installation",
           "Key Features",
@@ -945,10 +884,12 @@
           "Overview",
           "Performance",
           "Real-Time Event Enrichment Pipeline",
+          "Real-Time Event Enrichment Pipeline (AppsFlyer)",
+          "Staff Backend Engineer ? AppsFlyer",
           "Tech Stack",
           "general"
         ],
-        "coverage_pct": 0.0,
+        "coverage_pct": 66.7,
         "has_section_metadata": true
       },
       "duplicate_check": {
@@ -958,66 +899,66 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 935,
-        "checklist_items_found": 4,
+        "summary_length": 771,
+        "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": null,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: NO  \nyears of experience: YES  \nSCORE: 0.8 / 1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [
           {
-            "term": "Python",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Education\n##Master of Science in Computer Science ? Tel Aviv University\n\n2016 ? 2018 | GPA"
-          },
-          {
-            "term": "PyTorch",
-            "found_in_top1": false,
-            "top1_preview": "Section: #Education\n##Master of Science in Computer Science ? Tel Aviv University\n\n2016 ? 2018 | GPA"
-          },
-          {
-            "term": "Tel Aviv University",
+            "term": "Kafka",
             "found_in_top1": true,
-            "top1_preview": "Section: #Education\n##Master of Science in Computer Science ? Tel Aviv University\n\n2016 ? 2018 | GPA"
+            "top1_preview": "Section: #Interests\nContributing to Apache Kafka and Flink communities"
           },
           {
-            "term": "fraud detection",
+            "term": "Tal Ben",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Personal Information\nFull Name: Tal Ben-David"
+          },
+          {
+            "term": "AppsFlyer",
+            "found_in_top1": true,
+            "top1_preview": "Section: License\nProprietary — AppsFlyer"
+          },
+          {
+            "term": "Real",
             "found_in_top1": true,
             "top1_preview": "Section: Key Features\n1.2M events/second throughput with sub-100ms end-to-end latency\n\nExactly-once "
           },
           {
-            "term": "recommendation engine",
+            "term": "Flink",
+            "found_in_top1": true,
+            "top1_preview": "Section: #Interests\nContributing to Apache Kafka and Flink communities"
+          },
+          {
+            "term": "ClickHouse",
             "found_in_top1": false,
             "top1_preview": "Section: Letter of Recommendation — Tal Ben-David\nTal combines rare depth in distributed systems the"
           },
           {
-            "term": "Kubernetes",
+            "term": "Tal",
             "found_in_top1": true,
-            "top1_preview": "Section: ##Real-Time Event Enrichment Pipeline (AppsFlyer)\nBuilt a streaming pipeline processing 1.2"
+            "top1_preview": "Section: #Personal Information\nFull Name: Tal Ben-David"
           },
           {
-            "term": "AWS",
+            "term": "David",
             "found_in_top1": true,
-            "top1_preview": "Section: #Certifications\n1. AWS Certified Solutions Architect ? Associate (April 2021, Amazon Web Se"
+            "top1_preview": "Section: #Personal Information\nFull Name: Tal Ben-David"
           },
           {
-            "term": "LangChain",
+            "term": "Technologies",
             "found_in_top1": false,
-            "top1_preview": "Section: #Languages\nHebrew: Native"
+            "top1_preview": "Section: Tech Stack\nLanguage: Java 17, Kotlin\n\nStreaming: Apache Kafka, Apache Flink\n\nStorage: Click"
           },
           {
-            "term": "Dean's List",
-            "found_in_top1": false,
-            "top1_preview": "Section: general\nTal Ben-David ? Curriculum Vitae"
-          },
-          {
-            "term": "capstone project",
-            "found_in_top1": false,
-            "top1_preview": "Section: Letter of Recommendation — Tal Ben-David\nTal combines rare depth in distributed systems the"
+            "term": "Java",
+            "found_in_top1": true,
+            "top1_preview": "Section: Tech Stack\nLanguage: Java 17, Kotlin\n\nStreaming: Apache Kafka, Apache Flink\n\nStorage: Click"
           }
         ],
-        "hit_rate": 0.4
+        "hit_rate": 0.8
       }
     }
   }

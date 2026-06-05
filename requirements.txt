@@ -18,6 +18,7 @@ unstructured[md,pdf,docx]
 ragas
 deepeval
 pandas
+pytest
 jinja2
 
 # SPE dataset generation

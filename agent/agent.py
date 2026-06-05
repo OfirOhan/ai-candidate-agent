@@ -1,46 +1,23 @@
-import re
-
 from agent.llm import LLMClient
 from agent.tools import TOOL_SCHEMAS, execute_tool
 
 SYSTEM_PROMPT = """
-You are an AI representative for a job candidate.
+You are an AI representative for a job candidate. 
 Your job is to answer recruiter questions accurately and professionally.
 
-You have two tools:
-
-1. get_structured_data(field) — Returns a single verified field.
-   ONLY for these exact fields: full_name, email_address, country_code,
-   phone_number, linkedin, github, education, years_of_experience,
-   current_role, desired_job_title, job_description,
-   monthly_salary_expectation, preferred_location, availability,
-   work_type, open_to_relocation.
-
-2. search_documents(query) — Searches the candidate's CV, certificates,
-   and project docs using semantic retrieval. Use for skills, projects,
-   work history details, certifications, achievements, and any question
-   needing context beyond a single field.
-
-Tool selection guidelines:
-- If the question asks for a single factual value that matches one of
-  the structured fields above, use get_structured_data.
-- If the question asks to "describe", "tell me about", "compare",
-  "summarize", or "explain" — always use search_documents, even if
-  the topic sounds like a structured field. These need rich context.
-- If a question requires both a structured fact AND document context
-  (e.g., "good fit for a remote role?"), call BOTH tools.
-- If get_structured_data returns a brief answer that doesn't fully
-  address the question, follow up with search_documents.
-
-Refusal policy:
-- If the question is about personal beliefs, religion, politics,
-  marital status, health, or other private matters unrelated to
-  professional qualifications — politely decline WITHOUT calling
-  any tool. Say: "I can only provide information related to the
-  candidate's professional qualifications and preferences."
+You have two tools at your disposal:
+- get_structured_data: Returns fixed, verified fields (contact info, education summary, 
+  job preferences, etc.). Use when the question maps to a specific known field.
+- search_documents: Searches the candidate's uploaded documents (CV, certificates, etc.) 
+  using semantic retrieval. Use when the question is about skills, projects, detailed 
+  experience, certifications, achievements, or anything requiring richer context.
 
 Rules:
-- Never guess or fabricate information. If you don't find it, say so.
+- Choose the tool that best fits the question. You may call both if needed.
+- If a tool's result is incomplete or doesn't fully answer the question,
+  call the other tool before responding. For example, if get_structured_data
+  returns a short summary, follow up with search_documents for richer detail.
+- Never guess or make up information. If you don't find it, say so.
 - Keep answers concise and professional.
 - Always answer in the same language the recruiter used.
 """
@@ -48,11 +25,6 @@ Rules:
 MAX_TOOL_ROUNDS = 5  # safety cap to prevent infinite loops
 
 llm = LLMClient()
-
-
-def _strip_thinking(text: str) -> str:
-    """Remove Qwen3 <think>...</think> blocks from the response."""
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
 
 def run(conversation_history: list, user_message: str) -> tuple[str, list, list]:
@@ -109,9 +81,6 @@ def run(conversation_history: list, user_message: str) -> tuple[str, list, list]
         # Safety: if we exhausted all rounds, do one final call without tools
         response = llm.call(messages=messages)
         answer = response["message"]["content"]
-
-    # Strip any Qwen3 thinking blocks from the answer
-    answer = _strip_thinking(answer)
 
     # Update conversation history
     conversation_history.append({"role": "assistant", "content": answer})

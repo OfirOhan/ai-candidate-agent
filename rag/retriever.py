@@ -50,22 +50,32 @@ def is_broad_query_llm(query: str) -> bool:
     prompt = (
         f"You are a query router for a recruitment search engine.\n"
         f"Classify the query as BROAD or SPECIFIC.\n\n"
-        f"BROAD = general summary, overview, or 'who is this person' questions.\n"
-        f"SPECIFIC = questions about ANY particular topic, skill, tool, project,\n"
-        f"  company, certification, achievement, or factual detail — even if\n"
-        f"  phrased in a general way like 'tell me about X'.\n\n"
+        f"BROAD = questions requiring a holistic view of the candidate:\n"
+        f"  - General overviews or summaries of the candidate\n"
+        f"  - Evaluative judgments (overqualified? good fit? should I hire?)\n"
+        f"  - Synthesis across multiple areas (unique skills, strengths)\n"
+        f"  - Comparisons across domains (academic vs professional)\n\n"
+        f"SPECIFIC = questions targeting a particular fact, skill, or topic:\n"
+        f"  - Any named technology, tool, framework, or language\n"
+        f"  - A specific project, company, role, or certification\n"
+        f"  - A particular skill area or achievement\n"
+        f"  - Even if phrased broadly, if it's about one topic it's SPECIFIC\n\n"
         f"Examples:\n"
         f'  "Tell me about the candidate" → BROAD\n'
         f'  "Summarize the candidate\'s profile" → BROAD\n'
-        f'  "Who is this person?" → BROAD\n'
-        f'  "Give me an overview" → BROAD\n'
-        f'  "Where did the candidate work before their current role?" → SPECIFIC\n'
-        f'  "What skills does the candidate have?" → SPECIFIC\n'
+        f'  "Is this candidate overqualified for a junior role?" → BROAD\n'
+        f'  "Would this candidate be a good fit for a remote role in Europe?" → BROAD\n'
+        f'  "What unique combination of skills does this candidate offer?" → BROAD\n'
+        f'  "Summarize why I should consider this candidate" → BROAD\n'
+        f'  "Compare the candidate\'s academic and professional experience" → BROAD\n'
+        f'  "What projects has the candidate worked on?" → BROAD\n'
         f'  "Does he know Python?" → SPECIFIC\n'
-        f'  "Was the candidate on the Dean\'s List?" → SPECIFIC\n'
-        f'  "What databases has the candidate worked with?" → SPECIFIC\n'
-        f'  "Has the candidate led a team?" → SPECIFIC\n'
-        f'  "What certifications do they have?" → SPECIFIC\n\n'
+        f'  "What cloud platforms does the candidate have experience with?" → SPECIFIC\n'
+        f'  "Tell me about the fraud detection project" → SPECIFIC\n'
+        f'  "What certifications do they have?" → SPECIFIC\n'
+        f'  "Has the candidate worked on any NLP projects?" → SPECIFIC\n'
+        f'  "What was the capstone project about?" → SPECIFIC\n'
+        f'  "Does the candidate have Kubernetes experience?" → SPECIFIC\n\n'
         f'User query: "{query}"\n\n'
         f"Return ONLY the word BROAD or SPECIFIC. No other text."
     )
@@ -75,7 +85,10 @@ def is_broad_query_llm(query: str) -> bool:
         messages=[{"role": "user", "content": prompt}],
     )
 
-    classification = response["message"]["content"].strip().upper()
+    raw = response["message"]["content"].strip()
+    # Handle Qwen3 thinking mode — take last non-empty line
+    lines = [l.strip() for l in raw.splitlines() if l.strip()]
+    classification = lines[-1].upper() if lines else "SPECIFIC"
     print(f"[Router] LLM classified query '{query}' as: {classification}")
     return "BROAD" in classification
 

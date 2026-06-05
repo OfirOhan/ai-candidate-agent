@@ -3,6 +3,8 @@ Ingestion Quality Evaluator — inspects the ChromaDB state after ingestion
 to assess chunk quality, section coverage, summary quality, and embedding coverage.
 """
 
+import re
+
 import chromadb
 import numpy as np
 import ollama
@@ -84,10 +86,17 @@ def run_ingestion_evaluation(
     found_sections = set()
     for meta in metadatas:
         if meta and "section" in meta:
-            found_sections.add(meta["section"])
+            # Strip markdown heading prefixes for comparison
+            section = meta["section"].lstrip("#").strip()
+            found_sections.add(section)
 
-    missing_sections = expected_sections - found_sections
-    extra_sections = found_sections - expected_sections
+    # Case-insensitive matching
+    normalized_expected = {s.lower(): s for s in expected_sections}
+    normalized_found = {s.lower(): s for s in found_sections}
+
+    matched = set(normalized_expected.keys()) & set(normalized_found.keys())
+    missing_sections = {normalized_expected[k] for k in set(normalized_expected.keys()) - matched}
+    extra_sections = {normalized_found[k] for k in set(normalized_found.keys()) - set(normalized_expected.keys())}
 
     report["section_coverage"] = {
         "expected": sorted(expected_sections),
@@ -95,7 +104,7 @@ def run_ingestion_evaluation(
         "missing": sorted(missing_sections),
         "extra": sorted(extra_sections),
         "coverage_pct": round(
-            len(expected_sections & found_sections) / len(expected_sections) * 100, 1
+            len(matched) / len(expected_sections) * 100, 1
         ) if expected_sections else 0,
         "has_section_metadata": len(found_sections) > 0,
     }
@@ -168,7 +177,10 @@ def run_ingestion_evaluation(
             line = line.strip().upper()
             if "SCORE:" in line:
                 try:
-                    score = float(line.split("SCORE:")[-1].strip())
+                    raw_score = line.split("SCORE:")[-1].strip()
+                    # Handle "0.9 / 1.0" format from Qwen3
+                    raw_score = raw_score.split("/")[0].strip()
+                    score = float(raw_score)
                 except ValueError:
                     pass
             elif ": YES" in line:
@@ -195,11 +207,23 @@ def run_ingestion_evaluation(
         print("[Ingestion Eval] No summary found!")
 
     # ── 5. Embedding Coverage Probes ─────────────────────────────────
-    probe_terms = [
-        "Python", "PyTorch", "Tel Aviv University", "fraud detection",
-        "recommendation engine", "Kubernetes", "AWS", "LangChain",
-        "Dean's List", "capstone project",
-    ]
+    # Extract candidate-specific probe terms from actual documents
+    def _extract_probe_terms(docs: list[str], n_terms: int = 10) -> list[str]:
+        """Extract real terms from ingested docs for probing."""
+        term_counts = {}
+        skip = {"Section", "The", "This", "And", "For", "With", "From", "That",
+                "Not", "Has", "Was", "Are", "His", "Her", "Its", "Our"}
+        for doc in docs:
+            for match in re.finditer(
+                r'\b[A-Z][a-zA-Z+#.]{2,}(?:\s+[A-Z][a-zA-Z+#.]+)*\b', doc
+            ):
+                term = match.group()
+                if term not in skip:
+                    term_counts[term] = term_counts.get(term, 0) + 1
+        sorted_terms = sorted(term_counts, key=term_counts.get, reverse=True)
+        return sorted_terms[:n_terms]
+
+    probe_terms = _extract_probe_terms(documents)
     embedder = SentenceTransformer(EMBED_MODEL)
     probe_results = []
 

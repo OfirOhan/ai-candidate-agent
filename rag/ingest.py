@@ -124,7 +124,12 @@ def generate_summary(full_text: str, doc_type: str) -> str:
     """
     prompt = (
         f"You are summarizing a {doc_type} document for a recruiter.\n"
-        f"Write a concise 5-6 sentence summary covering the most important points.\n"
+        f"Write a concise 5-6 sentence summary that must cover:\n"
+        f"1. Candidate's full name and current/most recent role\n"
+        f"2. Education: degree(s), institution(s), and graduation year(s)\n"
+        f"3. Total years of professional experience\n"
+        f"4. Key technical skills and domain expertise\n"
+        f"5. Most notable achievement or project\n"
         f"Be factual, no opinions.\n\n"
         f"Document:\n{full_text[:3000]}"  # cap at 3000 chars to avoid huge prompts
     )

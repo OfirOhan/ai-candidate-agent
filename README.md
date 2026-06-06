@@ -59,6 +59,17 @@ Built with **Ragas** and **DeepEval**, the `evaluation/` module rigorously bench
 ### 💻 Candidate Setup Dashboard
 A sleek Streamlit interface where the candidate can easily input verified structured facts and upload unstructured PDFs/Docs for automatic chunking and ingestion.
 
+<p align="center">
+  <img src="images/candidate_side.png" alt="Candidate Setup Dashboard" width="500" />
+</p>
+
+### 💬 Recruiter Chat Interface
+Recruiters interact with the AI agent through a clean conversational UI, asking questions about the candidate's background, skills, and availability — all answered in real-time by the agentic pipeline.
+
+<p align="center">
+  <img src="images/recruiter_side.png" alt="Recruiter Chat Interface" width="500" />
+</p>
+
 ---
 
 ## 🏗️ Architecture Overview

@@ -17,7 +17,8 @@ Rules:
 - If a tool's result is incomplete or doesn't fully answer the question,
   call the other tool before responding. For example, if get_structured_data
   returns a short summary, follow up with search_documents for richer detail.
-- Never guess or make up information. If you don't find it, say so.
+- N
+ever guess or make up information. If you don't find it, say so.
 - Keep answers concise and professional.
 - Always answer in the same language the recruiter used.
 """

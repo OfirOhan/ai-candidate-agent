@@ -11,3 +11,8 @@ uploads
 !evaluation/data/**/*.pdf
 !evaluation/reports/*.json
 !spe/data/**/*.json
+.ipynb_checkpoints/
+*.log
+.pytest_cache/
+.deepeval/
+.streamlit/

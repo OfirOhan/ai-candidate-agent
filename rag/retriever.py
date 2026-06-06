@@ -4,11 +4,11 @@ from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
 CHROMA_PATH = "./chroma_db"
-EMBED_MODEL = "all-MiniLM-L6-v2"
+EMBED_MODEL = "nomic-ai/nomic-embed-text-v1.5"
 RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 ROUTER_LLM = "qwen3"
 
-embedder = SentenceTransformer(EMBED_MODEL)
+embedder = SentenceTransformer(EMBED_MODEL, trust_remote_code=True)
 reranker = CrossEncoder(RERANK_MODEL)
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 

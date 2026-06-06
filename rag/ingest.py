@@ -6,15 +6,15 @@ from unstructured.partition.auto import partition
 import os
 
 CHROMA_PATH = "./chroma_db"
-EMBED_MODEL = "all-MiniLM-L6-v2"
+EMBED_MODEL = "nomic-ai/nomic-embed-text-v1.5"
 SUMMARY_LLM = "qwen3"
 
-embedder = SentenceTransformer(EMBED_MODEL)
+embedder = SentenceTransformer(EMBED_MODEL, trust_remote_code=True)
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
-    chunk_overlap=100,
+    chunk_size=400,
+    chunk_overlap=50,
     separators=["\n\n", "\n", ". ", " ", ""],
     length_function=len,
 )

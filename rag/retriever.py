@@ -2,7 +2,7 @@ import chromadb
 import ollama
 from rank_bm25 import BM25Okapi
 from sentence_transformers import CrossEncoder
-from embedder import embedder
+from rag.embedder import embedder
 
 CHROMA_PATH = "./chroma_db"
 RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"

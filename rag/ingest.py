@@ -2,7 +2,7 @@ import chromadb
 import ollama
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from unstructured.partition.auto import partition
-from embedder import embedder
+from rag.embedder import embedder
 import os
 import re
 

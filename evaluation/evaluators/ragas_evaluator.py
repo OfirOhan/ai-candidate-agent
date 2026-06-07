@@ -27,17 +27,21 @@ def _build_llm(model: str = "qwen3"):
     return LangchainLLMWrapper(ChatOllama(model=model, reasoning=False))
 
 
-def _build_embeddings(model: str = "all-MiniLM-L6-v2"):
+def _build_embeddings(model: str = "nomic-ai/nomic-embed-text-v1.5"):
     """Create a RAGAS-compatible embeddings wrapper."""
     return LangchainEmbeddingsWrapper(
-        HuggingFaceEmbeddings(model_name=model)
+        HuggingFaceEmbeddings(
+            model_name=model,
+            model_kwargs={"trust_remote_code": True},
+            encode_kwargs={"normalize_embeddings": True},
+        )
     )
 
 
 def run_ragas_evaluation(
     data: list[dict],
     judge_model: str = "qwen3",
-    embed_model: str = "all-MiniLM-L6-v2",
+    embed_model: str = "nomic-ai/nomic-embed-text-v1.5",
 ) -> pd.DataFrame:
     """
     Run RAGAS evaluation on collected pipeline results.

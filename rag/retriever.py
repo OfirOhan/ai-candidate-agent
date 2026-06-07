@@ -1,14 +1,13 @@
 import chromadb
 import ollama
 from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer, CrossEncoder
+from sentence_transformers import CrossEncoder
+from embedder import embedder
 
 CHROMA_PATH = "./chroma_db"
-EMBED_MODEL = "all-MiniLM-L6-v2"
 RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 ROUTER_LLM = "qwen3"
 
-embedder = SentenceTransformer(EMBED_MODEL)
 reranker = CrossEncoder(RERANK_MODEL)
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 
@@ -95,12 +94,16 @@ def bm25_search(query: str, chunks: list[str], top_k: int = 10) -> list[str]:
     return [chunks[i] for i in top_indices if scores[i] > 0]
 
 
-def rrf_fusion(vector_chunks: list[str], bm25_chunks: list[str], k: int = 60) -> list[str]:
+def rrf_fusion(*ranked_lists: list[str], k: int = 60) -> list[str]:
+    """Reciprocal Rank Fusion across any number of ranked lists.
+
+    Each list is scored independently — rank 0 in any list gets the
+    same 1/(k+1) score regardless of list length or origin.
+    """
     scores: dict[str, float] = {}
-    for rank, chunk in enumerate(vector_chunks):
-        scores[chunk] = scores.get(chunk, 0) + 1 / (k + rank + 1)
-    for rank, chunk in enumerate(bm25_chunks):
-        scores[chunk] = scores.get(chunk, 0) + 1 / (k + rank + 1)
+    for ranked_list in ranked_lists:
+        for rank, chunk in enumerate(ranked_list):
+            scores[chunk] = scores.get(chunk, 0) + 1 / (k + rank + 1)
     return sorted(scores, key=scores.get, reverse=True)
 
 
@@ -108,7 +111,7 @@ def rrf_fusion(vector_chunks: list[str], bm25_chunks: list[str], k: int = 60) ->
 # 4. Re-ranking
 # ---------------------------------------------------------------------------
 
-def rerank(query: str, chunks: list[str], top_k: int = 3) -> list[str]:
+def rerank(query: str, chunks: list[str], top_k: int = 5) -> list[str]:
     if not chunks:
         return []
     pairs = [[query, chunk] for chunk in chunks]
@@ -121,7 +124,7 @@ def rerank(query: str, chunks: list[str], top_k: int = 3) -> list[str]:
 # 5. Main retrieve pipeline
 # ---------------------------------------------------------------------------
 
-def retrieve(query: str, candidate_id: str, top_k: int = 3) -> dict:
+def retrieve(query: str, candidate_id: str, top_k: int = 5) -> dict:
     """
     Run the full retrieval pipeline for a query.
 
@@ -130,15 +133,25 @@ def retrieve(query: str, candidate_id: str, top_k: int = 3) -> dict:
         - route: "broad" | "specific" — how the query was classified
         - expanded_queries: list[str] | None — query variations (specific only)
     """
-    collection = client.get_or_create_collection(name=candidate_id)
+    collection = client.get_or_create_collection(
+        name=candidate_id,
+        metadata={"hnsw:space": "cosine"},
+    )
 
     # --- Step 1: Route via LLM ---
     is_broad = is_broad_query_llm(query)
 
     if is_broad:
         print(f"[Retriever] Broad query detected → searching summary index")
-        summary_collection = client.get_or_create_collection(f"{candidate_id}_summaries")
-        q_embedding = embedder.encode([query]).tolist()
+        summary_collection = client.get_or_create_collection(
+            f"{candidate_id}_summaries",
+            metadata={"hnsw:space": "cosine"},
+        )
+
+        # encode_query applies 'search_query:' prefix — aligns with the
+        # 'search_document:' prefix used when the summary was stored
+        q_embedding = [embedder.encode_query(query)]
+
         results = summary_collection.query(query_embeddings=q_embedding, n_results=top_k)
         chunks = results["documents"][0] if results["documents"] and results["documents"][0] else []
         return {
@@ -150,26 +163,24 @@ def retrieve(query: str, candidate_id: str, top_k: int = 3) -> dict:
     # --- Step 2: Query Expansion ---
     queries = expand_query(query)
 
-    # --- Step 3: Vector search (batched) ---
+    # --- Step 3: Vector search (per-query ranked lists) ---
+    # Each query's results are kept as a separate ranked list so RRF
+    # scores them independently — rank 0 in any list gets equal weight.
     fetch_per_query = 10
-    vector_chunks: list[str] = []
-    seen: set[str] = set()
+    per_query_results: list[list[str]] = []
 
-    q_embeddings = embedder.encode(queries).tolist()
+    q_embeddings = embedder.encode_queries(queries)
     results = collection.query(query_embeddings=q_embeddings, n_results=fetch_per_query)
 
     for chunk_list in results["documents"]:
-        for chunk in chunk_list:
-            if chunk not in seen:
-                seen.add(chunk)
-                vector_chunks.append(chunk)
+        per_query_results.append(chunk_list)
 
     # --- Step 4: BM25 search (full collection) ---
     all_chunks = collection.get(include=["documents"])["documents"]
     bm25_chunks = bm25_search(query, all_chunks, top_k=fetch_per_query)
 
-    # --- Step 5: Fuse vector + BM25 results with RRF ---
-    fused = rrf_fusion(vector_chunks, bm25_chunks)
+    # --- Step 5: Fuse all ranked lists with RRF ---
+    fused = rrf_fusion(*per_query_results, bm25_chunks)
 
     # --- Step 6: Re-rank and return the best ---
     top_chunks = rerank(query, fused, top_k=top_k)

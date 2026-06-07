@@ -8,10 +8,9 @@ import re
 import chromadb
 import numpy as np
 import ollama
-from sentence_transformers import SentenceTransformer
+from embedder import embedder
 
 CHROMA_PATH = "./chroma_db"
-EMBED_MODEL = "all-MiniLM-L6-v2"
 
 
 def run_ingestion_evaluation(
@@ -35,7 +34,10 @@ def run_ingestion_evaluation(
 
     # ── 1. Chunk Statistics ──────────────────────────────────────────
     try:
-        collection = client.get_or_create_collection(name=candidate_id)
+        collection = client.get_or_create_collection(
+            name=candidate_id,
+            metadata={"hnsw:space": "cosine"},
+        )
         all_data = collection.get(include=["documents", "metadatas"])
         documents = all_data["documents"] or []
         metadatas = all_data["metadatas"] or []
@@ -137,7 +139,10 @@ def run_ingestion_evaluation(
 
     # ── 4. Summary Quality (LLM-judged) ──────────────────────────────
     try:
-        summary_collection = client.get_or_create_collection(f"{candidate_id}_summaries")
+        summary_collection = client.get_or_create_collection(
+            f"{candidate_id}_summaries",
+            metadata={"hnsw:space": "cosine"},
+        )
         summary_data = summary_collection.get(include=["documents"])
         summaries = summary_data["documents"] or []
     except Exception:
@@ -224,11 +229,10 @@ def run_ingestion_evaluation(
         return sorted_terms[:n_terms]
 
     probe_terms = _extract_probe_terms(documents)
-    embedder = SentenceTransformer(EMBED_MODEL)
     probe_results = []
 
     for term in probe_terms:
-        q_embedding = embedder.encode([term]).tolist()
+        q_embedding = [embedder.encode_query(term)]
         results = collection.query(query_embeddings=q_embedding, n_results=1)
         top_doc = results["documents"][0][0] if results["documents"] and results["documents"][0] else ""
         found = term.lower() in top_doc.lower()

@@ -11,7 +11,7 @@ import ollama
 from sentence_transformers import SentenceTransformer
 
 CHROMA_PATH = "./chroma_db"
-EMBED_MODEL = "nomic-ai/nomic-embed-text-v1.5"
+EMBED_MODEL = "all-MiniLM-L6-v2"
 
 
 def run_ingestion_evaluation(
@@ -224,7 +224,7 @@ def run_ingestion_evaluation(
         return sorted_terms[:n_terms]
 
     probe_terms = _extract_probe_terms(documents)
-    embedder = SentenceTransformer(EMBED_MODEL, trust_remote_code=True)
+    embedder = SentenceTransformer(EMBED_MODEL)
     probe_results = []
 
     for term in probe_terms:

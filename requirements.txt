@@ -6,6 +6,7 @@ ollama
 langchain-text-splitters
 langchain-ollama
 langchain-huggingface
+einops
 
 # Document parsing
 PyMuPDF

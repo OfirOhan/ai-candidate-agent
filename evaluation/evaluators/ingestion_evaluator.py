@@ -8,7 +8,7 @@ import re
 import chromadb
 import numpy as np
 import ollama
-from embedder import embedder
+from rag.embedder import embedder
 
 CHROMA_PATH = "./chroma_db"
 

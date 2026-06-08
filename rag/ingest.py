@@ -12,7 +12,7 @@ SUMMARY_LLM = "qwen3"
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=512,
+    chunk_size=1000,
     chunk_overlap=150,
     separators=["\n\n", "\n", ". ", " ", ""],
     length_function=len,

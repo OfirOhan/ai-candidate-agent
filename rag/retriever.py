@@ -177,10 +177,10 @@ def retrieve(query: str, candidate_id: str, top_k: int = 5) -> dict:
 
     # --- Step 4: BM25 search (full collection) ---
     all_chunks = collection.get(include=["documents"])["documents"]
-    bm25_chunks = bm25_search(query, all_chunks, top_k=fetch_per_query)
+    bm25_lists = [bm25_search(q, all_chunks, top_k=fetch_per_query) for q in queries]
 
     # --- Step 5: Fuse all ranked lists with RRF ---
-    fused = rrf_fusion(*per_query_results, bm25_chunks)
+    fused = rrf_fusion(*per_query_results, *bm25_lists)
 
     # --- Step 6: Re-rank and return the best ---
     top_chunks = rerank(query, fused, top_k=top_k)

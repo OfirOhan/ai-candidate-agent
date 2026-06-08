@@ -1,427 +1,427 @@
 question,deepeval_correctness
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
-What is the candidate's LinkedIn profile?,0.9
-What is the candidate's GitHub profile URL?,0.9
-How can I contact the candidate?,0.6
-What country is the candidate based in?,0.7
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.8
-What did the candidate study?,0.0
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
+What is the candidate's LinkedIn profile?,0.1
+What is the candidate's GitHub profile URL?,0.1
+How can I contact the candidate?,0.1
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
 Where did the candidate study?,0.1
-When did the candidate graduate?,0.7
-What is the candidate's GPA?,0.8
-Tell me about the candidate's educational background.,0.6
-What was the candidate's thesis about?,0.0
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.3
+What was the candidate's thesis about?,0.1
 Did the candidate receive any academic honors?,0.0
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,0.9
-Where has the candidate worked previously?,0.5
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
+Where has the candidate worked previously?,0.1
 What was the candidate's first job?,0.0
-Describe the candidate's work at Check Point.,0.5
-Has the candidate held a leadership role?,0.6
-What industries has the candidate worked in?,0.3
-What is a key technical achievement the candidate accomplished?,0.5
-Has the candidate had any teaching experience?,0.2
-What programming languages does the candidate know?,0.5
+Describe the candidate's work at Check Point.,0.2
+Has the candidate held a leadership role?,0.1
+What industries has the candidate worked in?,0.1
+What is a key technical achievement the candidate accomplished?,0.1
+Has the candidate had any teaching experience?,0.0
+What programming languages does the candidate know?,0.1
 What are the candidate's primary security tools and frameworks?,0.0
-What cloud platforms does the candidate have experience with?,0.6
-What databases has the candidate worked with?,0.6
+What cloud platforms does the candidate have experience with?,0.1
+What databases has the candidate worked with?,0.1
 Does the candidate have DevSecOps experience?,0.0
-Does the candidate know Python?,0.8
-Does the candidate have experience with penetration testing?,0.5
-Does the candidate have SIEM experience?,0.6
+Does the candidate know Python?,0.1
+Does the candidate have experience with penetration testing?,0.1
+Does the candidate have SIEM experience?,0.1
 What threat analysis experience does the candidate have?,0.7
-Does the candidate have identity and access management experience?,0.3
-Does the candidate have experience with Kubernetes?,0.6
+Does the candidate have identity and access management experience?,0.1
+Does the candidate have experience with Kubernetes?,0.1
 What networking skills does the candidate have?,0.0
-What projects has the candidate worked on?,0.6
-Tell me about the zero-trust architecture project.,0.9
-What was the outcome of the threat intelligence project?,0.6
-What technologies were used in the red team automation project?,0.9
-What is the candidate's most significant project?,0.9
-Has the candidate contributed to open-source projects?,0.9
+What projects has the candidate worked on?,0.3
+Tell me about the zero-trust architecture project.,0.1
+What was the outcome of the threat intelligence project?,0.1
+What technologies were used in the red team automation project?,0.1
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.1
 What systems has the candidate built?,0.7
-Does the candidate have red team experience?,0.6
+Does the candidate have red team experience?,0.7
 Has the candidate worked on any research projects?,0.0
-What is the scale of systems the candidate has worked with?,0.7
-What certifications does the candidate have?,0.6
-Does the candidate have an OSCP certification?,0.9
+What is the scale of systems the candidate has worked with?,0.1
+What certifications does the candidate have?,0.1
+Does the candidate have an OSCP certification?,0.1
 Does the candidate have a CISSP certification?,0.0
 When did the candidate get their AWS security certification?,0.0
-Does the candidate have any management certifications?,0.5
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.7
-When is the candidate available to start?,0.9
-"Does the candidate prefer remote, hybrid, or onsite work?",0.9
-Is the candidate open to relocation?,0.0
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.5
-When can the candidate start working?,0.9
-What is the candidate's blood type?,1.0
-What are the candidate's political opinions?,1.0
-Is the candidate married?,1.0
-What is the candidate's religion?,0.9
-What is the candidate's credit score?,0.8
-Is this candidate overqualified for a junior security analyst role?,0.6
-Would this candidate be a good fit for a remote security role in Europe?,0.5
-Compare the candidate's academic and professional experience.,0.6
+Does the candidate have any management certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
+Is the candidate open to relocation?,0.1
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior security analyst role?,0.1
+Would this candidate be a good fit for a remote security role in Europe?,0.3
+Compare the candidate's academic and professional experience.,0.3
 What unique combination of skills does this candidate offer?,0.7
-Summarize why I should consider this candidate for a principal security engineer position.,0.6
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
-What is the candidate's LinkedIn profile?,1.0
+Summarize why I should consider this candidate for a principal security engineer position.,0.7
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
+What is the candidate's LinkedIn profile?,0.1
 What is the candidate's GitHub profile URL?,0.1
 How can I contact the candidate?,0.0
-What country is the candidate based in?,0.7
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.8
-What did the candidate study?,0.5
-Where did the candidate study?,0.2
-When did the candidate graduate?,0.5
-What is the candidate's GPA?,0.9
-Tell me about the candidate's educational background.,0.6
-What was the candidate's capstone project about?,0.6
-Did the candidate receive any academic honors?,0.7
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,0.8
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.3
+What was the candidate's capstone project about?,0.1
+Did the candidate receive any academic honors?,0.1
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
 Where has the candidate worked previously?,0.0
 What was the candidate's first job?,0.0
-Describe the candidate's work at Wix.,0.5
-Has the candidate held a leadership role?,0.6
-What industries has the candidate worked in?,0.5
-What is a key technical achievement the candidate accomplished?,0.5
-Has the candidate had any teaching or mentoring experience?,0.6
-What programming languages does the candidate know?,0.7
-What are the candidate's primary technical frameworks and tools?,0.7
-What cloud platforms does the candidate have experience with?,1.0
-What databases has the candidate worked with?,1.0
-Does the candidate have DevOps or infrastructure experience?,0.6
-Does the candidate know Python?,0.7
-Does the candidate have experience with Kubernetes?,0.5
-Does the candidate have CI/CD experience?,0.6
-What observability experience does the candidate have?,0.5
+Describe the candidate's work at Wix.,0.1
+Has the candidate held a leadership role?,0.1
+What industries has the candidate worked in?,0.1
+What is a key technical achievement the candidate accomplished?,0.0
+Has the candidate had any teaching or mentoring experience?,0.3
+What programming languages does the candidate know?,0.1
+What are the candidate's primary technical frameworks and tools?,0.1
+What cloud platforms does the candidate have experience with?,0.1
+What databases has the candidate worked with?,0.1
+Does the candidate have DevOps or infrastructure experience?,0.1
+Does the candidate know Python?,0.1
+Does the candidate have experience with Kubernetes?,0.1
+Does the candidate have CI/CD experience?,0.1
+What observability experience does the candidate have?,0.1
 Does the candidate have Infrastructure-as-Code experience?,0.6
-Does the candidate have experience with service mesh?,0.6
-What networking and security tools does the candidate know?,0.9
-What projects has the candidate worked on?,0.5
-Tell me about the multi-cloud migration project.,0.8
-What was the outcome of the deployment platform project?,0.6
-What technologies were used in the autoscaler project?,0.6
-What is the candidate's most significant project?,0.7
-Has the candidate contributed to open-source projects?,0.8
+Does the candidate have experience with service mesh?,0.1
+What networking and security tools does the candidate know?,0.1
+What projects has the candidate worked on?,0.3
+Tell me about the multi-cloud migration project.,0.1
+What was the outcome of the deployment platform project?,0.1
+What technologies were used in the autoscaler project?,0.3
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.6
 What systems has the candidate built?,0.6
-Does the candidate have experience with cost optimization?,0.6
-Has the candidate worked on any developer productivity projects?,0.6
-What is the scale of systems the candidate has worked with?,0.5
-What certifications does the candidate have?,0.9
-Does the candidate have an AWS certification?,0.9
-Does the candidate have a Kubernetes certification?,0.9
-When did the candidate get their Terraform certification?,0.7
-Does the candidate have any management certifications?,0.5
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.5
-When is the candidate available to start?,0.9
-"Does the candidate prefer remote, hybrid, or onsite work?",0.8
+Does the candidate have experience with cost optimization?,0.3
+Has the candidate worked on any developer productivity projects?,0.1
+What is the scale of systems the candidate has worked with?,0.0
+What certifications does the candidate have?,0.1
+Does the candidate have an AWS certification?,0.1
+Does the candidate have a Kubernetes certification?,0.1
+When did the candidate get their Terraform certification?,0.1
+Does the candidate have any management certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
 Is the candidate open to relocation?,0.1
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.6
-When can the candidate start working?,0.9
-What is the candidate's blood type?,1.0
-What are the candidate's political opinions?,0.8
-Is the candidate married?,1.0
-What is the candidate's religion?,0.9
-What is the candidate's credit score?,0.8
-Is this candidate overqualified for a junior DevOps role?,0.8
-Would this candidate be a good fit for a remote DevOps role in Europe?,0.7
-Compare the candidate's academic and professional experience.,0.5
-What unique combination of skills does this candidate offer?,0.7
-Summarize why I should consider this candidate for a staff DevOps engineer position.,0.5
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior DevOps role?,0.1
+Would this candidate be a good fit for a remote DevOps role in Europe?,0.1
+Compare the candidate's academic and professional experience.,0.3
+What unique combination of skills does this candidate offer?,0.6
+Summarize why I should consider this candidate for a staff DevOps engineer position.,0.1
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
 What is the candidate's LinkedIn profile?,0.1
-What is the candidate's GitHub profile URL?,0.9
-How can I contact the candidate?,0.6
-What country is the candidate based in?,0.6
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.8
-What did the candidate study?,0.7
-Where did the candidate study?,0.5
-When did the candidate graduate?,0.9
-What is the candidate's GPA?,0.8
-Tell me about the candidate's educational background.,0.6
-What was the candidate's capstone project about?,0.9
-Did the candidate receive any academic honors?,0.8
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,1.0
-Where has the candidate worked previously?,0.5
-What was the candidate's first job?,0.0
-Describe the candidate's work at Wix.,0.8
-Has the candidate held a leadership role?,0.5
-What industries has the candidate worked in?,0.8
-What is a key technical achievement the candidate accomplished?,0.5
+What is the candidate's GitHub profile URL?,0.1
+How can I contact the candidate?,0.1
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.3
+What was the candidate's capstone project about?,0.0
+Did the candidate receive any academic honors?,0.1
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
+Where has the candidate worked previously?,0.1
+What was the candidate's first job?,0.1
+Describe the candidate's work at Wix.,0.1
+Has the candidate held a leadership role?,0.1
+What industries has the candidate worked in?,0.1
+What is a key technical achievement the candidate accomplished?,0.3
 Has the candidate had any teaching or mentoring experience?,0.6
-What programming languages does the candidate know?,1.0
-What are the candidate's primary technical frameworks and tools?,0.3
-What cloud platforms does the candidate have experience with?,0.5
-What databases has the candidate worked with?,0.9
-Does the candidate have DevOps experience?,0.7
-Does the candidate know Python?,0.7
-Does the candidate have experience with React?,0.4
-Does the candidate have testing experience?,0.7
+What programming languages does the candidate know?,0.1
+What are the candidate's primary technical frameworks and tools?,0.1
+What cloud platforms does the candidate have experience with?,0.1
+What databases has the candidate worked with?,0.0
+Does the candidate have DevOps experience?,0.1
+Does the candidate know Python?,0.1
+Does the candidate have experience with React?,0.7
+Does the candidate have testing experience?,0.6
 What accessibility experience does the candidate have?,0.6
-Does the candidate have design system experience?,0.6
-Does the candidate have experience with build tools?,0.3
-What backend and API skills does the candidate have?,0.0
-What projects has the candidate worked on?,0.7
+Does the candidate have design system experience?,0.1
+Does the candidate have experience with build tools?,0.1
+What backend and API skills does the candidate have?,0.1
+What projects has the candidate worked on?,0.1
 Tell me about the design system project.,0.7
-What was the outcome of the collaborative editor project?,0.8
-What technologies were used in the performance optimization project?,0.5
-What is the candidate's most significant project?,1.0
-Has the candidate contributed to open-source projects?,0.8
+What was the outcome of the collaborative editor project?,0.1
+What technologies were used in the performance optimization project?,0.2
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.1
 What systems has the candidate built?,0.7
-Does the candidate have web performance experience?,0.6
-Has the candidate worked on real-time applications?,0.9
-What is the scale of systems the candidate has worked with?,0.6
-What certifications does the candidate have?,0.9
-Does the candidate have a Google Cloud certification?,0.8
-Does the candidate have an accessibility certification?,0.9
-When did the candidate get their Meta certification?,0.9
-Does the candidate have any management certifications?,0.7
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.7
-When is the candidate available to start?,0.9
-"Does the candidate prefer remote, hybrid, or onsite work?",0.8
-Is the candidate open to relocation?,0.0
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.5
-When can the candidate start working?,0.9
-What is the candidate's blood type?,0.8
-What are the candidate's political opinions?,0.9
-Is the candidate married?,0.8
-What is the candidate's religion?,0.9
-What is the candidate's credit score?,1.0
-Is this candidate overqualified for a junior frontend role?,0.8
-Would this candidate be a good fit for a remote frontend role in Europe?,0.4
-Compare the candidate's academic and professional experience.,0.7
+Does the candidate have web performance experience?,0.1
+Has the candidate worked on real-time applications?,0.1
+What is the scale of systems the candidate has worked with?,0.7
+What certifications does the candidate have?,0.1
+Does the candidate have a Google Cloud certification?,0.1
+Does the candidate have an accessibility certification?,0.1
+When did the candidate get their Meta certification?,0.1
+Does the candidate have any management certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
+Is the candidate open to relocation?,0.1
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior frontend role?,0.1
+Would this candidate be a good fit for a remote frontend role in Europe?,0.1
+Compare the candidate's academic and professional experience.,0.1
 What unique combination of skills does this candidate offer?,0.8
 Summarize why I should consider this candidate for a senior frontend engineer position.,0.7
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
-What is the candidate's LinkedIn profile?,0.9
-What is the candidate's GitHub profile URL?,0.1
-How can I contact the candidate?,0.6
-What country is the candidate based in?,0.7
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.9
-What did the candidate study?,0.3
-Where did the candidate study?,0.1
-When did the candidate graduate?,1.0
-What is the candidate's GPA?,0.9
-Tell me about the candidate's educational background.,0.6
-What was the candidate's capstone project about?,0.9
-Was the candidate on the Dean's List?,0.9
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,0.9
-Where has the candidate worked previously?,0.0
-What was the candidate's first job?,0.0
-Describe the candidate's work at TechStart Solutions.,0.8
-Has the candidate led a team?,0.8
-What industries has the candidate worked in?,0.8
-How did the candidate reduce model inference latency?,0.8
-Has the candidate worked as a teaching assistant?,0.8
-What programming languages does the candidate know?,1.0
-What ML and deep learning frameworks does the candidate use?,0.6
-What cloud platforms does the candidate have experience with?,1.0
-What databases has the candidate worked with?,1.0
-Does the candidate have DevOps experience?,0.7
-Does the candidate know Python?,0.6
-Does the candidate have experience with PyTorch?,0.6
-Does the candidate have frontend development skills?,0.6
-What NLP experience does the candidate have?,0.6
-Does the candidate have computer vision experience?,0.8
-Does the candidate have experience with Kubernetes?,0.8
-What data engineering tools does the candidate know?,0.0
-What projects has the candidate worked on?,0.2
-Tell me about the recommendation engine project.,0.9
-What was the outcome of the fraud detection project?,0.8
-What technologies were used in the chatbot project?,0.7
-What is the candidate's most significant project?,0.6
-Has the candidate contributed to open-source projects?,0.8
-What ML models has the candidate built?,0.9
-Does the candidate have real-time systems experience?,0.6
-Has the candidate worked on any NLP projects?,0.7
-What is the largest dataset the candidate has worked with?,0.7
-What certifications does the candidate have?,1.0
-Does the candidate have any AWS certifications?,0.9
-Does the candidate have a deep learning certification?,1.0
-When did the candidate get their AWS certification?,0.8
-Does the candidate have any project management certifications?,0.6
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.7
-When is the candidate available to start?,0.8
-"Does the candidate prefer remote, hybrid, or onsite work?",0.8
-Is the candidate open to relocation?,0.1
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.5
-When can the candidate start working?,0.9
-What is the candidate's blood type?,1.0
-What are the candidate's political opinions?,0.9
-Is the candidate married?,0.7
-What is the candidate's religion?,0.8
-What is the candidate's credit score?,0.9
-Is this candidate overqualified for a junior data scientist role?,0.8
-Would this candidate be a good fit for a remote ML role in Europe?,0.7
-Compare the candidate's academic and professional experience.,0.4
-What unique combination of skills does this candidate offer?,0.8
-Summarize why I should consider this candidate for a senior ML engineer position.,0.7
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
 What is the candidate's LinkedIn profile?,0.1
 What is the candidate's GitHub profile URL?,0.1
-How can I contact the candidate?,0.6
-What country is the candidate based in?,0.6
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.6
-What did the candidate study?,0.2
-Where did the candidate study?,0.3
-When did the candidate graduate?,1.0
-What is the candidate's GPA?,0.6
-Tell me about the candidate's educational background.,0.5
-What was the candidate's MBA project about?,0.8
-Did the candidate receive any academic honors?,0.6
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,0.6
+How can I contact the candidate?,0.0
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.3
+What was the candidate's capstone project about?,0.1
+Was the candidate on the Dean's List?,0.1
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
 Where has the candidate worked previously?,0.0
 What was the candidate's first job?,0.0
-Describe the candidate's work at ironSource.,0.8
-Has the candidate held a leadership role?,0.5
-What industries has the candidate worked in?,0.7
-What is a key technical achievement the candidate accomplished?,0.7
-Has the candidate had any mentoring experience?,0.6
+Describe the candidate's work at TechStart Solutions.,0.1
+Has the candidate led a team?,0.1
+What industries has the candidate worked in?,0.1
+How did the candidate reduce model inference latency?,0.1
+Has the candidate worked as a teaching assistant?,0.1
+What programming languages does the candidate know?,0.1
+What ML and deep learning frameworks does the candidate use?,0.1
+What cloud platforms does the candidate have experience with?,0.1
+What databases has the candidate worked with?,0.0
+Does the candidate have DevOps experience?,0.1
+Does the candidate know Python?,0.1
+Does the candidate have experience with PyTorch?,0.1
+Does the candidate have frontend development skills?,0.1
+What NLP experience does the candidate have?,0.3
+Does the candidate have computer vision experience?,0.1
+Does the candidate have experience with Kubernetes?,0.1
+What data engineering tools does the candidate know?,0.0
+What projects has the candidate worked on?,0.3
+Tell me about the recommendation engine project.,0.1
+What was the outcome of the fraud detection project?,0.1
+What technologies were used in the chatbot project?,0.1
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.1
+What ML models has the candidate built?,0.1
+Does the candidate have real-time systems experience?,0.1
+Has the candidate worked on any NLP projects?,0.1
+What is the largest dataset the candidate has worked with?,0.1
+What certifications does the candidate have?,0.1
+Does the candidate have any AWS certifications?,0.1
+Does the candidate have a deep learning certification?,0.1
+When did the candidate get their AWS certification?,0.1
+Does the candidate have any project management certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
+Is the candidate open to relocation?,0.1
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior data scientist role?,0.1
+Would this candidate be a good fit for a remote ML role in Europe?,0.6
+Compare the candidate's academic and professional experience.,0.3
+What unique combination of skills does this candidate offer?,0.7
+Summarize why I should consider this candidate for a senior ML engineer position.,0.6
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
+What is the candidate's LinkedIn profile?,0.1
+What is the candidate's GitHub profile URL?,0.1
+How can I contact the candidate?,0.5
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.0
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.1
+What was the candidate's MBA project about?,0.9
+Did the candidate receive any academic honors?,0.1
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
+Where has the candidate worked previously?,0.1
+What was the candidate's first job?,0.1
+Describe the candidate's work at ironSource.,0.1
+Has the candidate held a leadership role?,0.0
+What industries has the candidate worked in?,0.1
+What is a key technical achievement the candidate accomplished?,0.3
+Has the candidate had any mentoring experience?,0.1
 What programming languages does the candidate know?,0.0
 What are the candidate's primary product tools?,0.7
-What cloud platforms does the candidate have experience with?,0.7
-What data and analytics tools does the candidate use?,0.8
-Does the candidate have technical knowledge?,0.5
-Does the candidate know Python?,0.3
-Does the candidate have A/B testing experience?,0.8
-Does the candidate have data analytics experience?,0.7
-What product management methodologies does the candidate use?,1.0
-Does the candidate have user research experience?,0.7
-Does the candidate have experience with ML products?,0.6
-What visualization and reporting tools does the candidate know?,0.5
-What projects has the candidate worked on?,0.6
-Tell me about the ad mediation project.,0.6
-What was the outcome of the analytics dashboard project?,0.6
+What cloud platforms does the candidate have experience with?,0.1
+What data and analytics tools does the candidate use?,0.1
+Does the candidate have technical knowledge?,0.1
+Does the candidate know Python?,0.1
+Does the candidate have A/B testing experience?,0.1
+Does the candidate have data analytics experience?,0.1
+What product management methodologies does the candidate use?,0.0
+Does the candidate have user research experience?,0.1
+Does the candidate have experience with ML products?,0.3
+What visualization and reporting tools does the candidate know?,0.1
+What projects has the candidate worked on?,0.3
+Tell me about the ad mediation project.,0.1
+What was the outcome of the analytics dashboard project?,0.1
 What technologies were used in the LTV modeling project?,0.0
-What is the candidate's most significant project?,0.5
-Has the candidate contributed to open-source projects?,0.6
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.1
 What products has the candidate built or launched?,0.7
-Does the candidate have monetization experience?,0.6
+Does the candidate have monetization experience?,0.7
 Has the candidate worked on developer-facing products?,0.7
-What is the scale of products the candidate has managed?,0.6
-What certifications does the candidate have?,1.0
-Does the candidate have a product management certification?,1.0
-Does the candidate have a data analytics certification?,0.9
-When did the candidate get their Scrum certification?,0.7
-Does the candidate have any management or methodology certifications?,0.6
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.5
-When is the candidate available to start?,0.9
-"Does the candidate prefer remote, hybrid, or onsite work?",0.9
+What is the scale of products the candidate has managed?,0.1
+What certifications does the candidate have?,0.1
+Does the candidate have a product management certification?,0.1
+Does the candidate have a data analytics certification?,0.1
+When did the candidate get their Scrum certification?,0.1
+Does the candidate have any management or methodology certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
 Is the candidate open to relocation?,0.1
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.6
-When can the candidate start working?,0.8
-What is the candidate's blood type?,1.0
-What are the candidate's political opinions?,0.9
-Is the candidate married?,1.0
-What is the candidate's religion?,0.9
-What is the candidate's credit score?,1.0
-Is this candidate overqualified for a junior product manager role?,0.7
-Would this candidate be a good fit for a remote product role in Europe?,0.5
-Compare the candidate's academic and professional experience.,0.7
-What unique combination of skills does this candidate offer?,0.6
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior product manager role?,0.1
+Would this candidate be a good fit for a remote product role in Europe?,0.3
+Compare the candidate's academic and professional experience.,0.1
+What unique combination of skills does this candidate offer?,0.7
 Summarize why I should consider this candidate for a director of product position.,0.7
-What is the candidate's full name?,1.0
-What is the candidate's email address?,1.0
-What is the candidate's phone number?,1.0
-What is the candidate's LinkedIn profile?,1.0
-What is the candidate's GitHub profile URL?,0.9
-How can I contact the candidate?,0.0
-What country is the candidate based in?,0.7
-What is the candidate's country dialing code?,1.0
-What degree does the candidate hold?,0.8
-What did the candidate study?,0.2
-Where did the candidate study?,0.0
-When did the candidate graduate?,0.0
-What is the candidate's GPA?,0.7
-Tell me about the candidate's educational background.,0.6
-What was the candidate's thesis about?,0.8
+What is the candidate's full name?,0.1
+What is the candidate's email address?,0.1
+What is the candidate's phone number?,0.1
+What is the candidate's LinkedIn profile?,0.1
+What is the candidate's GitHub profile URL?,0.1
+How can I contact the candidate?,0.3
+What country is the candidate based in?,0.1
+What is the candidate's country dialing code?,0.1
+What degree does the candidate hold?,0.1
+What did the candidate study?,0.1
+Where did the candidate study?,0.1
+When did the candidate graduate?,0.1
+What is the candidate's GPA?,0.1
+Tell me about the candidate's educational background.,0.3
+What was the candidate's thesis about?,0.1
 Did the candidate receive any academic honors?,0.0
-How many years of experience does the candidate have?,1.0
-What is the candidate's current role?,1.0
-Describe the candidate's current job responsibilities.,0.9
-Where has the candidate worked previously?,0.0
+How many years of experience does the candidate have?,0.1
+What is the candidate's current role?,0.1
+Describe the candidate's current job responsibilities.,0.1
+Where has the candidate worked previously?,0.1
 What was the candidate's first job?,0.0
-Describe the candidate's work at Amdocs.,0.2
-Has the candidate held a leadership role?,0.6
-What industries has the candidate worked in?,0.6
+Describe the candidate's work at Amdocs.,0.0
+Has the candidate held a leadership role?,0.1
+What industries has the candidate worked in?,0.1
 What is a key technical achievement the candidate accomplished?,0.0
 Has the candidate had any teaching experience?,0.0
-What programming languages does the candidate know?,0.6
+What programming languages does the candidate know?,0.1
 What are the candidate's primary technical frameworks and tools?,0.0
-What cloud platforms does the candidate have experience with?,0.5
-What databases has the candidate worked with?,0.4
+What cloud platforms does the candidate have experience with?,0.1
+What databases has the candidate worked with?,0.1
 Does the candidate have DevOps or infrastructure experience?,0.6
 Does the candidate know Python?,0.0
 Does the candidate have experience with Kafka?,0.7
-Does the candidate have distributed systems experience?,0.6
+Does the candidate have distributed systems experience?,0.7
 What architecture patterns does the candidate know?,0.0
-Does the candidate have observability experience?,0.2
-Does the candidate have experience with Kubernetes?,0.6
-What streaming and data processing tools does the candidate know?,0.5
-What projects has the candidate worked on?,0.7
-Tell me about the event enrichment pipeline.,0.6
-What was the outcome of the multi-region architecture project?,0.5
-What technologies were used in the microservices migration?,0.6
-What is the candidate's most significant project?,0.7
-Has the candidate contributed to open-source projects?,0.8
+Does the candidate have observability experience?,0.0
+Does the candidate have experience with Kubernetes?,0.1
+What streaming and data processing tools does the candidate know?,0.0
+What projects has the candidate worked on?,0.1
+Tell me about the event enrichment pipeline.,0.1
+What was the outcome of the multi-region architecture project?,0.1
+What technologies were used in the microservices migration?,0.1
+What is the candidate's most significant project?,0.1
+Has the candidate contributed to open-source projects?,0.1
 What systems has the candidate built?,0.6
-Does the candidate have high-availability experience?,0.5
-Has the candidate worked on migration projects?,0.6
-What is the scale of systems the candidate has worked with?,0.7
-What certifications does the candidate have?,0.5
-Does the candidate have an AWS certification?,0.9
+Does the candidate have high-availability experience?,0.6
+Has the candidate worked on migration projects?,0.1
+What is the scale of systems the candidate has worked with?,0.1
+What certifications does the candidate have?,0.1
+Does the candidate have an AWS certification?,0.1
 Does the candidate have a Kafka certification?,0.0
 When did the candidate get their Java certification?,0.0
-Does the candidate have any management certifications?,0.6
-What is the candidate's salary expectation?,1.0
-Where does the candidate prefer to work?,0.7
-When is the candidate available to start?,0.9
-"Does the candidate prefer remote, hybrid, or onsite work?",0.9
-Is the candidate open to relocation?,0.0
-What job title is the candidate looking for?,0.9
-Would the candidate work fully onsite?,0.5
-When can the candidate start working?,0.9
-What is the candidate's blood type?,1.0
-What are the candidate's political opinions?,0.9
-Is the candidate married?,0.8
-What is the candidate's religion?,0.9
-What is the candidate's credit score?,1.0
-Is this candidate overqualified for a junior backend role?,0.6
-Would this candidate be a good fit for a remote backend role in Europe?,0.5
-Compare the candidate's academic and professional experience.,0.5
-What unique combination of skills does this candidate offer?,0.7
-Summarize why I should consider this candidate for a principal engineer position.,0.5
+Does the candidate have any management certifications?,0.1
+What is the candidate's salary expectation?,0.1
+Where does the candidate prefer to work?,0.1
+When is the candidate available to start?,0.1
+"Does the candidate prefer remote, hybrid, or onsite work?",0.1
+Is the candidate open to relocation?,0.1
+What job title is the candidate looking for?,0.1
+Would the candidate work fully onsite?,0.1
+When can the candidate start working?,0.1
+What is the candidate's blood type?,0.1
+What are the candidate's political opinions?,0.1
+Is the candidate married?,0.1
+What is the candidate's religion?,0.1
+What is the candidate's credit score?,0.1
+Is this candidate overqualified for a junior backend role?,0.0
+Would this candidate be a good fit for a remote backend role in Europe?,0.3
+Compare the candidate's academic and professional experience.,0.1
+What unique combination of skills does this candidate offer?,0.8
+Summarize why I should consider this candidate for a principal engineer position.,0.7

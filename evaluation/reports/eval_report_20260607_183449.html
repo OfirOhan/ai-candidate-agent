@@ -1,0 +1,2678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Component-Based Evaluation Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0f172a; color: #e2e8f0;
+    padding: 2rem; line-height: 1.6;
+  }
+  h1 { color: #f8fafc; margin-bottom: 0.5rem; font-size: 1.8rem; }
+  h2 { color: #94a3b8; margin: 2rem 0 1rem; font-size: 1.3rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+  h3 { color: #94a3b8; }
+  .meta { color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }
+  .metrics-grid {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;
+  }
+  .metric-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 1.2rem 1.5rem; min-width: 140px; text-align: center;
+  }
+  .metric-score { font-size: 1.6rem; font-weight: 700; }
+  .metric-label { font-size: 0.75rem; color: #94a3b8; margin-top: 0.3rem; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 1rem 0;
+    background: #1e293b; border-radius: 8px; overflow: hidden;
+  }
+  th { background: #334155; color: #e2e8f0; padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+  tr:hover { background: #334155; }
+  .answer-cell, .gt-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .summary-stat { display: inline-block; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 0.8rem 1.2rem; margin: 0.3rem; }
+  .summary-stat strong { color: #38bdf8; }
+  .component-section { margin: 2rem 0; padding: 1.5rem; background: #1e293b22; border-radius: 12px; border: 1px solid #334155; }
+</style>
+</head>
+<body>
+
+<h1>Multi-Candidate Evaluation Report</h1>
+<div class="meta">Generated: 2026-06-07 18:34:49 | Questions: 71 | Candidates: Dana Levy</div>
+
+<h2>Overview</h2>
+<div class="metrics-grid">
+  
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">1</div>
+      <div class="metric-label">Candidates</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">71</div>
+      <div class="metric-label">Total Questions</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#38bdf8">13.16s</div>
+      <div class="metric-label">Avg Latency</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#22c55e">93.0%</div>
+      <div class="metric-label">Tool Accuracy</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#22c55e">0.892</div>
+      <div class="metric-label">RAG: Faithfulness</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#eab308">0.755</div>
+      <div class="metric-label">RAG: Answer Relevancy</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#eab308">0.542</div>
+      <div class="metric-label">RAG: Llm Context Precision With Reference</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#ef4444">0.459</div>
+      <div class="metric-label">RAG: Context Recall</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#eab308">0.648</div>
+      <div class="metric-label">Answer Correctness</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#22c55e">95.8%</div>
+      <div class="metric-label">Refusal Accuracy</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-score" style="color:#22c55e">87.2%</div>
+      <div class="metric-label">Router Accuracy</div>
+    </div>
+</div>
+
+<div class="component-section">
+<h2>1. Tool Selection</h2>
+
+    
+    <div class="summary-stat"><strong>66/71</strong> correct (93.0%)</div>
+    
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Trajectory</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>q001</td>
+          <td title="What is the candidate&#x27;s full name?">What is the candidate&#x27;s full name?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q002</td>
+          <td title="What is the candidate&#x27;s email address?">What is the candidate&#x27;s email address?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q003</td>
+          <td title="What is the candidate&#x27;s phone number?">What is the candidate&#x27;s phone number?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q004</td>
+          <td title="What is the candidate&#x27;s LinkedIn profile?">What is the candidate&#x27;s LinkedIn profile?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q005</td>
+          <td title="What is the candidate&#x27;s GitHub profile URL?">What is the candidate&#x27;s GitHub profile URL?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q006</td>
+          <td title="How can I contact the candidate?">How can I contact the candidate?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q007</td>
+          <td title="What country is the candidate based in?">What country is the candidate based in?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q008</td>
+          <td title="What is the candidate&#x27;s country dialing code?">What is the candidate&#x27;s country dialing code?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q009</td>
+          <td title="What degree does the candidate hold?">What degree does the candidate hold?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q010</td>
+          <td title="What did the candidate study?">What did the candidate study?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q011</td>
+          <td title="Where did the candidate study?">Where did the candidate study?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q012</td>
+          <td title="When did the candidate graduate?">When did the candidate graduate?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q013</td>
+          <td title="What is the candidate&#x27;s GPA?">What is the candidate&#x27;s GPA?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q014</td>
+          <td title="Tell me about the candidate&#x27;s educational background.">Tell me about the candidate&#x27;s educational background.</td>
+          <td>docs</td>
+          <td style="color:#ef4444">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q015</td>
+          <td title="What was the candidate&#x27;s thesis about?">What was the candidate&#x27;s thesis about?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td title="Did the candidate receive any academic honors?">Did the candidate receive any academic honors?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q017</td>
+          <td title="How many years of experience does the candidate have?">How many years of experience does the candidate have?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q018</td>
+          <td title="What is the candidate&#x27;s current role?">What is the candidate&#x27;s current role?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q019</td>
+          <td title="Describe the candidate&#x27;s current job responsibilities.">Describe the candidate&#x27;s current job responsibilities.</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td title="What was the candidate&#x27;s first job?">What was the candidate&#x27;s first job?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td title="Describe the candidate&#x27;s work at Check Point.">Describe the candidate&#x27;s work at Check Point.</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td title="Has the candidate held a leadership role?">Has the candidate held a leadership role?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td title="What is a key technical achievement the candidate accomplish">What is a key technical achievement the candidate accomplish</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td title="Has the candidate had any teaching experience?">Has the candidate had any teaching experience?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td title="What are the candidate&#x27;s primary security tools and framewor">What are the candidate&#x27;s primary security tools and framewor</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td title="What cloud platforms does the candidate have experience with">What cloud platforms does the candidate have experience with</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td title="Does the candidate have DevSecOps experience?">Does the candidate have DevSecOps experience?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q033</td>
+          <td title="Does the candidate have experience with penetration testing?">Does the candidate have experience with penetration testing?</td>
+          <td>docs</td>
+          <td style="color:#ef4444">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td title="Does the candidate have SIEM experience?">Does the candidate have SIEM experience?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td title="What threat analysis experience does the candidate have?">What threat analysis experience does the candidate have?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td title="Does the candidate have identity and access management exper">Does the candidate have identity and access management exper</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td title="What networking skills does the candidate have?">What networking skills does the candidate have?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td title="Tell me about the zero-trust architecture project.">Tell me about the zero-trust architecture project.</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td title="What was the outcome of the threat intelligence project?">What was the outcome of the threat intelligence project?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td title="What technologies were used in the red team automation proje">What technologies were used in the red team automation proje</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td title="What is the candidate&#x27;s most significant project?">What is the candidate&#x27;s most significant project?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source projects?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td title="What systems has the candidate built?">What systems has the candidate built?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td title="Does the candidate have red team experience?">Does the candidate have red team experience?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td title="Has the candidate worked on any research projects?">Has the candidate worked on any research projects?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td title="What is the scale of systems the candidate has worked with?">What is the scale of systems the candidate has worked with?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td title="Does the candidate have an OSCP certification?">Does the candidate have an OSCP certification?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td title="Does the candidate have a CISSP certification?">Does the candidate have a CISSP certification?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td title="When did the candidate get their AWS security certification?">When did the candidate get their AWS security certification?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td title="Does the candidate have any management certifications?">Does the candidate have any management certifications?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q054</td>
+          <td title="What is the candidate&#x27;s salary expectation?">What is the candidate&#x27;s salary expectation?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q055</td>
+          <td title="Where does the candidate prefer to work?">Where does the candidate prefer to work?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q056</td>
+          <td title="When is the candidate available to start?">When is the candidate available to start?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q057</td>
+          <td title="Does the candidate prefer remote, hybrid, or onsite work?">Does the candidate prefer remote, hybrid, or onsite work?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q058</td>
+          <td title="Is the candidate open to relocation?">Is the candidate open to relocation?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q059</td>
+          <td title="What job title is the candidate looking for?">What job title is the candidate looking for?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q060</td>
+          <td title="Would the candidate work fully onsite?">Would the candidate work fully onsite?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q061</td>
+          <td title="When can the candidate start working?">When can the candidate start working?</td>
+          <td>structured</td>
+          <td style="color:#22c55e">structured</td>
+          <td style="font-size:0.8em">get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q066</td>
+          <td title="What is the candidate&#x27;s blood type?">What is the candidate&#x27;s blood type?</td>
+          <td>none</td>
+          <td style="color:#ef4444">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q067</td>
+          <td title="What are the candidate&#x27;s political opinions?">What are the candidate&#x27;s political opinions?</td>
+          <td>none</td>
+          <td style="color:#ef4444">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q068</td>
+          <td title="Is the candidate married?">Is the candidate married?</td>
+          <td>none</td>
+          <td style="color:#22c55e">none</td>
+          <td style="font-size:0.8em">no tools</td>
+        </tr>
+        <tr>
+          <td>q069</td>
+          <td title="What is the candidate&#x27;s religion?">What is the candidate&#x27;s religion?</td>
+          <td>none</td>
+          <td style="color:#22c55e">none</td>
+          <td style="font-size:0.8em">no tools</td>
+        </tr>
+        <tr>
+          <td>q070</td>
+          <td title="What is the candidate&#x27;s credit score?">What is the candidate&#x27;s credit score?</td>
+          <td>none</td>
+          <td style="color:#22c55e">none</td>
+          <td style="font-size:0.8em">no tools</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td title="Is this candidate overqualified for a junior security analys">Is this candidate overqualified for a junior security analys</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">get_structured_data → search_documents</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td title="Would this candidate be a good fit for a remote security rol">Would this candidate be a good fit for a remote security rol</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">get_structured_data → get_structured_data → get_structured_data → search_documents</td>
+        </tr>
+        <tr>
+          <td>q073</td>
+          <td title="Compare the candidate&#x27;s academic and professional experience">Compare the candidate&#x27;s academic and professional experience</td>
+          <td>docs</td>
+          <td style="color:#ef4444">structured</td>
+          <td style="font-size:0.8em">get_structured_data → get_structured_data</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candidate offer?</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td title="Summarize why I should consider this candidate for a princip">Summarize why I should consider this candidate for a princip</td>
+          <td>docs</td>
+          <td style="color:#22c55e">docs</td>
+          <td style="font-size:0.8em">search_documents</td>
+        </tr></tbody>
+    </table>
+</div>
+
+<div class="component-section">
+<h2>2. RAG Quality (RAGAS + Hallucination)</h2>
+
+    <p style="color:#94a3b8;margin-bottom:1rem">Showing only questions routed through search_documents (41 questions)</p>
+    <div class="summary-stat"><strong style="color:#22c55e">0.892</strong> Faithfulness</div><div class="summary-stat"><strong style="color:#eab308">0.755</strong> Answer Relevancy</div><div class="summary-stat"><strong style="color:#eab308">0.542</strong> Llm Context Precision With Reference</div><div class="summary-stat"><strong style="color:#ef4444">0.459</strong> Context Recall</div>
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Route</th><th>Answer</th><th>Scores</th><th>Latency</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>q015</td>
+          <td title="What was the candidate&#x27;s thesis about?">What was the candidate&#x27;s thesis about?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Sy">The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Sy...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.881</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#eab308" title="context_recall">0.500</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>13.93s</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td title="Did the candidate receive any academic honors?">Did the candidate receive any academic honors?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However">The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.833</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>12.82s</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to">The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.667</span> <span style="color:#22c55e" title="answer_relevancy">0.856</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>10.04s</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td title="What was the candidate&#x27;s first job?">What was the candidate&#x27;s first job?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The provided documents do not mention the candidate&#x27;s first job. The available information focuses o">The provided documents do not mention the candidate&#x27;s first job. The available information focuses o...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.750</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>15.04s</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td title="Describe the candidate&#x27;s work at Check Point.">Describe the candidate&#x27;s work at Check Point.</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 t">The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 t...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.825</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.250</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>11.87s</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td title="Has the candidate held a leadership role?">Has the candidate held a leadership role?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufma">The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufma...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.871</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.867</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.69s</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environ">The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.889</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.99s</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td title="What is a key technical achievement the candidate accomplished?">What is a key technical achievement the candidate </td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network arch">The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network arch...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.859</span> <span style="color:#eab308" title="llm_context_precision_with_reference">0.700</span> <span style="color:#eab308" title="context_recall">0.500</span> <span style="color:#ef4444" title="Hallucination">0.200</span></td>
+          <td>12.16s</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td title="Has the candidate had any teaching experience?">Has the candidate had any teaching experience?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has demonstrated teaching and mentoring experience through her role as a team leader a">The candidate has demonstrated teaching and mentoring experience through her role as a team leader a...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.873</span> <span style="color:#eab308" title="llm_context_precision_with_reference">0.750</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>13.88s</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are p">The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are p...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.750</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.12s</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td title="What are the candidate&#x27;s primary security tools and frameworks?">What are the candidate&#x27;s primary security tools an</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework">The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.986</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>12.96s</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td title="What cloud platforms does the candidate have experience with?">What cloud platforms does the candidate have exper</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, ">The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.979</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>8.83s</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platf">The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platf...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.800</span> <span style="color:#22c55e" title="answer_relevancy">0.956</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#22c55e" title="Hallucination">0.800</span></td>
+          <td>10.23s</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td title="Does the candidate have DevSecOps experience?">Does the candidate have DevSecOps experience?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSec">The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSec...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.733</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.400</span></td>
+          <td>16.11s</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack an">Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack an...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>10.83s</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td title="Does the candidate have SIEM experience?">Does the candidate have SIEM experience?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as w">The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as w...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.824</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.867</span> <span style="color:#eab308" title="context_recall">0.500</span> <span style="color:#ef4444" title="Hallucination">0.400</span></td>
+          <td>10.75s</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td title="What threat analysis experience does the candidate have?">What threat analysis experience does the candidate</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelli">The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelli...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.959</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#eab308" title="Hallucination">0.600</span></td>
+          <td>14.83s</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td title="Does the candidate have identity and access management experience?">Does the candidate have identity and access manage</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has significant identity and access management (IAM) experience, as demonstrated by th">The candidate has significant identity and access management (IAM) experience, as demonstrated by th...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.765</span> <span style="color:#eab308" title="llm_context_precision_with_reference">0.533</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#eab308" title="Hallucination">0.600</span></td>
+          <td>10.42s</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, th">The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, th...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.500</span> <span style="color:#22c55e" title="answer_relevancy">0.982</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.833</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>10.4s</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td title="What networking skills does the candidate have?">What networking skills does the candidate have?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate demonstrates strong networking skills, particularly in security and architecture. Key ">The candidate demonstrates strong networking skills, particularly in security and architecture. Key ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.875</span> <span style="color:#22c55e" title="answer_relevancy">0.819</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>15.75s</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)">The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.400</span></td>
+          <td>18.78s</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td title="Tell me about the zero-trust architecture project.">Tell me about the zero-trust architecture project.</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at ">The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.754</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.804</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>11.07s</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td title="What was the outcome of the threat intelligence project?">What was the outcome of the threat intelligence pr</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The threat intelligence project resulted in the creation of an end-to-end platform that ingests over">The threat intelligence project resulted in the creation of an end-to-end platform that ingests over...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.875</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.66s</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td title="What technologies were used in the red team automation project?">What technologies were used in the red team automa</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt St">The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt St...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>10.05s</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td title="What is the candidate&#x27;s most significant project?">What is the candidate&#x27;s most significant project?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust networ">The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust networ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.902</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.917</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.11s</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source proje</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an o">The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an o...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.969</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.200</span></td>
+          <td>11.32s</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td title="What systems has the candidate built?">What systems has the candidate built?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+  ">The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+  ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#eab308" title="context_recall">0.750</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>14.09s</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td title="Does the candidate have red team experience?">Does the candidate have red team experience?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of ">The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of ...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.873</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>10.07s</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td title="Has the candidate worked on any research projects?">Has the candidate worked on any research projects?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has been involved in several research projects, as detailed in the provided documents:">The candidate has been involved in several research projects, as detailed in the provided documents:...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.941</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.250</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>10.25s</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td title="What is the scale of systems the candidate has worked with?">What is the scale of systems the candidate has wor</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Arch">The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Arch...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.765</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.917</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#eab308" title="Hallucination">0.600</span></td>
+          <td>12.04s</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP">The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.981</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.333</span> <span style="color:#22c55e" title="Hallucination">0.800</span></td>
+          <td>12.51s</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td title="Does the candidate have an OSCP certification?">Does the candidate have an OSCP certification?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obt">Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obt...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#22c55e" title="answer_relevancy">0.915</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.400</span></td>
+          <td>9.63s</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td title="Does the candidate have a CISSP certification?">Does the candidate have a CISSP certification?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate does not have a CISSP certification. The search of their documents revealed only an OS">The candidate does not have a CISSP certification. The search of their documents revealed only an OS...</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.333</span> <span style="color:#22c55e" title="answer_relevancy">1.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>9.31s</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td title="When did the candidate get their AWS security certification?">When did the candidate get their AWS security cert</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The ">The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The ...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.667</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>12.97s</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td title="Does the candidate have any management certifications?">Does the candidate have any management certificati</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate does not hold any management certifications. The documents mention technical certifica">The candidate does not hold any management certifications. The documents mention technical certifica...</td>
+          <td><span style="color:#eab308" title="faithfulness">0.750</span> <span style="color:#22c55e" title="answer_relevancy">0.993</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#eab308" title="Hallucination">0.600</span></td>
+          <td>13.7s</td>
+        </tr>
+        <tr>
+          <td>q066</td>
+          <td title="What is the candidate&#x27;s blood type?">What is the candidate&#x27;s blood type?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s blood type is not mentioned in the provided documents or structured data.">The candidate&#x27;s blood type is not mentioned in the provided documents or structured data....</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>13.01s</td>
+        </tr>
+        <tr>
+          <td>q067</td>
+          <td title="What are the candidate&#x27;s political opinions?">What are the candidate&#x27;s political opinions?</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or struc">The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or struc...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.800</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>313.69s</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td title="Is this candidate overqualified for a junior security analyst role?">Is this candidate overqualified for a junior secur</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in adv">The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in adv...</td>
+          <td><span style="color:#22c55e" title="faithfulness">0.889</span> <span style="color:#22c55e" title="answer_relevancy">0.990</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">0.804</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>22.54s</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td title="Would this candidate be a good fit for a remote security role in Europe?">Would this candidate be a good fit for a remote se</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate has strong technical skills and experience in security, including expertise in zero-tr">The candidate has strong technical skills and experience in security, including expertise in zero-tr...</td>
+          <td><span style="color:#ef4444" title="faithfulness">0.462</span> <span style="color:#ef4444" title="answer_relevancy">0.000</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#ef4444" title="context_recall">0.000</span> <span style="color:#22c55e" title="Hallucination">1.000</span></td>
+          <td>21.57s</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candid</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate offers a rare combination of **offensive security expertise** and **architectural lead">The candidate offers a rare combination of **offensive security expertise** and **architectural lead...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.700</span> <span style="color:#22c55e" title="llm_context_precision_with_reference">1.000</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>16.25s</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td title="Summarize why I should consider this candidate for a principal security engineer position.">Summarize why I should consider this candidate for</td>
+          <td>specific</td>
+          <td class="answer-cell" title="The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:">The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:...</td>
+          <td><span style="color:#22c55e" title="faithfulness">1.000</span> <span style="color:#eab308" title="answer_relevancy">0.743</span> <span style="color:#ef4444" title="llm_context_precision_with_reference">0.500</span> <span style="color:#22c55e" title="context_recall">1.000</span> <span style="color:#ef4444" title="Hallucination">0.000</span></td>
+          <td>15.61s</td>
+        </tr></tbody>
+    </table>
+</div>
+
+<div class="component-section">
+<h2>3. Answer Correctness (GEval)</h2>
+
+    <div class="summary-stat"><strong style="color:#eab308">0.648</strong> Mean Correctness (71 questions)</div>
+    <table>
+      <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Answer</th><th>Ground Truth</th><th>Correctness</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>q001</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s full name?">What is the candidate&#x27;s full name?</td>
+          <td class="answer-cell" title="The candidate&#x27;s full name is **Dana Levy**.">The candidate&#x27;s full name is **Dana Levy**....</td>
+          <td class="gt-cell" title="Dana Levy">Dana Levy...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q002</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s email address?">What is the candidate&#x27;s email address?</td>
+          <td class="answer-cell" title="The candidate&#x27;s email address is **dana.levy@gmail.com**.">The candidate&#x27;s email address is **dana.levy@gmail.com**....</td>
+          <td class="gt-cell" title="dana.levy@gmail.com">dana.levy@gmail.com...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q003</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s phone number?">What is the candidate&#x27;s phone number?</td>
+          <td class="answer-cell" title="The candidate&#x27;s phone number is **+972 52-987-6543**.">The candidate&#x27;s phone number is **+972 52-987-6543**....</td>
+          <td class="gt-cell" title="+972 52-987-6543">+972 52-987-6543...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q004</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s LinkedIn profile?">What is the candidate&#x27;s LinkedIn profile?</td>
+          <td class="answer-cell" title="The candidate&#x27;s LinkedIn profile is [https://linkedin.com/in/danalevy](https://linkedin.com/in/danal">The candidate&#x27;s LinkedIn profile is [https://linkedin.com/in/danalevy](https://linkedin.com/in/danal...</td>
+          <td class="gt-cell" title="https://linkedin.com/in/danalevy">https://linkedin.com/in/danalevy...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q005</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s GitHub profile URL?">What is the candidate&#x27;s GitHub profile URL?</td>
+          <td class="answer-cell" title="The candidate&#x27;s GitHub profile URL is [https://github.com/danalevy](https://github.com/danalevy).">The candidate&#x27;s GitHub profile URL is [https://github.com/danalevy](https://github.com/danalevy)....</td>
+          <td class="gt-cell" title="https://github.com/danalevy">https://github.com/danalevy...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q006</td>
+          <td>personal</td>
+          <td title="How can I contact the candidate?">How can I contact the candidate?</td>
+          <td class="answer-cell" title="The candidate&#x27;s email address is **dana.levy@gmail.com**. If you need additional contact details (e.">The candidate&#x27;s email address is **dana.levy@gmail.com**. If you need additional contact details (e....</td>
+          <td class="gt-cell" title="You can contact Dana Levy via email at dana.levy@gmail.com, by phone at +972 52-987-6543, or through">You can contact Dana Levy via email at dana.levy@gmail.com, by phone at +972 52-987-6543, or through...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q007</td>
+          <td>personal</td>
+          <td title="What country is the candidate based in?">What country is the candidate based in?</td>
+          <td class="answer-cell" title="The candidate is based in Israel, with a country code of +972.">The candidate is based in Israel, with a country code of +972....</td>
+          <td class="gt-cell" title="Israel. The candidate is based in Haifa, Israel.">Israel. The candidate is based in Haifa, Israel....</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q008</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s country dialing code?">What is the candidate&#x27;s country dialing code?</td>
+          <td class="answer-cell" title="The candidate&#x27;s country dialing code is **+972**.">The candidate&#x27;s country dialing code is **+972**....</td>
+          <td class="gt-cell" title="+972">+972...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q009</td>
+          <td>education</td>
+          <td title="What degree does the candidate hold?">What degree does the candidate hold?</td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Te">The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Te...</td>
+          <td class="gt-cell" title="Master&#x27;s degree in Computer Science from Technion - Israel Institute of Technology.">Master&#x27;s degree in Computer Science from Technion - Israel Institute of Technology....</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q010</td>
+          <td>education</td>
+          <td title="What did the candidate study?">What did the candidate study?</td>
+          <td class="answer-cell" title="The candidate studied **Master&#x27;s in Computer Science** at the **Technion - Israel Institute of Techn">The candidate studied **Master&#x27;s in Computer Science** at the **Technion - Israel Institute of Techn...</td>
+          <td class="gt-cell" title="Computer Science">Computer Science...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q011</td>
+          <td>education</td>
+          <td title="Where did the candidate study?">Where did the candidate study?</td>
+          <td class="answer-cell" title="The candidate studied at Technion - Israel Institute of Technology, where they earned a Master&#x27;s in ">The candidate studied at Technion - Israel Institute of Technology, where they earned a Master&#x27;s in ...</td>
+          <td class="gt-cell" title="Technion - Israel Institute of Technology">Technion - Israel Institute of Technology...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q012</td>
+          <td>education</td>
+          <td title="When did the candidate graduate?">When did the candidate graduate?</td>
+          <td class="answer-cell" title="The candidate graduated with their Master&#x27;s in Computer Science from Technion - Israel Institute of ">The candidate graduated with their Master&#x27;s in Computer Science from Technion - Israel Institute of ...</td>
+          <td class="gt-cell" title="2020">2020...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q013</td>
+          <td>education</td>
+          <td title="What is the candidate&#x27;s GPA?">What is the candidate&#x27;s GPA?</td>
+          <td class="answer-cell" title="The candidate&#x27;s GPA is 92/100.">The candidate&#x27;s GPA is 92/100....</td>
+          <td class="gt-cell" title="92/100">92/100...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q014</td>
+          <td>education</td>
+          <td title="Tell me about the candidate&#x27;s educational background.">Tell me about the candidate&#x27;s educational backgrou</td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Te">The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Te...</td>
+          <td class="gt-cell" title="Dana Levy holds a Master&#x27;s degree in Computer Science from the Technion, graduating in 2020 with a G">Dana Levy holds a Master&#x27;s degree in Computer Science from the Technion, graduating in 2020 with a G...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q015</td>
+          <td>education</td>
+          <td title="What was the candidate&#x27;s thesis about?">What was the candidate&#x27;s thesis about?</td>
+          <td class="answer-cell" title="The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Sy">The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Sy...</td>
+          <td class="gt-cell" title="The thesis was on Adversarial Machine Learning Attacks on Network Intrusion Detection Systems — deve">The thesis was on Adversarial Machine Learning Attacks on Network Intrusion Detection Systems — deve...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td>education</td>
+          <td title="Did the candidate receive any academic honors?">Did the candidate receive any academic honors?</td>
+          <td class="answer-cell" title="The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However">The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However...</td>
+          <td class="gt-cell" title="Yes, Dana was on the Dean&#x27;s List in 2019 at the Technion.">Yes, Dana was on the Dean&#x27;s List in 2019 at the Technion....</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q017</td>
+          <td>experience</td>
+          <td title="How many years of experience does the candidate have?">How many years of experience does the candidate ha</td>
+          <td class="answer-cell" title="The candidate has **5 years of experience**.">The candidate has **5 years of experience**....</td>
+          <td class="gt-cell" title="5 years of experience.">5 years of experience....</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q018</td>
+          <td>experience</td>
+          <td title="What is the candidate&#x27;s current role?">What is the candidate&#x27;s current role?</td>
+          <td class="answer-cell" title="The candidate&#x27;s current role is **Senior Security Engineer at CyberArk**.">The candidate&#x27;s current role is **Senior Security Engineer at CyberArk**....</td>
+          <td class="gt-cell" title="Senior Security Engineer at CyberArk">Senior Security Engineer at CyberArk...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q019</td>
+          <td>experience</td>
+          <td title="Describe the candidate&#x27;s current job responsibilities.">Describe the candidate&#x27;s current job responsibilit</td>
+          <td class="answer-cell" title="The candidate&#x27;s current job responsibilities include leading offensive security research, designing ">The candidate&#x27;s current job responsibilities include leading offensive security research, designing ...</td>
+          <td class="gt-cell" title="Leading offensive security research and designing zero-trust architecture for enterprise identity pr">Leading offensive security research and designing zero-trust architecture for enterprise identity pr...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td>experience</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td class="answer-cell" title="The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to">The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to...</td>
+          <td class="gt-cell" title="Before CyberArk, Dana worked as a Security Analyst at Check Point Software Technologies in Tel Aviv,">Before CyberArk, Dana worked as a Security Analyst at Check Point Software Technologies in Tel Aviv,...</td>
+          <td style="color:#ef4444">0.100</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td>experience</td>
+          <td title="What was the candidate&#x27;s first job?">What was the candidate&#x27;s first job?</td>
+          <td class="answer-cell" title="The provided documents do not mention the candidate&#x27;s first job. The available information focuses o">The provided documents do not mention the candidate&#x27;s first job. The available information focuses o...</td>
+          <td class="gt-cell" title="Security Analyst at Check Point Software Technologies (July 2020 – February 2022).">Security Analyst at Check Point Software Technologies (July 2020 – February 2022)....</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td>experience</td>
+          <td title="Describe the candidate&#x27;s work at Check Point.">Describe the candidate&#x27;s work at Check Point.</td>
+          <td class="answer-cell" title="The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 t">The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 t...</td>
+          <td class="gt-cell" title="At Check Point, Dana performed vulnerability assessments and penetration testing, developed automate">At Check Point, Dana performed vulnerability assessments and penetration testing, developed automate...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td>experience</td>
+          <td title="Has the candidate held a leadership role?">Has the candidate held a leadership role?</td>
+          <td class="answer-cell" title="The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufma">The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufma...</td>
+          <td class="gt-cell" title="Yes, Dana manages a red team of 4 engineers at CyberArk, conducting code reviews and mentoring junio">Yes, Dana manages a red team of 4 engineers at CyberArk, conducting code reviews and mentoring junio...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td>experience</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td class="answer-cell" title="The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environ">The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environ...</td>
+          <td class="gt-cell" title="Financial services (banking security) and enterprise identity management.">Financial services (banking security) and enterprise identity management....</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td>experience</td>
+          <td title="What is a key technical achievement the candidate accomplished?">What is a key technical achievement the candidate </td>
+          <td class="answer-cell" title="The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network arch">The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network arch...</td>
+          <td class="gt-cell" title="Dana reduced lateral movement attack surface by 60% through her zero-trust network segmentation fram">Dana reduced lateral movement attack surface by 60% through her zero-trust network segmentation fram...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td>experience</td>
+          <td title="Has the candidate had any teaching experience?">Has the candidate had any teaching experience?</td>
+          <td class="answer-cell" title="The candidate has demonstrated teaching and mentoring experience through her role as a team leader a">The candidate has demonstrated teaching and mentoring experience through her role as a team leader a...</td>
+          <td class="gt-cell" title="Yes, Dana served as a Teaching Assistant for Network Security at the Technion (2019-2020). She also ">Yes, Dana served as a Teaching Assistant for Network Security at the Technion (2019-2020). She also ...</td>
+          <td style="color:#ef4444">0.200</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td>skills</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know</td>
+          <td class="answer-cell" title="The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are p">The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are p...</td>
+          <td class="gt-cell" title="Python, Go, C, Bash, and PowerShell.">Python, Go, C, Bash, and PowerShell....</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td>skills</td>
+          <td title="What are the candidate&#x27;s primary security tools and frameworks?">What are the candidate&#x27;s primary security tools an</td>
+          <td class="answer-cell" title="The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework">The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework...</td>
+          <td class="gt-cell" title="Burp Suite, Metasploit, Nmap, Wireshark, IDA Pro, Ghidra, YARA, and Sigma.">Burp Suite, Metasploit, Nmap, Wireshark, IDA Pro, Ghidra, YARA, and Sigma....</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td>skills</td>
+          <td title="What cloud platforms does the candidate have experience with?">What cloud platforms does the candidate have exper</td>
+          <td class="answer-cell" title="The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, ">The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, ...</td>
+          <td class="gt-cell" title="AWS (Security Hub), Azure (Sentinel), and GCP (Security Command Center). Also uses Terraform for sec">AWS (Security Hub), Azure (Sentinel), and GCP (Security Command Center). Also uses Terraform for sec...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td>skills</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td class="answer-cell" title="The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platf">The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platf...</td>
+          <td class="gt-cell" title="PostgreSQL, MongoDB, and Elasticsearch.">PostgreSQL, MongoDB, and Elasticsearch....</td>
+          <td style="color:#ef4444">0.100</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td>skills</td>
+          <td title="Does the candidate have DevSecOps experience?">Does the candidate have DevSecOps experience?</td>
+          <td class="answer-cell" title="The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSec">The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSec...</td>
+          <td class="gt-cell" title="Yes, the candidate has experience with Docker, Kubernetes security, GitHub Actions, SonarQube, Trivy">Yes, the candidate has experience with Docker, Kubernetes security, GitHub Actions, SonarQube, Trivy...</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td>skills</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td class="answer-cell" title="Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack an">Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack an...</td>
+          <td class="gt-cell" title="Yes, Python is one of the candidate&#x27;s primary programming languages, used extensively for security t">Yes, Python is one of the candidate&#x27;s primary programming languages, used extensively for security t...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q033</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with penetration testing?">Does the candidate have experience with penetratio</td>
+          <td class="answer-cell" title="The candidate has experience with penetration testing, as indicated by their job description which i">The candidate has experience with penetration testing, as indicated by their job description which i...</td>
+          <td class="gt-cell" title="Yes, Dana is OSCP certified and performs penetration testing on cloud-native infrastructure at Cyber">Yes, Dana is OSCP certified and performs penetration testing on cloud-native infrastructure at Cyber...</td>
+          <td style="color:#ef4444">0.400</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td>skills</td>
+          <td title="Does the candidate have SIEM experience?">Does the candidate have SIEM experience?</td>
+          <td class="answer-cell" title="The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as w">The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as w...</td>
+          <td class="gt-cell" title="Yes, Dana has extensive SIEM experience with Splunk, Elastic SIEM, Suricata, Snort, and CrowdStrike ">Yes, Dana has extensive SIEM experience with Splunk, Elastic SIEM, Suricata, Snort, and CrowdStrike ...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td>skills</td>
+          <td title="What threat analysis experience does the candidate have?">What threat analysis experience does the candidate</td>
+          <td class="answer-cell" title="The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelli">The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelli...</td>
+          <td class="gt-cell" title="Extensive threat analysis including malware analysis with IDA Pro and Ghidra, custom YARA and Sigma ">Extensive threat analysis including malware analysis with IDA Pro and Ghidra, custom YARA and Sigma ...</td>
+          <td style="color:#eab308">0.700</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td>skills</td>
+          <td title="Does the candidate have identity and access management experience?">Does the candidate have identity and access manage</td>
+          <td class="answer-cell" title="The candidate has significant identity and access management (IAM) experience, as demonstrated by th">The candidate has significant identity and access management (IAM) experience, as demonstrated by th...</td>
+          <td class="gt-cell" title="Yes, Dana has experience with CyberArk PAM, HashiCorp Vault, OAuth 2.0, SAML, FIDO2, and SPIFFE/SPIR">Yes, Dana has experience with CyberArk PAM, HashiCorp Vault, OAuth 2.0, SAML, FIDO2, and SPIFFE/SPIR...</td>
+          <td style="color:#ef4444">0.300</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes</td>
+          <td class="answer-cell" title="The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, th">The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, th...</td>
+          <td class="gt-cell" title="Yes, Dana has Kubernetes security experience, using it in the zero-trust framework and as part of he">Yes, Dana has Kubernetes security experience, using it in the zero-trust framework and as part of he...</td>
+          <td style="color:#eab308">0.700</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td>skills</td>
+          <td title="What networking skills does the candidate have?">What networking skills does the candidate have?</td>
+          <td class="answer-cell" title="The candidate demonstrates strong networking skills, particularly in security and architecture. Key ">The candidate demonstrates strong networking skills, particularly in security and architecture. Key ...</td>
+          <td class="gt-cell" title="TCP/IP, DNS, TLS/SSL, VPN, Zero-Trust Architecture, and Micro-segmentation.">TCP/IP, DNS, TLS/SSL, VPN, Zero-Trust Architecture, and Micro-segmentation....</td>
+          <td style="color:#ef4444">0.200</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td>projects</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td class="answer-cell" title="The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)">The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)...</td>
+          <td class="gt-cell" title="Zero-Trust Network Architecture, Automated Threat Intelligence Platform, Red Team Automation Framewo">Zero-Trust Network Architecture, Automated Threat Intelligence Platform, Red Team Automation Framewo...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td>projects</td>
+          <td title="Tell me about the zero-trust architecture project.">Tell me about the zero-trust architecture project.</td>
+          <td class="answer-cell" title="The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at ">The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at ...</td>
+          <td class="gt-cell" title="Designed and implemented a zero-trust segmentation framework for enterprise identity platforms enfor">Designed and implemented a zero-trust segmentation framework for enterprise identity platforms enfor...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td>projects</td>
+          <td title="What was the outcome of the threat intelligence project?">What was the outcome of the threat intelligence pr</td>
+          <td class="answer-cell" title="The threat intelligence project resulted in the creation of an end-to-end platform that ingests over">The threat intelligence project resulted in the creation of an end-to-end platform that ingests over...</td>
+          <td class="gt-cell" title="The automated threat intelligence platform ingests 500K+ indicators of compromise daily from OSINT f">The automated threat intelligence platform ingests 500K+ indicators of compromise daily from OSINT f...</td>
+          <td style="color:#eab308">0.700</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td>projects</td>
+          <td title="What technologies were used in the red team automation project?">What technologies were used in the red team automa</td>
+          <td class="answer-cell" title="The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt St">The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt St...</td>
+          <td class="gt-cell" title="Python, Go, Cobalt Strike, and Docker.">Python, Go, Cobalt Strike, and Docker....</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td>projects</td>
+          <td title="What is the candidate&#x27;s most significant project?">What is the candidate&#x27;s most significant project?</td>
+          <td class="answer-cell" title="The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust networ">The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust networ...</td>
+          <td class="gt-cell" title="The Zero-Trust Network Architecture at CyberArk, which enforces least-privilege access across 50+ mi">The Zero-Trust Network Architecture at CyberArk, which enforces least-privilege access across 50+ mi...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td>projects</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source proje</td>
+          <td class="answer-cell" title="The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an o">The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an o...</td>
+          <td class="gt-cell" title="Yes, Dana created CloudSec Scanner, an open-source cloud security misconfiguration scanner for AWS a">Yes, Dana created CloudSec Scanner, an open-source cloud security misconfiguration scanner for AWS a...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td>projects</td>
+          <td title="What systems has the candidate built?">What systems has the candidate built?</td>
+          <td class="answer-cell" title="The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+  ">The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+  ...</td>
+          <td class="gt-cell" title="Zero-trust network segmentation framework, automated threat intelligence platform (500K+ IOCs/day), ">Zero-trust network segmentation framework, automated threat intelligence platform (500K+ IOCs/day), ...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td>projects</td>
+          <td title="Does the candidate have red team experience?">Does the candidate have red team experience?</td>
+          <td class="answer-cell" title="The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of ">The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of ...</td>
+          <td class="gt-cell" title="Yes, Dana leads red team operations at CyberArk, built a red team automation framework for simulatin">Yes, Dana leads red team operations at CyberArk, built a red team automation framework for simulatin...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td>projects</td>
+          <td title="Has the candidate worked on any research projects?">Has the candidate worked on any research projects?</td>
+          <td class="answer-cell" title="The candidate has been involved in several research projects, as detailed in the provided documents:">The candidate has been involved in several research projects, as detailed in the provided documents:...</td>
+          <td class="gt-cell" title="Yes, Dana&#x27;s master&#x27;s thesis on Adversarial ML Attacks on Network IDS demonstrated 85% evasion rate a">Yes, Dana&#x27;s master&#x27;s thesis on Adversarial ML Attacks on Network IDS demonstrated 85% evasion rate a...</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td>projects</td>
+          <td title="What is the scale of systems the candidate has worked with?">What is the scale of systems the candidate has wor</td>
+          <td class="answer-cell" title="The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Arch">The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Arch...</td>
+          <td class="gt-cell" title="Dana has worked with systems ingesting 500K+ IOCs daily, zero-trust frameworks covering 50+ microser">Dana has worked with systems ingesting 500K+ IOCs daily, zero-trust frameworks covering 50+ microser...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td>certifications</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td class="answer-cell" title="The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP">The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP...</td>
+          <td class="gt-cell" title="OSCP — Offensive Security Certified Professional (June 2021), CISSP — Certified Information Systems ">OSCP — Offensive Security Certified Professional (June 2021), CISSP — Certified Information Systems ...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td>certifications</td>
+          <td title="Does the candidate have an OSCP certification?">Does the candidate have an OSCP certification?</td>
+          <td class="answer-cell" title="Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obt">Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obt...</td>
+          <td class="gt-cell" title="Yes, Dana holds the OSCP (Offensive Security Certified Professional) certification, obtained in June">Yes, Dana holds the OSCP (Offensive Security Certified Professional) certification, obtained in June...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td>certifications</td>
+          <td title="Does the candidate have a CISSP certification?">Does the candidate have a CISSP certification?</td>
+          <td class="answer-cell" title="The candidate does not have a CISSP certification. The search of their documents revealed only an OS">The candidate does not have a CISSP certification. The search of their documents revealed only an OS...</td>
+          <td class="gt-cell" title="Yes, Dana holds the CISSP (Certified Information Systems Security Professional) certification from I">Yes, Dana holds the CISSP (Certified Information Systems Security Professional) certification from I...</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td>certifications</td>
+          <td title="When did the candidate get their AWS security certification?">When did the candidate get their AWS security cert</td>
+          <td class="answer-cell" title="The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The ">The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The ...</td>
+          <td class="gt-cell" title="September 2022.">September 2022....</td>
+          <td style="color:#ef4444">0.000</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td>certifications</td>
+          <td title="Does the candidate have any management certifications?">Does the candidate have any management certificati</td>
+          <td class="answer-cell" title="The candidate does not hold any management certifications. The documents mention technical certifica">The candidate does not hold any management certifications. The documents mention technical certifica...</td>
+          <td class="gt-cell" title="Dana does not hold a specific management certification, but she has the CISSP which covers security ">Dana does not hold a specific management certification, but she has the CISSP which covers security ...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q054</td>
+          <td>preferences</td>
+          <td title="What is the candidate&#x27;s salary expectation?">What is the candidate&#x27;s salary expectation?</td>
+          <td class="answer-cell" title="The candidate&#x27;s monthly salary expectation is **45,000 ILS**.">The candidate&#x27;s monthly salary expectation is **45,000 ILS**....</td>
+          <td class="gt-cell" title="45,000 ILS per month.">45,000 ILS per month....</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q055</td>
+          <td>preferences</td>
+          <td title="Where does the candidate prefer to work?">Where does the candidate prefer to work?</td>
+          <td class="answer-cell" title="The candidate prefers to work in Haifa, Israel.">The candidate prefers to work in Haifa, Israel....</td>
+          <td class="gt-cell" title="Haifa, Israel.">Haifa, Israel....</td>
+          <td style="color:#eab308">0.700</td>
+        </tr>
+        <tr>
+          <td>q056</td>
+          <td>preferences</td>
+          <td title="When is the candidate available to start?">When is the candidate available to start?</td>
+          <td class="answer-cell" title="The candidate is available to start in **August 2026**.">The candidate is available to start in **August 2026**....</td>
+          <td class="gt-cell" title="August 2026.">August 2026....</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q057</td>
+          <td>preferences</td>
+          <td title="Does the candidate prefer remote, hybrid, or onsite work?">Does the candidate prefer remote, hybrid, or onsit</td>
+          <td class="answer-cell" title="The candidate prefers hybrid work arrangements.">The candidate prefers hybrid work arrangements....</td>
+          <td class="gt-cell" title="Hybrid.">Hybrid....</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q058</td>
+          <td>preferences</td>
+          <td title="Is the candidate open to relocation?">Is the candidate open to relocation?</td>
+          <td class="answer-cell" title="The candidate is not open to relocation.">The candidate is not open to relocation....</td>
+          <td class="gt-cell" title="No.">No....</td>
+          <td style="color:#ef4444">0.100</td>
+        </tr>
+        <tr>
+          <td>q059</td>
+          <td>preferences</td>
+          <td title="What job title is the candidate looking for?">What job title is the candidate looking for?</td>
+          <td class="answer-cell" title="The candidate is looking for a **Principal Security Engineer** role.">The candidate is looking for a **Principal Security Engineer** role....</td>
+          <td class="gt-cell" title="Principal Security Engineer.">Principal Security Engineer....</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q060</td>
+          <td>preferences</td>
+          <td title="Would the candidate work fully onsite?">Would the candidate work fully onsite?</td>
+          <td class="answer-cell" title="The candidate&#x27;s work type is listed as **Hybrid**, which means they are not available for full-time ">The candidate&#x27;s work type is listed as **Hybrid**, which means they are not available for full-time ...</td>
+          <td class="gt-cell" title="The candidate prefers hybrid work and is not open to relocation, so a fully onsite role would need t">The candidate prefers hybrid work and is not open to relocation, so a fully onsite role would need t...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q061</td>
+          <td>preferences</td>
+          <td title="When can the candidate start working?">When can the candidate start working?</td>
+          <td class="answer-cell" title="The candidate is available to start working in August 2026.">The candidate is available to start working in August 2026....</td>
+          <td class="gt-cell" title="August 2026.">August 2026....</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q066</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s blood type?">What is the candidate&#x27;s blood type?</td>
+          <td class="answer-cell" title="The candidate&#x27;s blood type is not mentioned in the provided documents or structured data.">The candidate&#x27;s blood type is not mentioned in the provided documents or structured data....</td>
+          <td class="gt-cell" title="I don&#x27;t have information about the candidate&#x27;s blood type. This is not part of the professional prof">I don&#x27;t have information about the candidate&#x27;s blood type. This is not part of the professional prof...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q067</td>
+          <td>negative</td>
+          <td title="What are the candidate&#x27;s political opinions?">What are the candidate&#x27;s political opinions?</td>
+          <td class="answer-cell" title="The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or struc">The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or struc...</td>
+          <td class="gt-cell" title="I don&#x27;t have information about the candidate&#x27;s political views. I can only provide professional and ">I don&#x27;t have information about the candidate&#x27;s political views. I can only provide professional and ...</td>
+          <td style="color:#22c55e">1.000</td>
+        </tr>
+        <tr>
+          <td>q068</td>
+          <td>negative</td>
+          <td title="Is the candidate married?">Is the candidate married?</td>
+          <td class="answer-cell" title="The question about marital status is not covered by the structured data fields or the uploaded docum">The question about marital status is not covered by the structured data fields or the uploaded docum...</td>
+          <td class="gt-cell" title="I don&#x27;t have information about the candidate&#x27;s marital status. I can only share professional profile">I don&#x27;t have information about the candidate&#x27;s marital status. I can only share professional profile...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q069</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s religion?">What is the candidate&#x27;s religion?</td>
+          <td class="answer-cell" title="The candidate&#x27;s religion is not listed in the structured data fields, and there is no evidence of th">The candidate&#x27;s religion is not listed in the structured data fields, and there is no evidence of th...</td>
+          <td class="gt-cell" title="I don&#x27;t have information about the candidate&#x27;s religious beliefs. I can only provide professional an">I don&#x27;t have information about the candidate&#x27;s religious beliefs. I can only provide professional an...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q070</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s credit score?">What is the candidate&#x27;s credit score?</td>
+          <td class="answer-cell" title="The candidate&#x27;s credit score is not available in the provided information. I cannot access personal ">The candidate&#x27;s credit score is not available in the provided information. I cannot access personal ...</td>
+          <td class="gt-cell" title="I don&#x27;t have information about the candidate&#x27;s credit score. This is not part of the professional pr">I don&#x27;t have information about the candidate&#x27;s credit score. This is not part of the professional pr...</td>
+          <td style="color:#22c55e">0.900</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td>complex</td>
+          <td title="Is this candidate overqualified for a junior security analyst role?">Is this candidate overqualified for a junior secur</td>
+          <td class="answer-cell" title="The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in adv">The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in adv...</td>
+          <td class="gt-cell" title="Likely yes. With 5 years of experience, OSCP and CISSP certifications, a Master&#x27;s degree from the Te">Likely yes. With 5 years of experience, OSCP and CISSP certifications, a Master&#x27;s degree from the Te...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td>complex</td>
+          <td title="Would this candidate be a good fit for a remote security role in Europe?">Would this candidate be a good fit for a remote se</td>
+          <td class="answer-cell" title="The candidate has strong technical skills and experience in security, including expertise in zero-tr">The candidate has strong technical skills and experience in security, including expertise in zero-tr...</td>
+          <td class="gt-cell" title="Potentially challenging. Dana prefers hybrid work and is not open to relocation. However, she has st">Potentially challenging. Dana prefers hybrid work and is not open to relocation. However, she has st...</td>
+          <td style="color:#eab308">0.600</td>
+        </tr>
+        <tr>
+          <td>q073</td>
+          <td>complex</td>
+          <td title="Compare the candidate&#x27;s academic and professional experience.">Compare the candidate&#x27;s academic and professional </td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s in Computer Science from Technion - Israel Institute of Technology (2">The candidate holds a Master&#x27;s in Computer Science from Technion - Israel Institute of Technology (2...</td>
+          <td class="gt-cell" title="Academically, Dana earned an MSc in Computer Science from the Technion with a 92/100 GPA, specializi">Academically, Dana earned an MSc in Computer Science from the Technion with a 92/100 GPA, specializi...</td>
+          <td style="color:#eab308">0.500</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td>complex</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candid</td>
+          <td class="answer-cell" title="The candidate offers a rare combination of **offensive security expertise** and **architectural lead">The candidate offers a rare combination of **offensive security expertise** and **architectural lead...</td>
+          <td class="gt-cell" title="Dana combines offensive security expertise (OSCP, red team, pen testing) with defensive architecture">Dana combines offensive security expertise (OSCP, red team, pen testing) with defensive architecture...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td>complex</td>
+          <td title="Summarize why I should consider this candidate for a principal security engineer position.">Summarize why I should consider this candidate for</td>
+          <td class="answer-cell" title="The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:">The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:...</td>
+          <td class="gt-cell" title="Dana Levy is a strong candidate: 5 years of security experience, leads a red team of 4 at CyberArk, ">Dana Levy is a strong candidate: 5 years of security experience, leads a red team of 4 at CyberArk, ...</td>
+          <td style="color:#22c55e">0.800</td>
+        </tr></tbody>
+    </table>
+</div>
+
+<div class="component-section">
+<h2>4. Refusal Accuracy</h2>
+
+    
+    <div class="summary-stat"><strong style="color:#22c55e">95.8%</strong> Accuracy</div>
+    <div class="summary-stat"><strong style="color:#eab308">75.0%</strong> Precision</div>
+    <div class="summary-stat"><strong style="color:#eab308">60.0%</strong> Recall</div>
+    <div class="summary-stat"><strong style="color:#22c55e">0</strong> Hallucinations</div>
+    
+    <table style="width:auto;margin:1rem 0">
+      <thead>
+        <tr><th></th><th>Refused</th><th>Answered</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Should refuse</strong></td>
+          <td style="color:#22c55e">TP = 3</td>
+          <td style="color:#ef4444">FN = 2</td>
+        </tr>
+        <tr>
+          <td><strong>Should answer</strong></td>
+          <td style="color:#ef4444">FP = 1</td>
+          <td style="color:#22c55e">TN = 65</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    
+    <table>
+      <thead><tr><th>ID</th><th>Category</th><th>Question</th><th>Class</th><th>Refused</th><th>Halluc</th><th>Redirect</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>q060</td>
+          <td>preferences</td>
+          <td title="Would the candidate work fully onsite?">Would the candidate work fully onsite?</td>
+          <td style="color:#ef4444;font-weight:bold">FP</td>
+          <td>Yes</td>
+          <td></td>
+          <td>✓</td>
+          <td class="answer-cell" title="The candidate&#x27;s work type is listed as **Hybrid**, which means they are not available for full-time onsite work. They li">The candidate&#x27;s work type is listed as **Hybrid**, which means they are not available for full-time onsite work. They li...</td>
+        </tr>
+        <tr>
+          <td>q066</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s blood type?">What is the candidate&#x27;s blood type?</td>
+          <td style="color:#ef4444;font-weight:bold">FN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s blood type is not mentioned in the provided documents or structured data.">The candidate&#x27;s blood type is not mentioned in the provided documents or structured data....</td>
+        </tr>
+        <tr>
+          <td>q067</td>
+          <td>negative</td>
+          <td title="What are the candidate&#x27;s political opinions?">What are the candidate&#x27;s political opinions?</td>
+          <td style="color:#ef4444;font-weight:bold">FN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or structured data. The avai">The candidate&#x27;s political opinions are not mentioned or addressed in the provided documents or structured data. The avai...</td>
+        </tr>
+        <tr>
+          <td>q068</td>
+          <td>negative</td>
+          <td title="Is the candidate married?">Is the candidate married?</td>
+          <td style="color:#22c55e;font-weight:bold">TP</td>
+          <td>Yes</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The question about marital status is not covered by the structured data fields or the uploaded documents. I don&#x27;t have a">The question about marital status is not covered by the structured data fields or the uploaded documents. I don&#x27;t have a...</td>
+        </tr>
+        <tr>
+          <td>q070</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s credit score?">What is the candidate&#x27;s credit score?</td>
+          <td style="color:#22c55e;font-weight:bold">TP</td>
+          <td>Yes</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s credit score is not available in the provided information. I cannot access personal financial data or cr">The candidate&#x27;s credit score is not available in the provided information. I cannot access personal financial data or cr...</td>
+        </tr>
+        <tr>
+          <td>q069</td>
+          <td>negative</td>
+          <td title="What is the candidate&#x27;s religion?">What is the candidate&#x27;s religion?</td>
+          <td style="color:#22c55e;font-weight:bold">TP</td>
+          <td>Yes</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s religion is not listed in the structured data fields, and there is no evidence of this information in th">The candidate&#x27;s religion is not listed in the structured data fields, and there is no evidence of this information in th...</td>
+        </tr>
+        <tr>
+          <td>q001</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s full name?">What is the candidate&#x27;s full name?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s full name is **Dana Levy**.">The candidate&#x27;s full name is **Dana Levy**....</td>
+        </tr>
+        <tr>
+          <td>q002</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s email address?">What is the candidate&#x27;s email address?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s email address is **dana.levy@gmail.com**.">The candidate&#x27;s email address is **dana.levy@gmail.com**....</td>
+        </tr>
+        <tr>
+          <td>q009</td>
+          <td>education</td>
+          <td title="What degree does the candidate hold?">What degree does the candidate hold?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Technology, graduated ">The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Technology, graduated ...</td>
+        </tr>
+        <tr>
+          <td>q010</td>
+          <td>education</td>
+          <td title="What did the candidate study?">What did the candidate study?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate studied **Master&#x27;s in Computer Science** at the **Technion - Israel Institute of Technology**, graduating ">The candidate studied **Master&#x27;s in Computer Science** at the **Technion - Israel Institute of Technology**, graduating ...</td>
+        </tr>
+        <tr>
+          <td>q011</td>
+          <td>education</td>
+          <td title="Where did the candidate study?">Where did the candidate study?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate studied at Technion - Israel Institute of Technology, where they earned a Master&#x27;s in Computer Science (20">The candidate studied at Technion - Israel Institute of Technology, where they earned a Master&#x27;s in Computer Science (20...</td>
+        </tr>
+        <tr>
+          <td>q012</td>
+          <td>education</td>
+          <td title="When did the candidate graduate?">When did the candidate graduate?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate graduated with their Master&#x27;s in Computer Science from Technion - Israel Institute of Technology in **2020">The candidate graduated with their Master&#x27;s in Computer Science from Technion - Israel Institute of Technology in **2020...</td>
+        </tr>
+        <tr>
+          <td>q005</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s GitHub profile URL?">What is the candidate&#x27;s GitHub profile URL?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s GitHub profile URL is [https://github.com/danalevy](https://github.com/danalevy).">The candidate&#x27;s GitHub profile URL is [https://github.com/danalevy](https://github.com/danalevy)....</td>
+        </tr>
+        <tr>
+          <td>q006</td>
+          <td>personal</td>
+          <td title="How can I contact the candidate?">How can I contact the candidate?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s email address is **dana.levy@gmail.com**. If you need additional contact details (e.g., phone number, Li">The candidate&#x27;s email address is **dana.levy@gmail.com**. If you need additional contact details (e.g., phone number, Li...</td>
+        </tr>
+        <tr>
+          <td>q003</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s phone number?">What is the candidate&#x27;s phone number?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s phone number is **+972 52-987-6543**.">The candidate&#x27;s phone number is **+972 52-987-6543**....</td>
+        </tr>
+        <tr>
+          <td>q004</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s LinkedIn profile?">What is the candidate&#x27;s LinkedIn profile?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s LinkedIn profile is [https://linkedin.com/in/danalevy](https://linkedin.com/in/danalevy).">The candidate&#x27;s LinkedIn profile is [https://linkedin.com/in/danalevy](https://linkedin.com/in/danalevy)....</td>
+        </tr>
+        <tr>
+          <td>q017</td>
+          <td>experience</td>
+          <td title="How many years of experience does the candidate have?">How many years of experience does the candidate ha</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has **5 years of experience**.">The candidate has **5 years of experience**....</td>
+        </tr>
+        <tr>
+          <td>q018</td>
+          <td>experience</td>
+          <td title="What is the candidate&#x27;s current role?">What is the candidate&#x27;s current role?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s current role is **Senior Security Engineer at CyberArk**.">The candidate&#x27;s current role is **Senior Security Engineer at CyberArk**....</td>
+        </tr>
+        <tr>
+          <td>q019</td>
+          <td>experience</td>
+          <td title="Describe the candidate&#x27;s current job responsibilities.">Describe the candidate&#x27;s current job responsibilit</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s current job responsibilities include leading offensive security research, designing zero-trust architect">The candidate&#x27;s current job responsibilities include leading offensive security research, designing zero-trust architect...</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td>experience</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to the present. The pr">The candidate has previously worked at **CyberArk** as a Senior Security Engineer from March 2022 to the present. The pr...</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td>experience</td>
+          <td title="What was the candidate&#x27;s first job?">What was the candidate&#x27;s first job?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The provided documents do not mention the candidate&#x27;s first job. The available information focuses on their current role">The provided documents do not mention the candidate&#x27;s first job. The available information focuses on their current role...</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td>experience</td>
+          <td title="Describe the candidate&#x27;s work at Check Point.">Describe the candidate&#x27;s work at Check Point.</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 to February 2022 in T">The candidate worked as a **Security Analyst** at Check Point Software Technologies from July 2020 to February 2022 in T...</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td>experience</td>
+          <td title="Has the candidate held a leadership role?">Has the candidate held a leadership role?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufman, VP of Security Re">The candidate has held leadership roles. According to the recommendation letter from Dr. Alon Kaufman, VP of Security Re...</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td>experience</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environments**. Their roles">The candidate has worked in the **cybersecurity industry**, specifically within **enterprise environments**. Their roles...</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td>experience</td>
+          <td title="What is a key technical achievement the candidate accomplished?">What is a key technical achievement the candidate </td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network architecture framework**">The candidate&#x27;s key technical achievement was designing and implementing a **zero-trust network architecture framework**...</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td>experience</td>
+          <td title="Has the candidate had any teaching experience?">Has the candidate had any teaching experience?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has demonstrated teaching and mentoring experience through her role as a team leader and trainer. Document">The candidate has demonstrated teaching and mentoring experience through her role as a team leader and trainer. Document...</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td>skills</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are prominently featured ">The candidate knows **Go** and **Python**. These are explicitly listed in their tech stack and are prominently featured ...</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td>skills</td>
+          <td title="What are the candidate&#x27;s primary security tools and frameworks?">What are the candidate&#x27;s primary security tools an</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework (CyberArk)**:  
+   ">The candidate&#x27;s primary security tools and frameworks include:  
+
+1. **Red Team Automation Framework (CyberArk)**:  
+   ...</td>
+        </tr>
+        <tr>
+          <td>q013</td>
+          <td>education</td>
+          <td title="What is the candidate&#x27;s GPA?">What is the candidate&#x27;s GPA?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s GPA is 92/100.">The candidate&#x27;s GPA is 92/100....</td>
+        </tr>
+        <tr>
+          <td>q014</td>
+          <td>education</td>
+          <td title="Tell me about the candidate&#x27;s educational background.">Tell me about the candidate&#x27;s educational backgrou</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Technology, graduated ">The candidate holds a Master&#x27;s degree in Computer Science from the Technion - Israel Institute of Technology, graduated ...</td>
+        </tr>
+        <tr>
+          <td>q007</td>
+          <td>personal</td>
+          <td title="What country is the candidate based in?">What country is the candidate based in?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate is based in Israel, with a country code of +972.">The candidate is based in Israel, with a country code of +972....</td>
+        </tr>
+        <tr>
+          <td>q008</td>
+          <td>personal</td>
+          <td title="What is the candidate&#x27;s country dialing code?">What is the candidate&#x27;s country dialing code?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s country dialing code is **+972**.">The candidate&#x27;s country dialing code is **+972**....</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td>skills</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack and mention it as a ke">Yes, the candidate knows Python. The documents explicitly list Python as part of their tech stack and mention it as a ke...</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td>skills</td>
+          <td title="Does the candidate have DevSecOps experience?">Does the candidate have DevSecOps experience?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSecOps&quot; isn&#x27;t explicitl">The candidate&#x27;s experience aligns with DevSecOps principles in several ways, though the term &quot;DevSecOps&quot; isn&#x27;t explicitl...</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td>skills</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platform, which ingests a">The candidate has worked with **Elasticsearch** as part of their Automated Threat Intelligence Platform, which ingests a...</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td>skills</td>
+          <td title="What cloud platforms does the candidate have experience with?">What cloud platforms does the candidate have exper</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, Boto3, and S3 bucket">The candidate has experience with the following cloud platforms:  
+- **AWS** (via AWS Security Hub, Boto3, and S3 bucket...</td>
+        </tr>
+        <tr>
+          <td>q033</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with penetration testing?">Does the candidate have experience with penetratio</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has experience with penetration testing, as indicated by their job description which includes &quot;conducting ">The candidate has experience with penetration testing, as indicated by their job description which includes &quot;conducting ...</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td>skills</td>
+          <td title="Does the candidate have SIEM experience?">Does the candidate have SIEM experience?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as well as related tools">The candidate has extensive SIEM experience, specifically with **Splunk** and **Elastic SIEM**, as well as related tools...</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td>skills</td>
+          <td title="What threat analysis experience does the candidate have?">What threat analysis experience does the candidate</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelligence Platform**: De">The candidate has significant threat analysis experience, including:  
+1. **Automated Threat Intelligence Platform**: De...</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td>skills</td>
+          <td title="Does the candidate have identity and access management experience?">Does the candidate have identity and access manage</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has significant identity and access management (IAM) experience, as demonstrated by their work on the **Ze">The candidate has significant identity and access management (IAM) experience, as demonstrated by their work on the **Ze...</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td>projects</td>
+          <td title="What was the outcome of the threat intelligence project?">What was the outcome of the threat intelligence pr</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The threat intelligence project resulted in the creation of an end-to-end platform that ingests over **500,000 indicator">The threat intelligence project resulted in the creation of an end-to-end platform that ingests over **500,000 indicator...</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td>projects</td>
+          <td title="What technologies were used in the red team automation project?">What technologies were used in the red team automa</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt Strike**, and **Docker">The red team automation project utilized the following technologies: **Python**, **Go**, **Cobalt Strike**, and **Docker...</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td>projects</td>
+          <td title="What is the candidate&#x27;s most significant project?">What is the candidate&#x27;s most significant project?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust network architecture frame">The candidate&#x27;s most significant project, as highlighted in the document, is the **zero-trust network architecture frame...</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td>projects</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source proje</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an open-source tool for ">The candidate has contributed to open-source projects. They developed the **CloudSec Scanner**, an open-source tool for ...</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td>skills</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, they designed a zero-t">The candidate has experience with Kubernetes. In the **Zero-Trust Network Architecture** project, they designed a zero-t...</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td>skills</td>
+          <td title="What networking skills does the candidate have?">What networking skills does the candidate have?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate demonstrates strong networking skills, particularly in security and architecture. Key highlights include:
+">The candidate demonstrates strong networking skills, particularly in security and architecture. Key highlights include:
+...</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td>projects</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)**  
+   - Designed a">The candidate has worked on the following projects:
+
+1. **Zero-Trust Network Architecture (CyberArk)**  
+   - Designed a...</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td>projects</td>
+          <td title="Tell me about the zero-trust architecture project.">Tell me about the zero-trust architecture project.</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at CyberArk, focusing o">The candidate led the design and implementation of a **Zero-Trust Network Architecture** project at CyberArk, focusing o...</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td>projects</td>
+          <td title="What is the scale of systems the candidate has worked with?">What is the scale of systems the candidate has wor</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Architecture**: Designed">The candidate has worked with systems at significant scale, including:
+
+1. **Zero-Trust Network Architecture**: Designed...</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td>projects</td>
+          <td title="Has the candidate worked on any research projects?">Has the candidate worked on any research projects?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has been involved in several research projects, as detailed in the provided documents:
+
+1. **Zero-Trust Ne">The candidate has been involved in several research projects, as detailed in the provided documents:
+
+1. **Zero-Trust Ne...</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td>projects</td>
+          <td title="Does the candidate have red team experience?">Does the candidate have red team experience?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of leading red team ope">The candidate has significant red team experience. The documents state:  
+- &quot;Proven track record of leading red team ope...</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td>projects</td>
+          <td title="What systems has the candidate built?">What systems has the candidate built?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+   - **Description**: ">The candidate has built the following systems:  
+
+1. **Automated Threat Intelligence Platform**  
+   - **Description**: ...</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td>certifications</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP)** – June 2021, Off">The candidate holds the following certification:  
+**Offensive Security Certified Professional (OSCP)** – June 2021, Off...</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td>certifications</td>
+          <td title="Does the candidate have an OSCP certification?">Does the candidate have an OSCP certification?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obtained in June 2021 f">Yes, the candidate holds the **Offensive Security Certified Professional (OSCP)** certification, obtained in June 2021 f...</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td>certifications</td>
+          <td title="Does the candidate have a CISSP certification?">Does the candidate have a CISSP certification?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate does not have a CISSP certification. The search of their documents revealed only an OSCP (Offensive Securi">The candidate does not have a CISSP certification. The search of their documents revealed only an OSCP (Offensive Securi...</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td>certifications</td>
+          <td title="When did the candidate get their AWS security certification?">When did the candidate get their AWS security cert</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The provided information">The candidate&#x27;s documents do not specify the date they obtained the AWS Security certification. The provided information...</td>
+        </tr>
+        <tr>
+          <td>q056</td>
+          <td>preferences</td>
+          <td title="When is the candidate available to start?">When is the candidate available to start?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate is available to start in **August 2026**.">The candidate is available to start in **August 2026**....</td>
+        </tr>
+        <tr>
+          <td>q055</td>
+          <td>preferences</td>
+          <td title="Where does the candidate prefer to work?">Where does the candidate prefer to work?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate prefers to work in Haifa, Israel.">The candidate prefers to work in Haifa, Israel....</td>
+        </tr>
+        <tr>
+          <td>q054</td>
+          <td>preferences</td>
+          <td title="What is the candidate&#x27;s salary expectation?">What is the candidate&#x27;s salary expectation?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s monthly salary expectation is **45,000 ILS**.">The candidate&#x27;s monthly salary expectation is **45,000 ILS**....</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td>certifications</td>
+          <td title="Does the candidate have any management certifications?">Does the candidate have any management certificati</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate does not hold any management certifications. The documents mention technical certifications like OSCP (Off">The candidate does not hold any management certifications. The documents mention technical certifications like OSCP (Off...</td>
+        </tr>
+        <tr>
+          <td>q059</td>
+          <td>preferences</td>
+          <td title="What job title is the candidate looking for?">What job title is the candidate looking for?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate is looking for a **Principal Security Engineer** role.">The candidate is looking for a **Principal Security Engineer** role....</td>
+        </tr>
+        <tr>
+          <td>q058</td>
+          <td>preferences</td>
+          <td title="Is the candidate open to relocation?">Is the candidate open to relocation?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate is not open to relocation.">The candidate is not open to relocation....</td>
+        </tr>
+        <tr>
+          <td>q015</td>
+          <td>education</td>
+          <td title="What was the candidate&#x27;s thesis about?">What was the candidate&#x27;s thesis about?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Systems (IDS)**. The r">The candidate&#x27;s thesis focused on **Adversarial Machine Learning (ML) against Intrusion Detection Systems (IDS)**. The r...</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td>education</td>
+          <td title="Did the candidate receive any academic honors?">Did the candidate receive any academic honors?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However, their Master of Sc">The candidate&#x27;s academic records do not explicitly mention receiving formal academic honors. However, their Master of Sc...</td>
+        </tr>
+        <tr>
+          <td>q061</td>
+          <td>preferences</td>
+          <td title="When can the candidate start working?">When can the candidate start working?</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate is available to start working in August 2026.">The candidate is available to start working in August 2026....</td>
+        </tr>
+        <tr>
+          <td>q057</td>
+          <td>preferences</td>
+          <td title="Does the candidate prefer remote, hybrid, or onsite work?">Does the candidate prefer remote, hybrid, or onsit</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate prefers hybrid work arrangements.">The candidate prefers hybrid work arrangements....</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td>complex</td>
+          <td title="Is this candidate overqualified for a junior security analyst role?">Is this candidate overqualified for a junior secur</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in advanced areas like zer">The candidate has **5 years of experience** as a **Senior Security Engineer**, with expertise in advanced areas like zer...</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td>complex</td>
+          <td title="Would this candidate be a good fit for a remote security role in Europe?">Would this candidate be a good fit for a remote se</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate has strong technical skills and experience in security, including expertise in zero-trust architecture, th">The candidate has strong technical skills and experience in security, including expertise in zero-trust architecture, th...</td>
+        </tr>
+        <tr>
+          <td>q073</td>
+          <td>complex</td>
+          <td title="Compare the candidate&#x27;s academic and professional experience.">Compare the candidate&#x27;s academic and professional </td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate holds a Master&#x27;s in Computer Science from Technion - Israel Institute of Technology (2020) with a GPA of 9">The candidate holds a Master&#x27;s in Computer Science from Technion - Israel Institute of Technology (2020) with a GPA of 9...</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td>complex</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candid</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate offers a rare combination of **offensive security expertise** and **architectural leadership**, blending t">The candidate offers a rare combination of **offensive security expertise** and **architectural leadership**, blending t...</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td>complex</td>
+          <td title="Summarize why I should consider this candidate for a principal security engineer position.">Summarize why I should consider this candidate for</td>
+          <td style="color:#22c55e;font-weight:bold">TN</td>
+          <td>No</td>
+          <td></td>
+          <td></td>
+          <td class="answer-cell" title="The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:  
+
+1. **Technical E">The candidate, Dana Levy, stands out as an exceptional principal security engineer candidate due to:  
+
+1. **Technical E...</td>
+        </tr></tbody>
+    </table>
+</div>
+
+<div class="component-section">
+<h2>5. Ingestion Quality</h2>
+
+        <div style="margin:1rem 0;padding:1rem;background:#1e293b;border-radius:8px;border:1px solid #334155">
+          <h3 style="color:#f8fafc;font-size:1.1rem;margin-bottom:0.8rem">Dana Levy</h3>
+          <h4 style="color:#94a3b8;font-size:0.9rem">Chunks</h4>
+          
+        <div class="summary-stat"><strong>27</strong> Chunks</div>
+        <div class="summary-stat"><strong>233.6</strong> Avg Size</div>
+        <div class="summary-stat"><strong>34-1068</strong> Range</div>
+        <div class="summary-stat"><strong>0</strong> Tiny</div>
+        
+            <table style="margin-top:0.5rem">
+              <thead><tr><th>Doc Type</th><th>Chunks</th><th>Avg Size</th><th>Min</th><th>Max</th></tr></thead>
+              <tbody><tr><td>cv</td><td>15</td><td>213.1</td><td>34</td><td>414</td></tr><tr><td>readme</td><td>9</td><td>150.0</td><td>36</td><td>315</td></tr><tr><td>recommendation</td><td>3</td><td>586.3</td><td>53</td><td>1068</td></tr></tbody>
+            </table>
+            
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Sections</h4>
+          <div class="summary-stat"><strong style="color:#eab308">77.8%</strong> Coverage</div><div class="summary-stat">Missing: Technical Skills, Work Experience</div>
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Summaries</h4>
+          
+        <div class="summary-stat"><strong style="color:#22c55e">1.000</strong> Summary</div>
+        <div class="summary-stat"><strong>5/5</strong> Checklist</div>
+        
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Embeddings</h4>
+          <div class="summary-stat"><strong style="color:#22c55e">90%</strong> Embedding Hit Rate</div>
+          <h4 style="color:#94a3b8;font-size:0.9rem;margin-top:0.8rem">Duplicates</h4>
+          
+        <div class="summary-stat"><strong>0</strong> Exact Dups</div>
+        <div class="summary-stat"><strong>0</strong> Near Dups</div>
+        
+        </div>
+        
+</div>
+
+<div class="component-section">
+<h2>6. Router Accuracy</h2>
+
+    
+    <div class="summary-stat"><strong style="color:#22c55e">34/39</strong> Correct (87.2%)</div>
+    <div class="summary-stat"><strong>0</strong> False Broad</div>
+    <div class="summary-stat"><strong>5</strong> False Specific</div>
+    
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Expected</th><th>Actual</th><th>Correct</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>q015</td>
+          <td title="What was the candidate&#x27;s thesis about?">What was the candidate&#x27;s thesis about?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q016</td>
+          <td title="Did the candidate receive any academic honors?">Did the candidate receive any academic honors?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q020</td>
+          <td title="Where has the candidate worked previously?">Where has the candidate worked previously?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q021</td>
+          <td title="What was the candidate&#x27;s first job?">What was the candidate&#x27;s first job?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q022</td>
+          <td title="Describe the candidate&#x27;s work at Check Point.">Describe the candidate&#x27;s work at Check Point.</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q023</td>
+          <td title="Has the candidate held a leadership role?">Has the candidate held a leadership role?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q024</td>
+          <td title="What industries has the candidate worked in?">What industries has the candidate worked in?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q025</td>
+          <td title="What is a key technical achievement the candidate accomplish">What is a key technical achievement the candidate accomplish</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q026</td>
+          <td title="Has the candidate had any teaching experience?">Has the candidate had any teaching experience?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q027</td>
+          <td title="What programming languages does the candidate know?">What programming languages does the candidate know?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q028</td>
+          <td title="What are the candidate&#x27;s primary security tools and framewor">What are the candidate&#x27;s primary security tools and framewor</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q029</td>
+          <td title="What cloud platforms does the candidate have experience with">What cloud platforms does the candidate have experience with</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q030</td>
+          <td title="What databases has the candidate worked with?">What databases has the candidate worked with?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q031</td>
+          <td title="Does the candidate have DevSecOps experience?">Does the candidate have DevSecOps experience?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q032</td>
+          <td title="Does the candidate know Python?">Does the candidate know Python?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q034</td>
+          <td title="Does the candidate have SIEM experience?">Does the candidate have SIEM experience?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q035</td>
+          <td title="What threat analysis experience does the candidate have?">What threat analysis experience does the candidate have?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q036</td>
+          <td title="Does the candidate have identity and access management exper">Does the candidate have identity and access management exper</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q037</td>
+          <td title="Does the candidate have experience with Kubernetes?">Does the candidate have experience with Kubernetes?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q038</td>
+          <td title="What networking skills does the candidate have?">What networking skills does the candidate have?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q039</td>
+          <td title="What projects has the candidate worked on?">What projects has the candidate worked on?</td>
+          <td>broad</td>
+          <td style="color:#ef4444">specific</td>
+          <td style="color:#ef4444">✗</td>
+        </tr>
+        <tr>
+          <td>q040</td>
+          <td title="Tell me about the zero-trust architecture project.">Tell me about the zero-trust architecture project.</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q041</td>
+          <td title="What was the outcome of the threat intelligence project?">What was the outcome of the threat intelligence project?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q042</td>
+          <td title="What technologies were used in the red team automation proje">What technologies were used in the red team automation proje</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q043</td>
+          <td title="What is the candidate&#x27;s most significant project?">What is the candidate&#x27;s most significant project?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q044</td>
+          <td title="Has the candidate contributed to open-source projects?">Has the candidate contributed to open-source projects?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q045</td>
+          <td title="What systems has the candidate built?">What systems has the candidate built?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q046</td>
+          <td title="Does the candidate have red team experience?">Does the candidate have red team experience?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q047</td>
+          <td title="Has the candidate worked on any research projects?">Has the candidate worked on any research projects?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q048</td>
+          <td title="What is the scale of systems the candidate has worked with?">What is the scale of systems the candidate has worked with?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q049</td>
+          <td title="What certifications does the candidate have?">What certifications does the candidate have?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q050</td>
+          <td title="Does the candidate have an OSCP certification?">Does the candidate have an OSCP certification?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q051</td>
+          <td title="Does the candidate have a CISSP certification?">Does the candidate have a CISSP certification?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q052</td>
+          <td title="When did the candidate get their AWS security certification?">When did the candidate get their AWS security certification?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q053</td>
+          <td title="Does the candidate have any management certifications?">Does the candidate have any management certifications?</td>
+          <td>specific</td>
+          <td style="color:#22c55e">specific</td>
+          <td style="color:#22c55e">✓</td>
+        </tr>
+        <tr>
+          <td>q071</td>
+          <td title="Is this candidate overqualified for a junior security analys">Is this candidate overqualified for a junior security analys</td>
+          <td>broad</td>
+          <td style="color:#ef4444">specific</td>
+          <td style="color:#ef4444">✗</td>
+        </tr>
+        <tr>
+          <td>q072</td>
+          <td title="Would this candidate be a good fit for a remote security rol">Would this candidate be a good fit for a remote security rol</td>
+          <td>broad</td>
+          <td style="color:#ef4444">specific</td>
+          <td style="color:#ef4444">✗</td>
+        </tr>
+        <tr>
+          <td>q074</td>
+          <td title="What unique combination of skills does this candidate offer?">What unique combination of skills does this candidate offer?</td>
+          <td>broad</td>
+          <td style="color:#ef4444">specific</td>
+          <td style="color:#ef4444">✗</td>
+        </tr>
+        <tr>
+          <td>q075</td>
+          <td title="Summarize why I should consider this candidate for a princip">Summarize why I should consider this candidate for a princip</td>
+          <td>broad</td>
+          <td style="color:#ef4444">specific</td>
+          <td style="color:#ef4444">✗</td>
+        </tr></tbody>
+    </table>
+</div>
+
+</body>
+</html>

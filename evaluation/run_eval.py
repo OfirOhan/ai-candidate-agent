@@ -31,7 +31,7 @@ DRY_RUN = False
 REUSE_PIPELINE_RESULTS = False
 
 # Number of chunks the retriever returns
-TOP_K = 3
+TOP_K = 5
 
 # Ollama model used as LLM judge
 JUDGE_MODEL = "qwen3"

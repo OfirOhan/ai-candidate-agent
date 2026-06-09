@@ -14,7 +14,7 @@ REPORTS_DIR = Path(__file__).parent / "reports"
 
 
 def select_rag_results(pipeline_results: list[dict]) -> list[dict]:
-    """Questions that should enter the RAG quality metrics (RAGAS + hallucination).
+    """Questions that should enter the RAG quality metrics (RAGAS).
 
     Single source of truth for the RAG filter so the harness (which scores) and
     the report (which aligns per-question rows to the score DataFrames by index)
@@ -107,18 +107,6 @@ def _build_overview_section(pipeline_results, eval_results) -> str:
       <div class="metric-label">RAG: {label}</div>
     </div>"""
 
-    # Hallucination mean (RAG-only). Higher = worse, so color on the inverted scale.
-    hallucination_df = eval_results.get("hallucination_df")
-    if hallucination_df is not None and "deepeval_hallucination" in hallucination_df.columns:
-        vals = hallucination_df["deepeval_hallucination"].dropna()
-        if len(vals) > 0:
-            mean_val = vals.mean()
-            cards += f"""
-    <div class="metric-card">
-      <div class="metric-score" style="color:{_score_color(1 - mean_val)}">{_format_score(mean_val)}</div>
-      <div class="metric-label">RAG: Hallucination (lower is better)</div>
-    </div>"""
-
     # GEval mean
     geval_df = eval_results.get("geval_df")
     if geval_df is not None and "deepeval_correctness" in geval_df.columns:
@@ -200,7 +188,7 @@ def _build_tool_section(tool_df) -> str:
     </table>"""
 
 
-def _build_rag_section(ragas_df, hallucination_df, pipeline_results) -> str:
+def _build_rag_section(ragas_df, pipeline_results) -> str:
     """Build the RAG Quality section."""
     if ragas_df is None or len(ragas_df) == 0:
         return "<p>No RAG-routed questions to evaluate.</p>"
@@ -225,11 +213,6 @@ def _build_rag_section(ragas_df, hallucination_df, pipeline_results) -> str:
         for col in metric_cols:
             val = ragas_df.iloc[i][col]
             scores += f'<span style="color:{_score_color(val)}" title="{col}">{_format_score(val)}</span> '
-
-        # Hallucination score
-        if hallucination_df is not None and i < len(hallucination_df):
-            h_val = hallucination_df.iloc[i].get("deepeval_hallucination")
-            scores += f'<span style="color:{_score_color(h_val)}" title="Hallucination">{_format_score(h_val)}</span>'
 
         answer = html.escape(str(r["answer"])[:100], quote=True)
         rows += f"""
@@ -546,7 +529,6 @@ def _generate_html(pipeline_results, eval_results) -> str:
     tool_section = _build_tool_section(eval_results.get("tool_eval_df"))
     rag_section = _build_rag_section(
         eval_results.get("ragas_df"),
-        eval_results.get("hallucination_df"),
         pipeline_results,
     )
     retrieval_gate_section = _build_retrieval_gate_section(eval_results.get("retrieval_gate_df"))
@@ -609,7 +591,7 @@ def _generate_html(pipeline_results, eval_results) -> str:
 </div>
 
 <div class="component-section">
-<h2>2. RAG Quality (RAGAS + Hallucination)</h2>
+<h2>2. RAG Quality (RAGAS)</h2>
 {rag_section}
 </div>
 
@@ -675,7 +657,7 @@ def generate_report(
             "total_questions": len(pipeline_results),
             "pipeline_results": pipeline_results,
         }
-        for key in ["tool_eval_df", "ragas_df", "hallucination_df", "retrieval_gate_df", "geval_df", "refusal_df", "router_df"]:
+        for key in ["tool_eval_df", "ragas_df", "retrieval_gate_df", "geval_df", "refusal_df", "router_df"]:
             df = eval_results.get(key)
             if df is not None:
                 report_data[key.replace("_df", "_scores")] = df.to_dict(orient="records")

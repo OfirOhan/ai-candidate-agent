@@ -5,7 +5,7 @@ from sentence_transformers import CrossEncoder
 from rag.embedder import embedder
 
 CHROMA_PATH = "./chroma_db"
-RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+RERANK_MODEL = "Qwen/Qwen3-Reranker-0.6B"
 ROUTER_LLM = "qwen3"
 
 reranker = CrossEncoder(RERANK_MODEL)
@@ -111,7 +111,7 @@ def rrf_fusion(*ranked_lists: list[str], k: int = 60) -> list[str]:
 # 4. Re-ranking
 # ---------------------------------------------------------------------------
 
-def rerank(query: str, chunks: list[str], top_k: int = 5) -> list[str]:
+def rerank(query: str, chunks: list[str], top_k: int = 8) -> list[str]:
     if not chunks:
         return []
     pairs = [[query, chunk] for chunk in chunks]
@@ -124,7 +124,7 @@ def rerank(query: str, chunks: list[str], top_k: int = 5) -> list[str]:
 # 5. Main retrieve pipeline
 # ---------------------------------------------------------------------------
 
-def retrieve(query: str, candidate_id: str, top_k: int = 5) -> dict:
+def retrieve(query: str, candidate_id: str, top_k: int = 8) -> dict:
     """
     Run the full retrieval pipeline for a query.
 

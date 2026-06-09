@@ -15,8 +15,8 @@ from evaluation.harness import run_evaluation
 CANDIDATES = None
 
 # Which evaluation components to run (None = all):
-# Options: "tool_selection", "rag", "hallucination", "retrieval_gates", "geval", "refusal", "ingestion", "router"
-# Note: "rag" runs RAGAS + hallucination together. Use "hallucination" to run only the hallucination metric.
+# Options: "tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"
+# Note: "rag" runs RAGAS faithfulness/relevancy/precision/recall.
 # Note: "retrieval_gates" needs a fresh pipeline run (not REUSE) to capture the pre-rerank pool.
 COMPONENTS = None
 
@@ -39,8 +39,12 @@ REUSE_PIPELINE_RESULTS = False
 # force a clean run. Ignored when REUSE_PIPELINE_RESULTS is True.
 RESUME = False
 
-# Number of chunks the retriever returns
-TOP_K = 5
+# Number of chunks the retriever returns.
+# NOTE: this is a label for the report/checkpoint only — it does NOT drive
+# retrieval. The agent calls rag.retriever.retrieve() with its own default
+# top_k, so keep this in sync with that default (currently 8). The contexts
+# the eval actually scores come from the real agent run.
+TOP_K = 8
 
 # Ollama model used as LLM judge
 JUDGE_MODEL = "qwen3"
@@ -89,14 +93,6 @@ if __name__ == "__main__":
             vals = df[col].dropna()
             if len(vals) > 0:
                 print(f"  {col:30s}  mean={vals.mean():.4f}  min={vals.min():.4f}  max={vals.max():.4f}")
-
-    # ── Hallucination Summary ──
-    if results["hallucination_df"] is not None:
-        print("\n── Hallucination Summary (RAG-only) ──")
-        df = results["hallucination_df"]
-        vals = df["deepeval_hallucination"].dropna()
-        if len(vals) > 0:
-            print(f"  {'Hallucination':30s}  mean={vals.mean():.4f}")
 
     # ── Retrieval Gate Summary ──
     if results.get("retrieval_gate_df") is not None and len(results["retrieval_gate_df"]) > 0:

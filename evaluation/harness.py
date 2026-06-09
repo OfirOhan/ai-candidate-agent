@@ -5,7 +5,7 @@ candidates, each with multiple documents.
 
 Components:
   1. Tool Selection — expected vs actual tool
-  2. RAG Quality — RAGAS + DeepEval Hallucination (RAG-only)
+  2. RAG Quality — RAGAS (RAG-only)
   3. Answer Correctness — GEval (all questions)
   4. Refusal Accuracy — confusion matrix (all questions)
   5. Ingestion Quality — chunk stats, coverage, summary quality
@@ -253,47 +253,32 @@ def _run_tool_selection(pipeline_results: list[dict]) -> pd.DataFrame | None:
     return df
 
 
-def _run_rag_quality(pipeline_results: list[dict], judge_model: str) -> tuple:
-    """Evaluate RAG quality (RAGAS + Hallucination) on RAG-routed questions only.
+def _run_rag_quality(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
+    """Evaluate RAG quality (RAGAS) on RAG-routed questions only.
 
     Negative questions are excluded — see ``select_rag_results``.
+
+    NOTE: The DeepEval HallucinationMetric was removed here. It scored
+    hallucination as the fraction of retrieved chunks the answer "contradicts",
+    using the noisy retrieval pool as if it were authoritative ground truth and
+    a weak local judge that conflated omission with contradiction — producing
+    false positives (e.g. a verbatim-correct answer scored 1.0). RAGAS
+    faithfulness already measures answer-grounding correctly, so this metric was
+    redundant noise.
     """
     from evaluation.report import select_rag_results
     rag_data = select_rag_results(pipeline_results)
     print(f"[Harness] {len(rag_data)} questions routed through RAG (negatives excluded)")
 
     if not rag_data:
-        print("[Harness] No RAG-routed questions — skipping RAGAS and Hallucination")
-        return None, None
+        print("[Harness] No RAG-routed questions — skipping RAGAS")
+        return None
 
     from evaluation.evaluators.ragas_evaluator import run_ragas_evaluation
     ragas_df = run_ragas_evaluation(rag_data, judge_model=judge_model)
     ragas_df.to_csv(REPORTS_DIR / "ragas_scores.csv", index=False)
 
-    from evaluation.evaluators.deepeval_evaluator import run_deepeval_hallucination
-    hallucination_df = run_deepeval_hallucination(rag_data, judge_model=judge_model)
-    hallucination_df.to_csv(REPORTS_DIR / "hallucination_scores.csv", index=False)
-
-    return ragas_df, hallucination_df
-
-
-def _run_hallucination(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
-    """Evaluate hallucination standalone on RAG-routed questions only.
-
-    Negative questions are excluded — see ``select_rag_results``.
-    """
-    from evaluation.report import select_rag_results
-    rag_data = select_rag_results(pipeline_results)
-    print(f"[Harness] {len(rag_data)} questions routed through RAG (negatives excluded)")
-
-    if not rag_data:
-        print("[Harness] No RAG-routed questions — skipping Hallucination")
-        return None
-
-    from evaluation.evaluators.deepeval_evaluator import run_deepeval_hallucination
-    hallucination_df = run_deepeval_hallucination(rag_data, judge_model=judge_model)
-    hallucination_df.to_csv(REPORTS_DIR / "hallucination_scores.csv", index=False)
-    return hallucination_df
+    return ragas_df
 
 
 def _run_geval(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
@@ -376,7 +361,7 @@ def _run_router(pipeline_results: list[dict]) -> pd.DataFrame | None:
 
 # ── Component dispatch ───────────────────────────────────────────────────────
 
-ALL_COMPONENTS = ["tool_selection", "rag", "hallucination", "retrieval_gates", "geval", "refusal", "ingestion", "router"]
+ALL_COMPONENTS = ["tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"]
 
 
 # ── Main entry point ────────────────────────────────────────────────────────
@@ -562,7 +547,6 @@ def run_evaluation(
             "candidates": candidates_info,
             "tool_eval_df": None,
             "ragas_df": None,
-            "hallucination_df": None,
             "retrieval_gate_df": None,
             "geval_df": None,
             "refusal_df": None,
@@ -583,12 +567,7 @@ def run_evaluation(
                     eval_results["tool_eval_df"] = _run_tool_selection(all_pipeline_results)
 
                 elif component == "rag":
-                    ragas_df, hall_df = _run_rag_quality(all_pipeline_results, judge_model)
-                    eval_results["ragas_df"] = ragas_df
-                    eval_results["hallucination_df"] = hall_df
-
-                elif component == "hallucination":
-                    eval_results["hallucination_df"] = _run_hallucination(all_pipeline_results, judge_model)
+                    eval_results["ragas_df"] = _run_rag_quality(all_pipeline_results, judge_model)
 
                 elif component == "retrieval_gates":
                     eval_results["retrieval_gate_df"] = _run_retrieval_gates(all_pipeline_results)

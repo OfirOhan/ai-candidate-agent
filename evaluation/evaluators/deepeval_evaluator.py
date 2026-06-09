@@ -2,10 +2,14 @@
 DeepEval evaluator — wraps DeepEval with a custom Ollama-based judge LLM.
 
 Metrics computed (after removing redundancies with RAGAS):
-  - Hallucination:        Does the answer contain fabricated information?
-                          (requires retrieval context — RAG-only)
   - GEval (Correctness):  Custom LLM-judge scoring answer correctness
                           (reference-based — all questions)
+
+NOTE: HallucinationMetric was removed. It scored hallucination as the fraction
+of retrieved chunks the answer "contradicted", treating the noisy retrieval pool
+as authoritative ground truth, and the local judge conflated omission with
+contradiction (it flagged verbatim-correct answers as 1.0). RAGAS faithfulness
+already measures answer-grounding correctly, making it redundant.
 """
 
 import json
@@ -15,10 +19,7 @@ import pandas as pd
 import ollama as ollama_client
 from deepeval.models import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
-from deepeval.metrics import (
-    HallucinationMetric,
-    GEval,
-)
+from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
 
 
@@ -78,73 +79,6 @@ class OllamaJudge(DeepEvalBaseLLM):
 
     def get_model_name(self) -> str:
         return self._model_name
-
-
-# ---------------------------------------------------------------------------
-# Hallucination evaluation (RAG-only — requires contexts)
-# ---------------------------------------------------------------------------
-
-def run_deepeval_hallucination(
-    data: list[dict],
-    judge_model: str = "qwen3",
-) -> pd.DataFrame:
-    """
-    Run DeepEval HallucinationMetric on RAG-routed questions.
-
-    Args:
-        data: List of dicts with keys:
-            - question (str)
-            - answer (str)
-            - contexts (list[str]) — must be non-empty
-            - ground_truth (str)
-        judge_model: Ollama model name for LLM-as-judge
-
-    Returns:
-        DataFrame with per-question hallucination scores.
-    """
-    model = OllamaJudge(model_name=judge_model)
-
-    hallucination = HallucinationMetric(
-        model=model,
-        threshold=0.5,
-    )
-
-    test_cases = []
-    for d in data:
-        test_cases.append(
-            LLMTestCase(
-                input=d["question"],
-                actual_output=d["answer"],
-                expected_output=d["ground_truth"],
-                retrieval_context=d["contexts"],
-                context=d["contexts"],
-            )
-        )
-
-    print(f"[DeepEval] Evaluating {len(test_cases)} test cases for Hallucination...")
-
-    rows = []
-    for i, tc in enumerate(test_cases):
-        row = {
-            "question": tc.input,
-            "ground_truth": tc.expected_output,
-            "actual_answer": tc.actual_output,
-        }
-        try:
-            hallucination.measure(tc)
-            row["deepeval_hallucination"] = hallucination.score
-            row["reason"] = hallucination.reason
-        except Exception as e:
-            print(f"  [DeepEval] Hallucination failed on q{i+1}: {e}")
-            row["deepeval_hallucination"] = None
-            row["reason"] = f"[ERROR] {e}"
-        rows.append(row)
-
-        if (i + 1) % 10 == 0:
-            print(f"  [DeepEval] Hallucination progress: {i+1}/{len(test_cases)}")
-
-    print(f"[DeepEval] Hallucination evaluation complete.")
-    return pd.DataFrame(rows)
 
 
 # ---------------------------------------------------------------------------

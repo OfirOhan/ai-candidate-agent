@@ -15,7 +15,8 @@ from evaluation.harness import run_evaluation
 CANDIDATES = None
 
 # Which evaluation components to run (None = all):
-# Options: "tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"
+# Options: "tool_selection", "rag", "hallucination", "retrieval_gates", "geval", "refusal", "ingestion", "router"
+# Note: "rag" runs RAGAS + hallucination together. Use "hallucination" to run only the hallucination metric.
 # Note: "retrieval_gates" needs a fresh pipeline run (not REUSE) to capture the pre-rerank pool.
 COMPONENTS = None
 

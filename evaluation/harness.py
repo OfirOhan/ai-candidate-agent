@@ -277,6 +277,25 @@ def _run_rag_quality(pipeline_results: list[dict], judge_model: str) -> tuple:
     return ragas_df, hallucination_df
 
 
+def _run_hallucination(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
+    """Evaluate hallucination standalone on RAG-routed questions only.
+
+    Negative questions are excluded — see ``select_rag_results``.
+    """
+    from evaluation.report import select_rag_results
+    rag_data = select_rag_results(pipeline_results)
+    print(f"[Harness] {len(rag_data)} questions routed through RAG (negatives excluded)")
+
+    if not rag_data:
+        print("[Harness] No RAG-routed questions — skipping Hallucination")
+        return None
+
+    from evaluation.evaluators.deepeval_evaluator import run_deepeval_hallucination
+    hallucination_df = run_deepeval_hallucination(rag_data, judge_model=judge_model)
+    hallucination_df.to_csv(REPORTS_DIR / "hallucination_scores.csv", index=False)
+    return hallucination_df
+
+
 def _run_geval(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame | None:
     """Evaluate answer correctness via GEval on all questions.
 
@@ -357,7 +376,7 @@ def _run_router(pipeline_results: list[dict]) -> pd.DataFrame | None:
 
 # ── Component dispatch ───────────────────────────────────────────────────────
 
-ALL_COMPONENTS = ["tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"]
+ALL_COMPONENTS = ["tool_selection", "rag", "hallucination", "retrieval_gates", "geval", "refusal", "ingestion", "router"]
 
 
 # ── Main entry point ────────────────────────────────────────────────────────
@@ -567,6 +586,9 @@ def run_evaluation(
                     ragas_df, hall_df = _run_rag_quality(all_pipeline_results, judge_model)
                     eval_results["ragas_df"] = ragas_df
                     eval_results["hallucination_df"] = hall_df
+
+                elif component == "hallucination":
+                    eval_results["hallucination_df"] = _run_hallucination(all_pipeline_results, judge_model)
 
                 elif component == "retrieval_gates":
                     eval_results["retrieval_gate_df"] = _run_retrieval_gates(all_pipeline_results)

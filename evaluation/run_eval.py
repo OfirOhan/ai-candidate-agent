@@ -15,7 +15,8 @@ from evaluation.harness import run_evaluation
 CANDIDATES = None
 
 # Which evaluation components to run (None = all):
-# Options: "tool_selection", "rag", "geval", "refusal", "ingestion", "router"
+# Options: "tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"
+# Note: "retrieval_gates" needs a fresh pipeline run (not REUSE) to capture the pre-rerank pool.
 COMPONENTS = None
 
 # Filter golden dataset to a specific category, or None for all
@@ -87,6 +88,17 @@ if __name__ == "__main__":
         vals = df["deepeval_hallucination"].dropna()
         if len(vals) > 0:
             print(f"  {'Hallucination':30s}  mean={vals.mean():.4f}")
+
+    # ── Retrieval Gate Summary ──
+    if results.get("retrieval_gate_df") is not None and len(results["retrieval_gate_df"]) > 0:
+        print("\n── Retrieval Gate Summary (specific docs questions) ──")
+        df = results["retrieval_gate_df"]
+        total = len(df)
+        for stage in ("ok", "recall", "rerank", "ingestion"):
+            n = (df["loss_stage"] == stage).sum()
+            if n:
+                label = "reached answer" if stage == "ok" else f"lost @ {stage}"
+                print(f"  {label:18s}: {n}/{total} ({n/total*100:.1f}%)")
 
     # ── GEval Summary ──
     if results["geval_df"] is not None:

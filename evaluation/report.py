@@ -13,6 +13,23 @@ import pandas as pd
 REPORTS_DIR = Path(__file__).parent / "reports"
 
 
+def select_rag_results(pipeline_results: list[dict]) -> list[dict]:
+    """Questions that should enter the RAG quality metrics (RAGAS + hallucination).
+
+    Single source of truth for the RAG filter so the harness (which scores) and
+    the report (which aligns per-question rows to the score DataFrames by index)
+    stay in lock-step. Negative/out-of-scope questions are excluded: by design no
+    document chunk is relevant to them, so context precision/recall are meaningless
+    and were dragging the aggregate down.
+    """
+    return [
+        r for r in pipeline_results
+        if r.get("final_tool") == "search_documents"
+        and r.get("contexts")
+        and r.get("category") != "negative"
+    ]
+
+
 def _score_color(score) -> str:
     """Return CSS color for a metric score."""
     if score is None or (isinstance(score, float) and pd.isna(score)):
@@ -90,6 +107,18 @@ def _build_overview_section(pipeline_results, eval_results) -> str:
       <div class="metric-label">RAG: {label}</div>
     </div>"""
 
+    # Hallucination mean (RAG-only). Higher = worse, so color on the inverted scale.
+    hallucination_df = eval_results.get("hallucination_df")
+    if hallucination_df is not None and "deepeval_hallucination" in hallucination_df.columns:
+        vals = hallucination_df["deepeval_hallucination"].dropna()
+        if len(vals) > 0:
+            mean_val = vals.mean()
+            cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(1 - mean_val)}">{_format_score(mean_val)}</div>
+      <div class="metric-label">RAG: Hallucination (lower is better)</div>
+    </div>"""
+
     # GEval mean
     geval_df = eval_results.get("geval_df")
     if geval_df is not None and "deepeval_correctness" in geval_df.columns:
@@ -100,6 +129,17 @@ def _build_overview_section(pipeline_results, eval_results) -> str:
     <div class="metric-card">
       <div class="metric-score" style="color:{_score_color(mean_val)}">{_format_score(mean_val)}</div>
       <div class="metric-label">Answer Correctness</div>
+    </div>"""
+
+    # Retrieval gate — share of specific docs questions whose relevant chunk reached
+    # the final context (i.e. retrieval did not drop it).
+    gate_df = eval_results.get("retrieval_gate_df")
+    if gate_df is not None and len(gate_df) > 0:
+        ok = (gate_df["loss_stage"] == "ok").sum()
+        cards += f"""
+    <div class="metric-card">
+      <div class="metric-score" style="color:{_score_color(ok/len(gate_df))}">{_pct(ok, len(gate_df))}</div>
+      <div class="metric-label">Retrieval Reaches Answer</div>
     </div>"""
 
     # Refusal accuracy
@@ -174,8 +214,9 @@ def _build_rag_section(ragas_df, hallucination_df, pipeline_results) -> str:
             v = vals.mean()
             means_html += f'<div class="summary-stat"><strong style="color:{_score_color(v)}">{_format_score(v)}</strong> {col.replace("_", " ").title()}</div>'
 
-    # Per-question rows
-    rag_results = [r for r in pipeline_results if r.get("final_tool") == "search_documents" and r.get("contexts")]
+    # Per-question rows — must use the same selector the harness scored with,
+    # so ragas_df.iloc[i] lines up with rag_results[i].
+    rag_results = select_rag_results(pipeline_results)
     rows = ""
     for i, r in enumerate(rag_results):
         if i >= len(ragas_df):
@@ -206,6 +247,54 @@ def _build_rag_section(ragas_df, hallucination_df, pipeline_results) -> str:
     {means_html}
     <table>
       <thead><tr><th>ID</th><th>Question</th><th>Route</th><th>Answer</th><th>Scores</th><th>Latency</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
+def _build_retrieval_gate_section(gate_df) -> str:
+    """Build the Retrieval Gate Localization section (ingestion vs recall vs rerank)."""
+    if gate_df is None or len(gate_df) == 0:
+        return ("<p>No retrieval-gate data. Requires a fresh pipeline run (not REUSE) "
+                "so the pre-rerank fused pool is captured.</p>")
+
+    total = len(gate_df)
+    stage_color = {"ok": "#22c55e", "rerank": "#eab308", "recall": "#f97316", "ingestion": "#ef4444"}
+    counts = gate_df["loss_stage"].value_counts().to_dict()
+
+    summary = ""
+    for stage in ("ok", "recall", "rerank", "ingestion"):
+        n = counts.get(stage, 0)
+        label = "reached answer" if stage == "ok" else f"lost @ {stage}"
+        summary += (f'<div class="summary-stat"><strong style="color:{stage_color[stage]}">'
+                    f'{n}</strong> {label} ({_pct(n, total)})</div>')
+
+    rows = ""
+    for _, r in gate_df.sort_values("loss_stage").iterrows():
+        color = stage_color.get(r["loss_stage"], "#888")
+        q = html.escape(str(r["question"])[:55], quote=True)
+        rows += f"""
+        <tr>
+          <td>{r['id']}</td>
+          <td title="{q}">{q}</td>
+          <td>{html.escape(str(r.get('candidate_name', '')), quote=True)}</td>
+          <td>{r['category']}</td>
+          <td>{_format_score(r['target_sim'])}</td>
+          <td style="color:{_score_color(bool(r['in_index']))}">{_format_score(bool(r['in_index']))}</td>
+          <td style="color:{_score_color(bool(r['in_fused_pool']))}">{_format_score(bool(r['in_fused_pool']))}</td>
+          <td style="color:{_score_color(bool(r['in_final']))}">{_format_score(bool(r['in_final']))}</td>
+          <td style="color:{color};font-weight:600">{r['loss_stage']}</td>
+        </tr>"""
+
+    return f"""
+    <p style="color:#94a3b8;margin-bottom:1rem">Specific docs questions traced through the retrieval gates.
+    <strong>target_sim</strong> = similarity of the best index chunk to the ground-truth answer;
+    <strong>loss_stage</strong> = first gate where that chunk was lost
+    (ingestion → not well represented in any chunk; recall → never entered the fused pool;
+    rerank → cut by the cross-encoder).</p>
+    {summary}
+    <table>
+      <thead><tr><th>ID</th><th>Question</th><th>Candidate</th><th>Category</th>
+      <th>target_sim</th><th>In Index</th><th>In Pool</th><th>In Final</th><th>Loss Stage</th></tr></thead>
       <tbody>{rows}</tbody>
     </table>"""
 
@@ -460,6 +549,7 @@ def _generate_html(pipeline_results, eval_results) -> str:
         eval_results.get("hallucination_df"),
         pipeline_results,
     )
+    retrieval_gate_section = _build_retrieval_gate_section(eval_results.get("retrieval_gate_df"))
     geval_section = _build_geval_section(eval_results.get("geval_df"), pipeline_results)
     refusal_section = _build_refusal_section(eval_results.get("refusal_df"))
     ingestion_section = _build_ingestion_section(eval_results.get("ingestion_report"))
@@ -524,22 +614,27 @@ def _generate_html(pipeline_results, eval_results) -> str:
 </div>
 
 <div class="component-section">
-<h2>3. Answer Correctness (GEval)</h2>
+<h2>3. Retrieval Gate Localization (Ingestion / Recall / Rerank)</h2>
+{retrieval_gate_section}
+</div>
+
+<div class="component-section">
+<h2>4. Answer Correctness (GEval)</h2>
 {geval_section}
 </div>
 
 <div class="component-section">
-<h2>4. Refusal Accuracy</h2>
+<h2>5. Refusal Accuracy</h2>
 {refusal_section}
 </div>
 
 <div class="component-section">
-<h2>5. Ingestion Quality</h2>
+<h2>6. Ingestion Quality</h2>
 {ingestion_section}
 </div>
 
 <div class="component-section">
-<h2>6. Router Accuracy</h2>
+<h2>7. Router Accuracy</h2>
 {router_section}
 </div>
 
@@ -580,7 +675,7 @@ def generate_report(
             "total_questions": len(pipeline_results),
             "pipeline_results": pipeline_results,
         }
-        for key in ["tool_eval_df", "ragas_df", "hallucination_df", "geval_df", "refusal_df", "router_df"]:
+        for key in ["tool_eval_df", "ragas_df", "hallucination_df", "retrieval_gate_df", "geval_df", "refusal_df", "router_df"]:
             df = eval_results.get(key)
             if df is not None:
                 report_data[key.replace("_df", "_scores")] = df.to_dict(orient="records")

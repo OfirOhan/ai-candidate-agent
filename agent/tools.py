@@ -82,6 +82,7 @@ def search_documents(**kwargs) -> str:
         "route": result["route"],
         "expanded_queries": result["expanded_queries"],
         "chunks": chunks,
+        "fused_pool": result.get("fused_pool"),
     }
     if not chunks:
         return "No relevant information found in documents."

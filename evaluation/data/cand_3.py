@@ -187,7 +187,7 @@ REC="""# Letter of Recommendation — Maya Chen
 
 To Whom It May Concern,
 
-I am delighted to recommend Maya Chen, who has been an exceptional member of our frontend engineering team at Fiverr for the past four years. Maya joined us straight from university and has rapidly become one of our most impactful engineers.
+I am delighted to recommend Maya Chen, who has been an exceptional member of our frontend engineering team at Fiverr for the past three years. Maya joined us straight from university and has rapidly become one of our most impactful engineers.
 
 Maya's standout achievement has been leading our design system initiative. She built and maintains a component library used by 80+ engineers, with 60+ accessible components that have reduced UI development time by 40%. Her deep knowledge of accessibility standards led to our marketplace achieving full WCAG 2.1 AA compliance across 20+ product surfaces.
 

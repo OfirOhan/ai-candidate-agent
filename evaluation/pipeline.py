@@ -41,10 +41,12 @@ def run_full_pipeline(
     # (avoids a second retrieval call which would be non-deterministic)
     route = None
     contexts = []
+    fused_pool = None
     if any(t["tool"] == "search_documents" for t in trajectory):
         retrieval_meta = tools_module.get_last_retrieval_meta()
         route = retrieval_meta.get("route")
         contexts = retrieval_meta.get("chunks", [])
+        fused_pool = retrieval_meta.get("fused_pool")
 
     return {
         "question": question,
@@ -53,6 +55,7 @@ def run_full_pipeline(
         "tool_trajectory": trajectory,
         "final_tool": final_tool,
         "route": route,
+        "fused_pool": fused_pool,
     }
 
 

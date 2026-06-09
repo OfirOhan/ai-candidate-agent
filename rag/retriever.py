@@ -158,6 +158,9 @@ def retrieve(query: str, candidate_id: str, top_k: int = 5) -> dict:
             "chunks": chunks,
             "route": "broad",
             "expanded_queries": None,
+            # No fusion/rerank on the broad path — there is no separate candidate
+            # pool to expose, so per-gate retrieval analysis does not apply here.
+            "fused_pool": None,
         }
 
     # --- Step 2: Query Expansion ---
@@ -189,4 +192,8 @@ def retrieve(query: str, candidate_id: str, top_k: int = 5) -> dict:
         "chunks": top_chunks,
         "route": "specific",
         "expanded_queries": queries,
+        # The fused candidate pool *before* re-ranking. Exposed so evaluation can
+        # tell whether a relevant chunk was lost at recall (never entered the pool)
+        # vs. at re-ranking (entered the pool but was cut from the top-k).
+        "fused_pool": fused,
     }

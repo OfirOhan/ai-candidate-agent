@@ -166,10 +166,17 @@ def run_deepeval_geval(
 
     correctness = GEval(
         name="Correctness",
+        # NOTE: do NOT specify a numeric scale here (e.g. "score 1 if correct").
+        # GEval scores internally on a 0-10 scale and divides by 10, so telling
+        # the judge "1 = fully correct" makes correct answers come back as 1/10 = 0.1.
+        # Keep the criteria purely qualitative and let GEval handle the scale.
         criteria=(
-            "Determine whether the actual output is factually correct "
-            "based on the expected output. Score 1 if fully correct, "
-            "0 if completely wrong, and partial scores for partial correctness."
+            "Evaluate whether the Actual Output is factually correct and complete "
+            "with respect to the Expected Output. The Actual Output is correct when "
+            "it conveys the same facts as the Expected Output. Penalize factual "
+            "contradictions and missing key facts. Do NOT penalize differences in "
+            "wording, formatting (markdown, bold, links), verbosity, or additional "
+            "relevant context, as long as the core facts agree with the Expected Output."
         ),
         evaluation_params=[
             LLMTestCaseParams.ACTUAL_OUTPUT,
@@ -193,13 +200,19 @@ def run_deepeval_geval(
 
     rows = []
     for i, tc in enumerate(test_cases):
-        row = {"question": tc.input}
+        row = {
+            "question": tc.input,
+            "ground_truth": tc.expected_output,
+            "actual_answer": tc.actual_output,
+        }
         try:
             correctness.measure(tc)
             row["deepeval_correctness"] = correctness.score
+            row["reason"] = correctness.reason
         except Exception as e:
             print(f"  [DeepEval] GEval failed on q{i+1}: {e}")
             row["deepeval_correctness"] = None
+            row["reason"] = f"[ERROR] {e}"
         rows.append(row)
 
         if (i + 1) % 10 == 0:

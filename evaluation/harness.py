@@ -212,6 +212,7 @@ def _run_pipeline_on_dataset(
             "question": question,
             "answer": pipeline_result["answer"],
             "contexts": pipeline_result["contexts"],
+            "fused_pool": pipeline_result.get("fused_pool"),
             "ground_truth": item["ground_truth"],
             "category": item["category"],
             "expected_source": item["expected_source"],
@@ -240,12 +241,13 @@ def _run_tool_selection(pipeline_results: list[dict]) -> pd.DataFrame | None:
 
 
 def _run_rag_quality(pipeline_results: list[dict], judge_model: str) -> tuple:
-    """Evaluate RAG quality (RAGAS + Hallucination) on RAG-routed questions only."""
-    rag_data = [
-        r for r in pipeline_results
-        if r.get("final_tool") == "search_documents" and r.get("contexts")
-    ]
-    print(f"[Harness] {len(rag_data)} questions routed through RAG")
+    """Evaluate RAG quality (RAGAS + Hallucination) on RAG-routed questions only.
+
+    Negative questions are excluded — see ``select_rag_results``.
+    """
+    from evaluation.report import select_rag_results
+    rag_data = select_rag_results(pipeline_results)
+    print(f"[Harness] {len(rag_data)} questions routed through RAG (negatives excluded)")
 
     if not rag_data:
         print("[Harness] No RAG-routed questions — skipping RAGAS and Hallucination")
@@ -276,6 +278,15 @@ def _run_geval(pipeline_results: list[dict], judge_model: str) -> pd.DataFrame |
     from evaluation.evaluators.deepeval_evaluator import run_deepeval_geval
     df = run_deepeval_geval(pipeline_results, judge_model=judge_model)
     df.to_csv(REPORTS_DIR / "geval_scores.csv", index=False)
+    return df
+
+
+def _run_retrieval_gates(pipeline_results: list[dict]) -> pd.DataFrame | None:
+    """Localize retrieval failures (ingestion vs recall vs rerank) per question."""
+    from evaluation.evaluators.retrieval_gate_evaluator import run_retrieval_gate_evaluation
+    df = run_retrieval_gate_evaluation(pipeline_results)
+    if df is not None and not df.empty:
+        df.to_csv(REPORTS_DIR / "retrieval_gate_scores.csv", index=False)
     return df
 
 
@@ -333,7 +344,7 @@ def _run_router(pipeline_results: list[dict]) -> pd.DataFrame | None:
 
 # ── Component dispatch ───────────────────────────────────────────────────────
 
-ALL_COMPONENTS = ["tool_selection", "rag", "geval", "refusal", "ingestion", "router"]
+ALL_COMPONENTS = ["tool_selection", "rag", "retrieval_gates", "geval", "refusal", "ingestion", "router"]
 
 
 # ── Main entry point ────────────────────────────────────────────────────────
@@ -476,6 +487,7 @@ def run_evaluation(
             "tool_eval_df": None,
             "ragas_df": None,
             "hallucination_df": None,
+            "retrieval_gate_df": None,
             "geval_df": None,
             "refusal_df": None,
             "ingestion_report": None,
@@ -498,6 +510,9 @@ def run_evaluation(
                     ragas_df, hall_df = _run_rag_quality(all_pipeline_results, judge_model)
                     eval_results["ragas_df"] = ragas_df
                     eval_results["hallucination_df"] = hall_df
+
+                elif component == "retrieval_gates":
+                    eval_results["retrieval_gate_df"] = _run_retrieval_gates(all_pipeline_results)
 
                 elif component == "geval":
                     eval_results["geval_df"] = _run_geval(all_pipeline_results, judge_model)

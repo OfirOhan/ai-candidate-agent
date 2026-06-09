@@ -39,10 +39,30 @@ def write_docx(t,p):
     doc.save(str(p))
 def write_png(t,p):
     c=t.replace("**","").replace("# ","").replace("## ","").replace("### ","").replace("---","")
-    lines=c.split("\n");w,lh,m=1200,22,40;h=max(800,len(lines)*lh+m*2)
-    img=Image.new("RGB",(w,h),"white");draw=ImageDraw.Draw(img)
+    w,lh,m=1200,22,40;maxw=w-2*m
     try:font=ImageFont.truetype("arial.ttf",16)
     except:font=ImageFont.load_default()
+    _meas=ImageDraw.Draw(Image.new("RGB",(1,1)))
+    def measure(s):
+        try:return _meas.textlength(s,font=font)
+        except Exception:return len(s)*8
+    def wrap(line):
+        if not line.strip():return [""]
+        out=[];cur=""
+        for word in line.split(" "):
+            trial=word if not cur else cur+" "+word
+            if measure(trial)<=maxw:cur=trial;continue
+            if cur:out.append(cur);cur=""
+            while measure(word)>maxw:  # hard-break a single over-long token
+                i=len(word)
+                while i>1 and measure(word[:i])>maxw:i-=1
+                out.append(word[:i]);word=word[i:]
+            cur=word
+        out.append(cur);return out
+    lines=[]
+    for l in c.split("\n"):lines.extend(wrap(l))
+    h=max(800,len(lines)*lh+m*2)
+    img=Image.new("RGB",(w,h),"white");draw=ImageDraw.Draw(img)
     y=m
     for l in lines:
         if y+lh>h-m:break

@@ -75,46 +75,46 @@
     "id": "q009",
     "question": "What degree does the candidate hold?",
     "ground_truth": "MBA in Technology Management from Hebrew University of Jerusalem, and BSc in Industrial Engineering from the Technion.",
-    "expected_source": "structured",
+    "expected_source": "docs",
     "category": "education",
     "difficulty": "easy",
-    "expected_route": null
+    "expected_route": "specific"
   },
   {
     "id": "q010",
     "question": "What did the candidate study?",
     "ground_truth": "Technology Management (MBA) and Industrial Engineering (BSc)",
-    "expected_source": "structured",
+    "expected_source": "docs",
     "category": "education",
     "difficulty": "easy",
-    "expected_route": null
+    "expected_route": "specific"
   },
   {
     "id": "q011",
     "question": "Where did the candidate study?",
     "ground_truth": "Hebrew University of Jerusalem (MBA) and Technion (BSc)",
-    "expected_source": "structured",
+    "expected_source": "docs",
     "category": "education",
     "difficulty": "easy",
-    "expected_route": null
+    "expected_route": "specific"
   },
   {
     "id": "q012",
     "question": "When did the candidate graduate?",
     "ground_truth": "2021 (MBA) and 2018 (BSc)",
-    "expected_source": "structured",
+    "expected_source": "docs",
     "category": "education",
     "difficulty": "easy",
-    "expected_route": null
+    "expected_route": "specific"
   },
   {
     "id": "q013",
     "question": "What is the candidate's GPA?",
     "ground_truth": "3.8/4.0 (MBA) and 86/100 (BSc)",
-    "expected_source": "structured",
+    "expected_source": "docs",
     "category": "education",
     "difficulty": "easy",
-    "expected_route": null
+    "expected_route": "specific"
   },
   {
     "id": "q014",

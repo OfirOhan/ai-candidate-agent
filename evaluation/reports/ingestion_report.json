@@ -101,11 +101,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 873,
+        "summary_length": 803,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 1.0,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
+        "llm_score": 0.98,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.98 /1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -270,11 +270,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 743,
+        "summary_length": 850,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 0.95,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.95 /1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -426,7 +426,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 703,
+        "summary_length": 723,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -595,7 +595,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 792,
+        "summary_length": 711,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -750,7 +750,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 810,
+        "summary_length": 968,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -905,11 +905,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 699,
+        "summary_length": 670,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [

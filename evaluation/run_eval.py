@@ -31,6 +31,13 @@ DRY_RUN = False
 # If True, skip the RAG pipeline and reuse existing pipeline_results.json
 REUSE_PIPELINE_RESULTS = False
 
+# If True, resume a fresh run from per-candidate checkpoints in reports/partial/:
+# candidates already completed (with the same TOP_K + CATEGORY_FILTER) are loaded
+# from disk and their expensive agent QA loop is skipped. Use this to continue
+# after a crash without redoing finished candidates. Delete reports/partial/ to
+# force a clean run. Ignored when REUSE_PIPELINE_RESULTS is True.
+RESUME = False
+
 # Number of chunks the retriever returns
 TOP_K = 5
 
@@ -50,6 +57,7 @@ if __name__ == "__main__":
         dry_run=DRY_RUN,
         report_format=REPORT_FORMAT,
         reuse_results=REUSE_PIPELINE_RESULTS,
+        resume=RESUME,
     )
 
     # ── Candidates Summary ──

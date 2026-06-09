@@ -169,6 +169,19 @@ def _cleanup_eval_collections(eval_candidate_id: str):
             pass
 
 
+def _collection_has_data(eval_candidate_id: str) -> bool:
+    """True if the candidate's chunk collection already exists and is non-empty.
+
+    Lets a resumed run skip re-ingestion (and its LLM summary calls + PNG OCR)
+    when the collection from a previous run is still on disk.
+    """
+    try:
+        client = chromadb.PersistentClient(path=CHROMA_PATH)
+        return client.get_collection(name=eval_candidate_id).count() > 0
+    except Exception:
+        return False
+
+
 # ── Pipeline runner ──────────────────────────────────────────────────────────
 
 
@@ -358,6 +371,7 @@ def run_evaluation(
     dry_run: bool = False,
     report_format: str = "html",
     reuse_results: bool = False,
+    resume: bool = False,
 ) -> dict:
     """
     Multi-candidate component-based evaluation pipeline.
@@ -386,9 +400,12 @@ def run_evaluation(
     print(f"  Top-K      : {top_k}")
     print(f"  Dry run    : {dry_run}")
     print(f"  Reuse      : {reuse_results}")
+    print(f"  Resume     : {resume}")
     print("=" * 70)
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    partial_dir = REPORTS_DIR / "partial"
+    partial_dir.mkdir(parents=True, exist_ok=True)
 
     all_pipeline_results = []
     candidates_info = []  # for ingestion eval + reporting
@@ -432,24 +449,68 @@ def run_evaluation(
             eval_id = cand["eval_id"]
             eval_candidate_ids.append(eval_id)
 
-            # Seed structured data
-            backup_path = _seed_structured_data(cand["dir"])
-
-            # Clean + ingest documents
-            _cleanup_eval_collections(eval_id)
-            _seed_documents(cand["dir"], eval_id)
-
-            # Set candidate ID for the agent
-            set_candidate_id(eval_id)
-
-            # Load golden dataset
             dataset = _load_golden_dataset(cand["dir"], category_filter)
-            print(f"[Harness] {len(dataset)} questions for {cand['name']}")
 
-            # Run pipeline
-            results = _run_pipeline_on_dataset(
-                dataset, eval_id, cand["name"], top_k
-            )
+            # Per-candidate checkpoint. Tied to the run config (top_k + category)
+            # so a checkpoint from a different setting is never silently reused.
+            partial_path = partial_dir / f"{eval_id}.json"
+            cached = None
+            if resume and partial_path.exists():
+                try:
+                    with open(partial_path, "r", encoding="utf-8") as f:
+                        payload = json.load(f)
+                    if (payload.get("top_k") == top_k
+                            and payload.get("category_filter") == category_filter):
+                        cached = payload["results"]
+                    else:
+                        print(f"[Harness] Checkpoint for {cand['name']} has different "
+                              f"config (top_k/category) — re-running.")
+                except Exception as e:
+                    print(f"[Harness] Could not read checkpoint for {cand['name']}: {e}")
+
+            if cached is not None:
+                # Skip the expensive agent QA loop; just make sure the collection
+                # exists so retrieval-gate / ingestion components can read it.
+                if not _collection_has_data(eval_id):
+                    print(f"[Harness] Collection missing for {cand['name']} — re-ingesting.")
+                    _cleanup_eval_collections(eval_id)
+                    _seed_documents(cand["dir"], eval_id)
+                results = cached
+                print(f"[Harness] ↳ Resumed {cand['name']} from checkpoint "
+                      f"({len(results)} cached results)")
+            else:
+                # Seed structured data
+                backup_path = _seed_structured_data(cand["dir"])
+
+                # Clean + ingest documents
+                _cleanup_eval_collections(eval_id)
+                _seed_documents(cand["dir"], eval_id)
+
+                # Set candidate ID for the agent
+                set_candidate_id(eval_id)
+
+                print(f"[Harness] {len(dataset)} questions for {cand['name']}")
+
+                # Run pipeline
+                results = _run_pipeline_on_dataset(
+                    dataset, eval_id, cand["name"], top_k
+                )
+
+                # Restore structured data, then checkpoint immediately so a later
+                # crash never loses this candidate's answers.
+                _restore_structured_data(backup_path)
+                backup_path = None
+                try:
+                    with open(partial_path, "w", encoding="utf-8") as f:
+                        json.dump({
+                            "results": results,
+                            "top_k": top_k,
+                            "category_filter": category_filter,
+                        }, f, ensure_ascii=False)
+                    print(f"[Harness] ✔ Checkpointed {cand['name']} → {partial_path.name}")
+                except Exception as e:
+                    print(f"[Harness] WARNING: failed to checkpoint {cand['name']}: {e}")
+
             all_pipeline_results.extend(results)
 
             # Track candidate info
@@ -462,10 +523,6 @@ def run_evaluation(
                 "question_count": len(dataset),
                 "doc_files": [(str(f), dt) for f, dt in doc_files],
             })
-
-            # Restore structured data after each candidate
-            _restore_structured_data(backup_path)
-            backup_path = None
 
             print(f"[Harness] ✓ {cand['name']}: {len(results)} results collected")
 

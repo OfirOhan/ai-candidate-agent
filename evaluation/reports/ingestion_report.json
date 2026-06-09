@@ -101,11 +101,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 863,
+        "summary_length": 873,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 0.98,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.98 / 1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -270,11 +270,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 795,
+        "summary_length": 743,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 1.0,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
+        "llm_score": 0.95,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.95 /1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -340,8 +340,8 @@
         "total_chunks": 25,
         "avg_chunk_size": 340.0,
         "min_chunk_size": 19,
-        "max_chunk_size": 1037,
-        "std_chunk_size": 284.2,
+        "max_chunk_size": 1038,
+        "std_chunk_size": 284.3,
         "empty_or_tiny_chunks": 0
       },
       "doc_type_breakdown": {
@@ -359,9 +359,9 @@
         },
         "recommendation": {
           "chunk_count": 3,
-          "avg_size": 530.7,
+          "avg_size": 531.0,
           "min_size": 37,
-          "max_size": 1037
+          "max_size": 1038
         }
       },
       "section_coverage": {
@@ -426,7 +426,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 738,
+        "summary_length": 703,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -595,7 +595,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 789,
+        "summary_length": 792,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -662,31 +662,31 @@
     "name": "Noa Friedman",
     "report": {
       "chunk_stats": {
-        "total_chunks": 22,
-        "avg_chunk_size": 366.9,
-        "min_chunk_size": 85,
-        "max_chunk_size": 1013,
-        "std_chunk_size": 281.0,
+        "total_chunks": 23,
+        "avg_chunk_size": 417.0,
+        "min_chunk_size": 48,
+        "max_chunk_size": 976,
+        "std_chunk_size": 278.7,
         "empty_or_tiny_chunks": 0
       },
       "doc_type_breakdown": {
         "cv": {
-          "chunk_count": 14,
-          "avg_size": 352.3,
-          "min_size": 85,
-          "max_size": 929
+          "chunk_count": 15,
+          "avg_size": 374.9,
+          "min_size": 48,
+          "max_size": 951
         },
         "readme": {
           "chunk_count": 5,
-          "avg_size": 372.6,
-          "min_size": 150,
-          "max_size": 872
+          "avg_size": 412.2,
+          "min_size": 149,
+          "max_size": 913
         },
         "recommendation": {
           "chunk_count": 3,
-          "avg_size": 425.3,
-          "min_size": 108,
-          "max_size": 1013
+          "avg_size": 635.7,
+          "min_size": 131,
+          "max_size": 976
         }
       },
       "section_coverage": {
@@ -702,37 +702,43 @@
           "Work Experience"
         ],
         "found": [
-          "- Specialization: Technology Management and Innovation",
           "Academic: SaaS Chum Prediction",
-          "Architecture",
           "Certifications",
           "Education",
+          "Key Features",
           "Languages",
           "ML-Powered Ad Mediation (Unity)",
           "Overview",
+          "Performance",
+          "Personal Information",
           "Predictive LTV Modeling (Unity)",
+          "Product Tools: Jira, Confluence, Productboard, Figma, Miro, Amplitude, Mixpanel",
+          "Real-Time Publisher Analytics Dashboard (Unity)",
           "SDK Integration Redesign (ironSource)",
           "Summary",
-          "Tech Stack",
-          "Technical Skills",
+          "To Whom It May Concem,",
           "Work Experience",
           "general",
+          "installation",
           "interests"
         ],
         "missing": [
-          "Personal Information",
-          "Projects"
+          "Projects",
+          "Technical Skills"
         ],
         "extra": [
-          "- Specialization: Technology Management and Innovation",
           "Academic: SaaS Chum Prediction",
-          "Architecture",
+          "Key Features",
           "ML-Powered Ad Mediation (Unity)",
           "Overview",
+          "Performance",
           "Predictive LTV Modeling (Unity)",
+          "Product Tools: Jira, Confluence, Productboard, Figma, Miro, Amplitude, Mixpanel",
+          "Real-Time Publisher Analytics Dashboard (Unity)",
           "SDK Integration Redesign (ironSource)",
-          "Tech Stack",
-          "general"
+          "To Whom It May Concem,",
+          "general",
+          "installation"
         ],
         "coverage_pct": 77.8,
         "has_section_metadata": true
@@ -740,11 +746,11 @@
       "duplicate_check": {
         "exact_duplicates": 0,
         "near_duplicates_sampled": 0,
-        "total_unique": 22
+        "total_unique": 23
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 738,
+        "summary_length": 810,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -760,12 +766,22 @@
           {
             "term": "Noa",
             "found_in_top1": true,
-            "top1_preview": "Section: general\nTo Whom It May Concem,\n\nlam delighted to recommend Noa Friedman, who has been an ex"
+            "top1_preview": "Section: To Whom It May Concem,\n1am delighted to recommend Noa Friedman, who has been an exceptional"
           },
           {
             "term": "SDK",
             "found_in_top1": true,
             "top1_preview": "Section: ##SDK Integration Redesign (ironSource)\nRedesigned the SDK integration experience reducing "
+          },
+          {
+            "term": "BigQuery",
+            "found_in_top1": true,
+            "top1_preview": "Section: Product Tools: Jira, Confluence, Productboard, Figma, Miro, Amplitude, Mixpanel\nData & Anal"
+          },
+          {
+            "term": "Real",
+            "found_in_top1": false,
+            "top1_preview": "Section: ##Predictive LTV Modeling (Unity)\nCollaborated with ML engineering to build user lifetime v"
           },
           {
             "term": "She",
@@ -775,35 +791,25 @@
           {
             "term": "Noa Friedman",
             "found_in_top1": true,
-            "top1_preview": "Section: general\nNoa Friedman — Curriculum Vitae\n\n#Personal Information\n\n- Full Name: Noa Friedman -"
+            "top1_preview": "Section: #Personal Information\n- Full Name: Noa Friedman - Email: noa friedman@gmail.com - Phone: +9"
           },
           {
             "term": "Tel Aviv",
             "found_in_top1": true,
-            "top1_preview": "Section: general\nNoa Friedman — Curriculum Vitae\n\n#Personal Information\n\n- Full Name: Noa Friedman -"
+            "top1_preview": "Section: #Personal Information\n- Full Name: Noa Friedman - Email: noa friedman@gmail.com - Phone: +9"
           },
           {
-            "term": "BigQuery",
-            "found_in_top1": true,
-            "top1_preview": "Section: #Architecture\nof\n\nFlink) for\n\nThe platform consists a streaming data pipeline (Kafka + real"
-          },
-          {
-            "term": "Israel",
-            "found_in_top1": true,
-            "top1_preview": "Section: general\nNoa Friedman — Curriculum Vitae\n\n#Personal Information\n\n- Full Name: Noa Friedman -"
+            "term": "Collaborated",
+            "found_in_top1": false,
+            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — ironSource (acquired by Unity) Se"
           },
           {
             "term": "Work Experience",
             "found_in_top1": true,
-            "top1_preview": "Section: #Work Experience\n##Product Manager — itronSource (acquired by Unity) September 2021 — Janua"
-          },
-          {
-            "term": "Launched",
-            "found_in_top1": true,
-            "top1_preview": "Section: #Work Experience\n##Product Manager — itronSource (acquired by Unity) September 2021 — Janua"
+            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — ironSource (acquired by Unity) Se"
           }
         ],
-        "hit_rate": 0.9
+        "hit_rate": 0.7
       }
     }
   },
@@ -899,7 +905,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 793,
+        "summary_length": 699,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,

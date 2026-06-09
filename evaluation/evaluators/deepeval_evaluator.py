@@ -125,13 +125,19 @@ def run_deepeval_hallucination(
 
     rows = []
     for i, tc in enumerate(test_cases):
-        row = {"question": tc.input}
+        row = {
+            "question": tc.input,
+            "ground_truth": tc.expected_output,
+            "actual_answer": tc.actual_output,
+        }
         try:
             hallucination.measure(tc)
             row["deepeval_hallucination"] = hallucination.score
+            row["reason"] = hallucination.reason
         except Exception as e:
             print(f"  [DeepEval] Hallucination failed on q{i+1}: {e}")
             row["deepeval_hallucination"] = None
+            row["reason"] = f"[ERROR] {e}"
         rows.append(row)
 
         if (i + 1) % 10 == 0:

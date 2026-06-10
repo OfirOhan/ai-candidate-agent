@@ -1,14 +1,12 @@
 import chromadb
 import ollama
 from rank_bm25 import BM25Okapi
-from sentence_transformers import CrossEncoder
 from rag.embedder import embedder
+from rag.reranker import reranker
 
 CHROMA_PATH = "./chroma_db"
-RERANK_MODEL = "Qwen/Qwen3-Reranker-0.6B"
 ROUTER_LLM = "qwen3"
 
-reranker = CrossEncoder(RERANK_MODEL)
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 
@@ -112,12 +110,7 @@ def rrf_fusion(*ranked_lists: list[str], k: int = 60) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def rerank(query: str, chunks: list[str], top_k: int = 8) -> list[str]:
-    if not chunks:
-        return []
-    pairs = [[query, chunk] for chunk in chunks]
-    scores = reranker.predict(pairs)
-    scored = sorted(zip(scores, chunks), key=lambda x: x[0], reverse=True)
-    return [chunk for _, chunk in scored[:top_k]]
+    return reranker.rerank(query, chunks, top_k=top_k)
 
 
 # ---------------------------------------------------------------------------

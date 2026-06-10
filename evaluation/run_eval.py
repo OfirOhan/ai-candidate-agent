@@ -37,7 +37,7 @@ REUSE_PIPELINE_RESULTS = False
 # from disk and their expensive agent QA loop is skipped. Use this to continue
 # after a crash without redoing finished candidates. Delete reports/partial/ to
 # force a clean run. Ignored when REUSE_PIPELINE_RESULTS is True.
-RESUME = True
+RESUME = False
 
 # Number of chunks the retriever returns.
 # NOTE: this is a label for the report/checkpoint only — it does NOT drive

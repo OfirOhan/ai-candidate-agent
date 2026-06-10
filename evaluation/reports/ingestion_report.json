@@ -101,11 +101,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 803,
+        "summary_length": 822,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 0.98,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.98 /1.0"
+        "llm_score": 1.0,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -270,11 +270,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 850,
+        "summary_length": 621,
         "checklist_items_found": 5,
         "checklist_total": 5,
-        "llm_score": 1.0,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
+        "llm_score": 0.95,
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 0.95 /1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -426,11 +426,11 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 723,
+        "summary_length": 725,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
-        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 /1.0"
+        "raw_evaluation": "candidate name: YES  \ncurrent role/job title: YES  \nkey technical skills: YES  \neducation/degree: YES  \nyears of experience: YES  \nSCORE: 1.0 / 1.0"
       },
       "embedding_probes": {
         "probes": [
@@ -595,7 +595,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 711,
+        "summary_length": 643,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -665,28 +665,28 @@
         "total_chunks": 23,
         "avg_chunk_size": 417.0,
         "min_chunk_size": 48,
-        "max_chunk_size": 976,
+        "max_chunk_size": 975,
         "std_chunk_size": 278.7,
         "empty_or_tiny_chunks": 0
       },
       "doc_type_breakdown": {
         "cv": {
           "chunk_count": 15,
-          "avg_size": 374.9,
+          "avg_size": 374.8,
           "min_size": 48,
-          "max_size": 951
+          "max_size": 950
         },
         "readme": {
           "chunk_count": 5,
-          "avg_size": 412.2,
+          "avg_size": 412.4,
           "min_size": 149,
-          "max_size": 913
+          "max_size": 915
         },
         "recommendation": {
           "chunk_count": 3,
-          "avg_size": 635.7,
+          "avg_size": 635.3,
           "min_size": 131,
-          "max_size": 976
+          "max_size": 975
         }
       },
       "section_coverage": {
@@ -750,7 +750,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 968,
+        "summary_length": 853,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,
@@ -766,7 +766,7 @@
           {
             "term": "Noa",
             "found_in_top1": true,
-            "top1_preview": "Section: To Whom It May Concem,\n1am delighted to recommend Noa Friedman, who has been an exceptional"
+            "top1_preview": "Section: To Whom It May Concem,\nAtironSource, Noa redesigned the SDK integration experience, reducin"
           },
           {
             "term": "SDK",
@@ -801,12 +801,12 @@
           {
             "term": "Collaborated",
             "found_in_top1": false,
-            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — ironSource (acquired by Unity) Se"
+            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — itronSource (acquired by Unity) S"
           },
           {
             "term": "Work Experience",
             "found_in_top1": true,
-            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — ironSource (acquired by Unity) Se"
+            "top1_preview": "Section: #Work Experience\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n-\n\n##Product Manager — itronSource (acquired by Unity) S"
           }
         ],
         "hit_rate": 0.7
@@ -905,7 +905,7 @@
       },
       "summary_quality": {
         "summary_exists": true,
-        "summary_length": 670,
+        "summary_length": 701,
         "checklist_items_found": 5,
         "checklist_total": 5,
         "llm_score": 1.0,

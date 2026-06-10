@@ -49,7 +49,7 @@ The document engine (`rag/ingest.py` and `rag/retriever.py`) implements advanced
 * **Query Routing:** Dynamically classifies queries as `BROAD` (fetching the pre-computed candidate summaries) or `SPECIFIC` (triggering deep search).
 * **Query Expansion:** Uses an LLM to generate multiple semantic variations of the user's query to maximize recall.
 * **Hybrid Search & RRF:** Combines dense semantic vector search (ChromaDB + SentenceTransformers) with sparse keyword search (BM25 Okapi) using **Reciprocal Rank Fusion**.
-* **Cross-Encoder Re-ranking:** Re-scores the fused candidate pool using `Qwen3-Reranker-0.6B`, returning the top-8 most relevant chunks to maximize context quality.
+* **Instruction-Tuned Re-ranking:** Re-scores the fused candidate pool with `Qwen3-Reranker-0.6B`. Rather than a classification-head cross-encoder, it wraps each (query, chunk) pair in an instruction prompt and reads the relevance score from the model's `yes`/`no` token probability — the scoring method the model was actually trained for — returning the top-8 most relevant chunks to maximize context quality.
 
 ### 📊 Automated Evaluation Suite
 Built with **RAGAS** and **DeepEval (GEval)**, the `evaluation/` module rigorously benchmarks the agent across 7 components:
@@ -64,18 +64,19 @@ Built with **RAGAS** and **DeepEval (GEval)**, the `evaluation/` module rigorous
 | **Ingestion Quality** | Chunk coverage, section detection, summary quality |
 | **Router Accuracy** | Broad vs. specific query classification |
 
-**Current Results** *(6 candidates · 426 questions · 11.1s avg latency)*:
+**Current Results** *(6 candidates · 426 questions · 23.7s avg latency)*:
 
 | Metric | Score |
 |--------|-------|
-| Tool Selection Accuracy | **92.5%** |
-| Refusal Accuracy | **97.7%** |
-| Router Accuracy | **81.6%** |
-| RAG — Faithfulness | **91.2%** |
-| RAG — Answer Relevancy | **85.9%** |
-| RAG — Context Recall | **76.0%** |
-| RAG — Context Precision | **72.3%** |
-| Answer Correctness (GEval) | **79.2%** |
+| Tool Selection Accuracy | **91.1%** |
+| Refusal Accuracy | **96.5%** |
+| Router Accuracy | **82.4%** |
+| Retrieval Reaches Answer | **86.7%** |
+| RAG — Faithfulness | **91.3%** |
+| RAG — Answer Relevancy | **87.8%** |
+| RAG — Context Recall | **76.6%** |
+| RAG — Context Precision | **76.8%** |
+| Answer Correctness (GEval) | **79.1%** |
 
 A standout feature of the suite is **retrieval gate localization**, which traces each failed query to the exact stage it broke down — ingestion, recall, or re-ranking. This pinpointed the re-ranker as the primary bottleneck and informed a targeted upgrade to `Qwen3-Reranker-0.6B`, rather than guessing from an aggregate recall score.
 

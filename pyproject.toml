@@ -1,3 +1,84 @@
+[project]
+name = "candidate-representor-agent"
+version = "0.1.0"
+description = "An AI-powered digital avatar designed to represent you to recruiters 24/7."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # Core agent
+    "streamlit",
+    "chromadb",
+    "sentence-transformers",
+    "ollama",
+    "langchain-text-splitters",
+    "langchain-ollama",
+    "langchain-huggingface",
+    "einops",
+    # Document parsing
+    "PyMuPDF",
+    "python-docx",
+    "pytesseract",
+    "Pillow",
+    "unstructured[md,pdf,docx]",
+    # SPE dataset generation
+    "aiohttp",
+    "scikit-learn",
+    "scipy",
+    "numpy",
+    # RAG Fusion
+    "rank_bm25",
+    # Pinned: onnxruntime >=1.24 dropped Python 3.10 wheels
+    "onnxruntime<1.24",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pytest",
+]
+eval = [
+    "ragas",
+    "deepeval",
+    "pandas",
+    "jinja2",
+]
+
+# ---------------------------------------------------------------------------
+# Ruff – linter & formatter
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "E501",    # line too long — let the formatter handle it
+    "E741",    # ambiguous variable name — acceptable in ML/data code
+    "RUF001",  # ambiguous unicode — project uses Hebrew text intentionally
+    "SIM108",  # ternary operator — not always clearer
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agent", "rag", "store", "evaluation", "pages"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
 markers = [
     "integration: tests that require Ollama or external services (deselect with '-m not integration')",

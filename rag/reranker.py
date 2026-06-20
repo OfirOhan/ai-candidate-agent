@@ -7,8 +7,7 @@ RERANK_MODEL = "Qwen/Qwen3-Reranker-0.6B"
 # relevance *given an instruction*, so this is part of the scoring contract, not
 # decoration. Tuned here for recruitment-document retrieval.
 DEFAULT_INSTRUCTION = (
-    "Given a question about a job candidate, retrieve the resume passages "
-    "that answer it."
+    "Given a question about a job candidate, retrieve the resume passages that answer it."
 )
 
 
@@ -56,9 +55,7 @@ class Qwen3Reranker:
 
         self.tokenizer = AutoTokenizer.from_pretrained(RERANK_MODEL, padding_side="left")
         self.model = (
-            AutoModelForCausalLM.from_pretrained(RERANK_MODEL, dtype=dtype)
-            .to(device)
-            .eval()
+            AutoModelForCausalLM.from_pretrained(RERANK_MODEL, dtype=dtype).to(device).eval()
         )
         self.max_length = max_length
         self.batch_size = batch_size
@@ -84,7 +81,9 @@ class Qwen3Reranker:
         )
         for i, ids in enumerate(inputs["input_ids"]):
             inputs["input_ids"][i] = self.prefix_tokens + ids + self.suffix_tokens
-        inputs = self.tokenizer.pad(inputs, padding=True, return_tensors="pt", max_length=self.max_length)
+        inputs = self.tokenizer.pad(
+            inputs, padding=True, return_tensors="pt", max_length=self.max_length
+        )
         return {k: v.to(self.model.device) for k, v in inputs.items()}
 
     @torch.no_grad()
@@ -112,7 +111,7 @@ class Qwen3Reranker:
         scores: list[float] = []
         for start in range(0, len(texts), self.batch_size):
             scores.extend(self._score(texts[start : start + self.batch_size]))
-        scored = sorted(zip(scores, chunks), key=lambda x: x[0], reverse=True)
+        scored = sorted(zip(scores, chunks, strict=False), key=lambda x: x[0], reverse=True)
         return [chunk for _, chunk in scored[:top_k]]
 
 

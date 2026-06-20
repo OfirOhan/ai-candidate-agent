@@ -69,7 +69,9 @@ if __name__ == "__main__":
     if results.get("candidates"):
         print("\n── Candidates ──")
         for c in results["candidates"]:
-            print(f"  {c['name']} ({c['eval_id']}): {c['question_count']} questions, {c['doc_count']} docs")
+            print(
+                f"  {c['name']} ({c['eval_id']}): {c['question_count']} questions, {c['doc_count']} docs"
+            )
 
     # ── Tool Selection Summary ──
     if results["tool_eval_df"] is not None:
@@ -77,22 +79,28 @@ if __name__ == "__main__":
         df = results["tool_eval_df"]
         total = len(df)
         correct = df["tool_correct"].sum()
-        print(f"  Accuracy: {correct}/{total} ({correct/total*100:.1f}%)")
+        print(f"  Accuracy: {correct}/{total} ({correct / total * 100:.1f}%)")
         # Per-candidate breakdown
         if "candidate_name" in df.columns:
             for name, group in df.groupby("candidate_name"):
                 gc = group["tool_correct"].sum()
-                print(f"    {name}: {gc}/{len(group)} ({gc/len(group)*100:.1f}%)")
+                print(f"    {name}: {gc}/{len(group)} ({gc / len(group) * 100:.1f}%)")
 
     # ── RAGAS Summary ──
     if results["ragas_df"] is not None:
         print("\n── RAGAS Summary (RAG-only) ──")
         df = results["ragas_df"]
-        metric_cols = [c for c in df.columns if c not in ("user_input", "response", "retrieved_contexts", "reference")]
+        metric_cols = [
+            c
+            for c in df.columns
+            if c not in ("user_input", "response", "retrieved_contexts", "reference")
+        ]
         for col in metric_cols:
             vals = df[col].dropna()
             if len(vals) > 0:
-                print(f"  {col:30s}  mean={vals.mean():.4f}  min={vals.min():.4f}  max={vals.max():.4f}")
+                print(
+                    f"  {col:30s}  mean={vals.mean():.4f}  min={vals.min():.4f}  max={vals.max():.4f}"
+                )
 
     # ── Retrieval Gate Summary ──
     if results.get("retrieval_gate_df") is not None and len(results["retrieval_gate_df"]) > 0:
@@ -103,7 +111,7 @@ if __name__ == "__main__":
             n = (df["loss_stage"] == stage).sum()
             if n:
                 label = "reached answer" if stage == "ok" else f"lost @ {stage}"
-                print(f"  {label:18s}: {n}/{total} ({n/total*100:.1f}%)")
+                print(f"  {label:18s}: {n}/{total} ({n / total * 100:.1f}%)")
 
     # ── GEval Summary ──
     if results["geval_df"] is not None:
@@ -131,21 +139,23 @@ if __name__ == "__main__":
         df = results["router_df"]
         total = len(df)
         correct = df["route_correct"].sum()
-        print(f"  Accuracy: {correct}/{total} ({correct/total*100:.1f}%)")
+        print(f"  Accuracy: {correct}/{total} ({correct / total * 100:.1f}%)")
 
     # ── Ingestion Summary ──
     if results["ingestion_report"] is not None:
         print("\n── Ingestion Quality Summary ──")
-        for eval_id, entry in results["ingestion_report"].items():
+        for _eval_id, entry in results["ingestion_report"].items():
             report = entry["report"]
             name = entry["name"]
             cs = report.get("chunk_stats", {})
             sq = report.get("summary_quality", {})
             ep = report.get("embedding_probes", {})
             print(f"  {name}:")
-            print(f"    Chunks: {cs.get('total_chunks', 0)} (avg size: {cs.get('avg_chunk_size', 0)})")
+            print(
+                f"    Chunks: {cs.get('total_chunks', 0)} (avg size: {cs.get('avg_chunk_size', 0)})"
+            )
             print(f"    Summary score: {sq.get('llm_score', 'N/A')}")
-            print(f"    Embedding hit rate: {ep.get('hit_rate', 0)*100:.0f}%")
+            print(f"    Embedding hit rate: {ep.get('hit_rate', 0) * 100:.0f}%")
 
     if results.get("report_path"):
         print(f"\n✅ Report saved to: {results['report_path']}")

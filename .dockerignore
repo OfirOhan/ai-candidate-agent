@@ -1,0 +1,31 @@
+# Version control
+.git
+.gitignore
+
+# Python
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+
+# IDE
+.idea
+.claude
+
+# Dev/CI artifacts
+.ruff_cache
+.deepeval
+.ipynb_checkpoints
+
+# Data (rebuilt at runtime)
+chroma_db
+uploads
+
+# Docs & images not needed in container
+*.md
+!README.md
+images
+
+# Misc
+*.log
+setup.sh

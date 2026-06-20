@@ -1,10 +1,12 @@
+import os
+import re
+
 import chromadb
 import ollama
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from unstructured.partition.auto import partition
+
 from rag.embedder import embedder
-import os
-import re
 
 CHROMA_PATH = "./chroma_db"
 SUMMARY_LLM = "qwen3"
@@ -35,9 +37,7 @@ def get_summary_collection(candidate_id: str):
 
 # -- Section extraction ------------------------------------------------------
 
-_SPACED_HEADER_RE = re.compile(
-    r"^[A-Z](\s+[A-Z]){3,}(\s+[A-Z])*\s*$"
-)
+_SPACED_HEADER_RE = re.compile(r"^[A-Z](\s+[A-Z]){3,}(\s+[A-Z])*\s*$")
 
 
 def _is_spaced_header(text: str) -> bool:
@@ -55,9 +55,7 @@ def _is_data_title(text: str) -> bool:
     stripped = text.strip()
     if re.search(r"\d", stripped):
         return True
-    if "@" in stripped or "☎" in stripped or "✉" in stripped:
-        return True
-    return False
+    return bool("@" in stripped or "☎" in stripped or "✉" in stripped)
 
 
 def extract_sections(file_path: str) -> list[dict]:
@@ -74,10 +72,12 @@ def extract_sections(file_path: str) -> list[dict]:
 
     def _flush():
         if current_texts:
-            sections.append({
-                "text": "\n\n".join(current_texts),
-                "section": current_section,
-            })
+            sections.append(
+                {
+                    "text": "\n\n".join(current_texts),
+                    "section": current_section,
+                }
+            )
             current_texts.clear()
 
     for element in elements:
@@ -106,6 +106,7 @@ def extract_sections(file_path: str) -> list[dict]:
 
 # -- Summary generation ------------------------------------------------------
 
+
 def generate_summary(full_text: str, doc_type: str) -> str:
     """Ask the LLM to summarize the document in 5-6 sentences."""
     prompt = (
@@ -128,6 +129,7 @@ def generate_summary(full_text: str, doc_type: str) -> str:
 
 
 # -- Ingestion pipeline -------------------------------------------------------
+
 
 def ingest_document(file_path: str, candidate_id: str, doc_type: str = "cv"):
     """Full pipeline: file -> sections -> chunks -> embeddings -> ChromaDB.
@@ -153,12 +155,14 @@ def ingest_document(file_path: str, candidate_id: str, doc_type: str = "cv"):
             contextualized_chunk = f"Section: {section['section']}\n{chunk}"
             all_chunks.append(contextualized_chunk)
             all_ids.append(f"{base}_s{s_idx}_chunk_{c_idx}")
-            all_metas.append({
-                "candidate_id": candidate_id,
-                "doc_type": doc_type,
-                "source_file": base,
-                "section": section["section"],
-            })
+            all_metas.append(
+                {
+                    "candidate_id": candidate_id,
+                    "doc_type": doc_type,
+                    "source_file": base,
+                    "section": section["section"],
+                }
+            )
 
     # encode_documents applies 'search_document:' prefix to every chunk
     all_embeddings = embedder.encode_documents(all_chunks)
@@ -184,10 +188,12 @@ def ingest_document(file_path: str, candidate_id: str, doc_type: str = "cv"):
         documents=[summary],
         embeddings=summary_embedding,
         ids=[base],
-        metadatas=[{
-            "candidate_id": candidate_id,
-            "doc_type": doc_type,
-            "source_file": base,
-        }],
+        metadatas=[
+            {
+                "candidate_id": candidate_id,
+                "doc_type": doc_type,
+                "source_file": base,
+            }
+        ],
     )
     print(f"Summary stored for {base}: '{summary[:80]}...'")

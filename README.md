@@ -10,6 +10,8 @@
   <img src="https://img.shields.io/badge/Ollama-black?style=for-the-badge&logo=ollama&logoColor=white" />
   <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" />
   <img src="https://img.shields.io/badge/ChromaDB-FFA500?style=for-the-badge&logo=database&logoColor=white" />
+  <img src="https://img.shields.io/badge/uv-DE5FE9?style=for-the-badge&logo=uv&logoColor=white" />
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=for-the-badge" /></a>
 </p>
 
 </div>
@@ -127,8 +129,9 @@ graph TD;
 
 ### Prerequisites
 1. Ensure you have **Python 3.10+** installed.
-2. Install and run [Ollama](https://ollama.ai/).
-3. Pull the required models:
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) (fast Python package manager).
+3. Install and run [Ollama](https://ollama.ai/).
+4. Pull the required models:
    ```bash
    ollama pull qwen3
    ```
@@ -139,19 +142,52 @@ graph TD;
    git clone <your-repo-url>
    cd ai-candidate-agent
    ```
-2. Set up your virtual environment and install dependencies:
+2. Install all dependencies (creates a venv automatically):
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
+   uv sync --all-groups
    ```
 
-### Running the App
+### Running the App Locally
 Start the Streamlit application:
 ```bash
-streamlit run main.py
+uv run streamlit run main.py
 ```
 1. **Candidate Setup (`/setup`):** Fill in your verified details and upload your CV/documents.
 2. **Recruiter Chat (`/recruiter`):** Share the link with recruiters so they can chat with your personalized AI agent!
+
+### 🐳 Docker Deployment
+A highly optimized, multi-stage `Dockerfile` is included for production deployment (e.g. on RunPod). It automatically installs `uv`, system dependencies (Tesseract), and only your production Python packages.
+
+```bash
+# Build the image
+docker build -t candidate-agent .
+
+# Run the container (exposes port 3000)
+docker run -p 3000:3000 candidate-agent
+```
+> **Note:** The agent requires access to Ollama. If running in Docker on a pod, ensure Ollama is accessible from within the container (e.g. running on the host network or via a Docker network).
+
+---
+
+## 🛠️ Development
+
+This project uses [**Ruff**](https://docs.astral.sh/ruff/) for linting and formatting.
+
+```bash
+# Lint (check for issues)
+uv run ruff check .
+
+# Lint (auto-fix)
+uv run ruff check . --fix
+
+# Format code
+uv run ruff format .
+
+# Format check (dry run)
+uv run ruff format . --check
+
+# Run tests
+uv run pytest
+```
 
 ---

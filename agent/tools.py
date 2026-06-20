@@ -34,12 +34,12 @@ TOOL_SCHEMAS = [
                             "years_of_experience, current_role, desired_job_title, "
                             "job_description, monthly_salary_expectation, "
                             "preferred_location, availability, work_type, open_to_relocation"
-                        )
+                        ),
                     }
                 },
-                "required": ["field"]
-            }
-        }
+                "required": ["field"],
+            },
+        },
     },
     {
         "type": "function",
@@ -56,13 +56,13 @@ TOOL_SCHEMAS = [
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "The question or topic to search for"
+                        "description": "The question or topic to search for",
                     }
                 },
-                "required": ["query"]
-            }
-        }
-    }
+                "required": ["query"],
+            },
+        },
+    },
 ]
 
 # -- Tool execution functions ------------------------------------------------

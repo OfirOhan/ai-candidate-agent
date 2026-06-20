@@ -1,7 +1,9 @@
-import streamlit as st
 import os
+
+import streamlit as st
+
 from rag.ingest import ingest_document
-from store.structured import save, load, DEFAULT_EDUCATION
+from store.structured import DEFAULT_EDUCATION, load, save
 
 # -- Required fields definition -----------------------------------------------
 
@@ -15,7 +17,16 @@ REQUIRED_FIELDS = {
 }
 
 NO_EDUCATION_DETAILS = {"", "No Formal Education", "High School Diploma"}
-DEGREE_OPTIONS = ["", "No Formal Education", "High School Diploma", "Associate", "Bachelor's", "Master's", "PhD", "Other"]
+DEGREE_OPTIONS = [
+    "",
+    "No Formal Education",
+    "High School Diploma",
+    "Associate",
+    "Bachelor's",
+    "Master's",
+    "PhD",
+    "Other",
+]
 
 
 def required_label(label: str) -> str:
@@ -89,14 +100,20 @@ st.divider()
 
 st.header("Personal Details")
 
-data["full_name"] = st.text_input(required_label("Full Name"), value=data.get("full_name", ""), key="full_name")
-data["email_address"] = st.text_input(required_label("Email Address"), value=data.get("email_address", ""), key="email_address")
+data["full_name"] = st.text_input(
+    required_label("Full Name"), value=data.get("full_name", ""), key="full_name"
+)
+data["email_address"] = st.text_input(
+    required_label("Email Address"), value=data.get("email_address", ""), key="email_address"
+)
 
 col1, col2 = st.columns([1, 3])
 with col1:
     data["country_code"] = st.text_input("Country Code", value=data.get("country_code", "+"))
 with col2:
-    data["phone_number"] = st.text_input(required_label("Phone Number"), value=data.get("phone_number", ""), key="phone_number")
+    data["phone_number"] = st.text_input(
+        required_label("Phone Number"), value=data.get("phone_number", ""), key="phone_number"
+    )
 
 col3, col4 = st.columns(2)
 with col3:
@@ -158,10 +175,9 @@ for i, edu in enumerate(st.session_state.education):
                 key=f"gpa_{i}",
             )
 
-    if i > 0:
-        if st.button("Remove", key=f"remove_edu_{i}"):
-            st.session_state.education.pop(i)
-            st.rerun()
+    if i > 0 and st.button("Remove", key=f"remove_edu_{i}"):
+        st.session_state.education.pop(i)
+        st.rerun()
 
 if st.button("+ Add Education"):
     st.session_state.education.append(DEFAULT_EDUCATION.copy())
@@ -258,4 +274,6 @@ if st.button("Save Profile", type="primary", use_container_width=True):
         st.error(f"Please fill in the following required fields: **{', '.join(missing)}**")
     else:
         save(data)
-        st.success("Profile saved! Share this link with recruiters: http://localhost:8501/recruiter")
+        st.success(
+            "Profile saved! Share this link with recruiters: http://localhost:8501/recruiter"
+        )
